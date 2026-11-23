@@ -1,0 +1,24 @@
+---
+import Page from '../../layouts/Page.astro';
+import { articles, sources } from '../../lib/editorial.js';
+export function getStaticPaths() {
+  return articles.map((article) => ({ params: { slug: article.slug }, props: { article } }));
+}
+const { article } = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org', '@type': 'Article', headline: article.title,
+  description: article.description, datePublished: article.date,
+  author: { '@type': 'Organization', name: 'Kakobuy Spreadsheet' },
+};
+---
+<Page title={article.title + ' | Kakobuy Spreadsheet'} description={article.description} page="guides" structuredData={structuredData}>
+  <article class="reading">
+    <a class="text-link" href="/guides/">All guides</a>
+    <h1>{article.title}</h1>
+    <p class="intro">{article.description}</p>
+    {article.sections.map(([heading, paragraph]) => <section><h2>{heading}</h2><p>{paragraph}</p></section>)}
+    <details class="references"><summary>Sources</summary>
+      <ul>{article.refs.map((key) => <li><a class="text-link" href={sources[key][1]}>{sources[key][0]}</a></li>)}</ul>
+    </details>
+  </article>
+</Page>

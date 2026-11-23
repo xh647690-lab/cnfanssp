@@ -1,0 +1,30 @@
+---
+import { categories, mainSite, products } from '../lib/catalog.js';
+const { mode = 'products', searchLabel = 'Search', placeholder = 'Search CNFansSP products' } = Astro.props;
+---
+{mode === 'search' && <form class="search" role="search" method="get" action={mainSite + '/search.html'}>
+  <input name="keywords" type="search" aria-label={placeholder} placeholder={placeholder} required />
+  <input type="hidden" name="channelid" value="2" />
+  <button type="submit">{searchLabel}</button>
+</form>}
+{mode === 'categories' && <ul class="category-grid">{categories.map(({ name, url }) => <li><a href={url}>{name}</a></li>)}</ul>}
+{mode === 'products' && <>
+  <div class="sort"><label for="sort">Sort by</label> <select id="sort"><option value="source">Latest</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option></select></div>
+  <ul class="products" id="products">
+    {products.map(({ url, image, name, price, amount }, index) => <li data-price={amount} data-index={index}>
+      <a href={url}><img loading="lazy" src={image} alt={name} width="480" height="360" /><span>{name}<strong>{price}</strong></span></a>
+    </li>)}
+  </ul>
+</>}
+<script>
+  const grid = document.querySelector('#products');
+  const select = document.querySelector('#sort');
+  if (grid && select instanceof HTMLSelectElement) {
+    const cards = [...grid.querySelectorAll('li')];
+    select.addEventListener('change', () => {
+      const field = select.value === 'source' ? 'index' : 'price';
+      const direction = select.value === 'high' ? -1 : 1;
+      grid.append(...cards.toSorted((a, b) => direction * (Number(a.dataset[field]) - Number(b.dataset[field]))));
+    });
+  }
+</script>

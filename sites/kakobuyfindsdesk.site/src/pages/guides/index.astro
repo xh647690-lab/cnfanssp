@@ -1,0 +1,8 @@
+---
+import Page from '../../layouts/Page.astro';
+import { articles } from '../../lib/editorial.js';
+---
+<Page title="Kakobuy Guides | Buying, QC & Shipping" description="Read practical Kakobuy guides for seller links, QC checks, sizing, fees and international parcels." page="guides">
+  <h1>Kakobuy guides</h1>
+  <ul class="cards guide-index">{articles.map(({ slug, title, description }) => <li><a href={`/guides/${slug}/`}><strong>{title}</strong><span>{description}</span></a></li>)}</ul>
+</Page>

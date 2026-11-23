@@ -1,0 +1,25 @@
+---
+import Page from '../layouts/Page.astro';
+import { faqs } from '../lib/editorial.js';
+---
+<Page title="Kakobuy FAQ | Spreadsheet, QC, Shipping & Returns" description="24 questions on Kakobuy listings, sizing, warehouse photos, shipping costs and returns." page="faq">
+  <h1>Kakobuy FAQ</h1>
+  <p>Find answers about seller links, warehouse checks and parcel costs.</p>
+  <div class="faq">
+    {faqs.map(({ id, question, answer, guide }) => <details id={id}>
+      <summary>{question}</summary><p>{answer}</p>
+      <a class="text-link" href={`/guides/${guide.slug}/`}>{guide.title}</a>
+    </details>)}
+  </div>
+</Page>
+<script>
+  function openQuestion() {
+    const question = document.getElementById(location.hash.slice(1));
+    if (question instanceof HTMLDetailsElement) {
+      question.open = true;
+      question.scrollIntoView();
+    }
+  }
+  openQuestion();
+  window.addEventListener('hashchange', openQuestion);
+</script>

@@ -1,0 +1,33 @@
+---
+import '../site.css';
+import { languages, navigation } from '../lib/languages.js';
+
+const { title, description, page = '', lang = 'en', structuredData } = Astro.props;
+const labels = languages[lang] ?? languages.en;
+const home = lang === 'en' ? '/' : `/${lang}/`;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href="/kakobuy.ico" />
+    {page === 'home' && Object.keys(languages).map((code) => <link rel="alternate" hreflang={code} href={code === 'en' ? '/' : `/${code}/`} />)}
+    {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
+  </head>
+  <body>
+    <header class="top"><div class="wrap header">
+      <a class="brand" href={home}><img alt="Kakobuy" src="/kakobuy-logo.png" /><span>Spreadsheet</span></a>
+      <nav aria-label={labels.menu}>{navigation.map(([key, href]) => <a href={href} aria-current={key === page ? 'page' : undefined}>{labels[key]}</a>)}</nav>
+      <details class="language">
+        <summary aria-label={labels.langLabel}><span>{labels.name}</span> <small>{lang.toUpperCase()}</small></summary>
+        <ul>{Object.entries(languages).map(([code, locale]) => <li><a lang={code} hreflang={code} aria-current={code === lang ? 'true' : undefined} href={code === 'en' ? '/' : `/${code}/`}>{locale.name} <small>{code.toUpperCase()}</small></a></li>)}</ul>
+      </details>
+    </div></header>
+    <main class="wrap"><slot /></main>
+    <footer><div class="wrap"><a href="/about/">{labels.about}</a><p>{labels.disclosure}</p></div></footer>
+  </body>
+</html>

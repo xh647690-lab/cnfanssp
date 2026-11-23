@@ -1,0 +1,30 @@
+---
+import Page from '../layouts/Page.astro';
+import Catalog from './Catalog.astro';
+import { products } from '../lib/catalog.js';
+import { articles, faqs } from '../lib/editorial.js';
+import { languages } from '../lib/languages.js';
+const { lang = 'en' } = Astro.props;
+const labels = languages[lang];
+const featured = products[0];
+---
+<Page title="Kakobuy Spreadsheet | CNFansSP Product Finds" description={labels.intro} page="home" lang={lang}>
+  <section class="hero">
+    <div>
+      <h1>Kakobuy <em>Spreadsheet</em></h1>
+      <p>{labels.intro}</p>
+      <Catalog mode="search" searchLabel={labels.search} placeholder={labels.placeholder} />
+    </div>
+    <a class="feature" href={featured.url}><img src={featured.image} alt={featured.name} width="480" height="360" fetchpriority="high" /><span>{featured.name}<strong>{featured.price}</strong></span></a>
+  </section>
+  <section class="section"><h2>{labels.categories}</h2><Catalog mode="categories" /></section>
+  <section class="section"><h2>{labels.latest}</h2><Catalog /></section>
+  <section class="section">
+    <h2><a href="/faq/">{labels.questions}</a></h2>
+    <ul class="cards" lang="en">{faqs.slice(-3).reverse().map(({ id, question, answer }) => <li><a href={`/faq/#${id}`}><strong>{question}</strong><span>{answer}</span></a></li>)}</ul>
+  </section>
+  <section class="section">
+    <h2><a href="/guides/">{labels.read}</a></h2>
+    <ul class="cards" lang="en">{articles.slice(-3).reverse().map(({ slug, title, description }) => <li><a href={`/guides/${slug}/`}><strong>{title}</strong><span>{description}</span></a></li>)}</ul>
+  </section>
+</Page>

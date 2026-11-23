@@ -1,0 +1,11 @@
+---
+import Page from '../layouts/Page.astro';
+import Catalog from '../components/Catalog.astro';
+import { mainSite } from '../lib/catalog.js';
+---
+<Page title="Kakobuy Spreadsheet Finds" description="Search CNFansSP or open the latest product listings." page="finds">
+  <h1>Product finds</h1>
+  <Catalog mode="search" />
+  <Catalog />
+  <p><a class="text-link" href={mainSite + '/AllProducts/'}>Browse all products on CNFansSP</a></p>
+</Page>
