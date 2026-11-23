@@ -1,21 +1,23 @@
 ---
 import '../site.css';
 import { languages, navigation } from '../lib/languages.js';
+import { canonicalUrl, homePaths, isProduction } from '../lib/seo.js';
 
 const { title, description, page = '', lang = 'en', structuredData } = Astro.props;
 const labels = languages[lang] ?? languages.en;
-const home = lang === 'en' ? '/' : `/${lang}/`;
+const home = homePaths[lang] ?? '/';
 ---
 <!doctype html>
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="robots" content="noindex, follow" />
+    {isProduction ? <link rel="canonical" href={canonicalUrl(Astro.url.pathname)} /> : <meta name="robots" content="noindex, follow" />}
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" href="/kakobuy.ico" />
-    {page === 'home' && Object.keys(languages).map((code) => <link rel="alternate" hreflang={code} href={code === 'en' ? '/' : `/${code}/`} />)}
+    {isProduction && page === 'home' && Object.entries(homePaths).map(([code, path]) => <link rel="alternate" hreflang={code} href={canonicalUrl(path)} />)}
+    {isProduction && page === 'home' && <link rel="alternate" hreflang="x-default" href={canonicalUrl('/')} />}
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
   </head>
   <body>
