@@ -1,0 +1,20 @@
+---
+import { isProduction, origin } from '../lib/seo.js';
+
+const { measurementId } = Astro.props;
+const hostname = new URL(origin).hostname;
+const valid = typeof measurementId === 'string' && /^G-[A-Z0-9]+$/.test(measurementId);
+---
+{isProduction && valid && <script is:inline define:vars={{ measurementId, hostname }}>
+  if (window.location.hostname === hostname) {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', measurementId);
+
+    const tag = document.createElement('script');
+    tag.async = true;
+    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(measurementId);
+    document.head.append(tag);
+  }
+</script>}

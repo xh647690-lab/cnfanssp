@@ -1,5 +1,6 @@
 ---
 import '../site.css';
+import Analytics from '../components/Analytics.astro';
 import { languages, navigation } from '../lib/languages.js';
 import { canonicalUrl, homePaths, isProduction } from '../lib/seo.js';
 
@@ -16,6 +17,7 @@ const home = homePaths[lang] ?? '/';
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" href="/kakobuy.ico" />
+    <Analytics measurementId="G-C89Z99V3LG" />
     {isProduction && page === 'home' && Object.entries(homePaths).map(([code, path]) => <link rel="alternate" hreflang={code} href={canonicalUrl(path)} />)}
     {isProduction && page === 'home' && <link rel="alternate" hreflang="x-default" href={canonicalUrl('/')} />}
     {structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData).replaceAll('<', '\\u003c')} />}
