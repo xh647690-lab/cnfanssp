@@ -2,6 +2,13 @@ import { articles, faqs, articleInLocale } from './editorial.mjs';
 import { languageOrder, languageName, languageTag, localizedPath, localizedText, localizedCategory } from './locales.mjs';
 
 export const sourceOrigin = 'https://www.cnfanssp.com';
+export const siteOrigin = 'https://kakobuyfindsguide.store';
+export const analyticsScriptHash = 'sha256-VLj4bgpMmTjG4PRa0fM8YcGujdoku4r/7b2mY7Z/ugU=';
+const googleTag = '<script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script>' +
+  `<script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-C89Z99V3LG');</script>`;
 const favicon = '/favicon.ico';
 const logo = 'https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png';
 const navigation = [['home','/'], ['catalog','/spreadsheet/'], ['categories','/categories/'], ['faq','/faq/'], ['guides','/articles/']];
@@ -9,6 +16,25 @@ const xmlEscapes = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#3
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => xmlEscapes[char]);
 const secureLink = (label, url, css = '') => '<a class="' + esc(css) + '" href="' + esc(url) + '">' + esc(label) + '</a>';
 const brand = base => '<a href="' + base + '" class="brand"><img src="' + logo + '" width="642" height="162" alt="Kakobuy"></a>';
+
+const editorialLocales = ['en','zh'];
+const editorialSections = ['faq','guides','article'];
+
+export function renderSitemap() {
+  const urls = navigation.flatMap(([section, path]) => {
+    const locales = editorialSections.includes(section) ? editorialLocales : languageOrder;
+    return locales.map(locale => siteOrigin + localizedPath(locale, path));
+  });
+  for (const { slug } of articles) {
+    for (const locale of editorialLocales) {
+      urls.push(siteOrigin + localizedPath(locale, '/articles/' + slug + '/'));
+    }
+  }
+  return '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.map(url => '  <url><loc>' + esc(url) + '</loc></url>').join('\n') +
+    '\n</urlset>\n';
+}
 
 export function getRoute(pathname) {
   const components = pathname.split('/').filter(Boolean);
@@ -139,10 +165,10 @@ export function renderPage(origin, route, categories) {
   const description = article?.summary ?? (section === 'faq'
     ? (locale === 'zh' ? '24 个有关 Kakobuy 下单、仓库验货、运费、退换货和物流的常见问题。' : '24 answers about ordering on Kakobuy, QC photos, shipping costs, returns, and tracking.')
     : t.intro);
-  const editorial = ['faq','guides','article'].includes(section);
+  const editorial = editorialSections.includes(section);
   const canonicalLocale = editorial && locale !== 'zh' ? 'en' : locale;
   const canonical = origin + localizedPath(canonicalLocale,path);
-  const variants = editorial ? ['en','zh'] : languageOrder;
+  const variants = editorial ? editorialLocales : languageOrder;
   const alternate = variants.length ? [...variants,'x-default'].map(option => '<link rel="alternate" hreflang="' +
     languageTag(option) + '" href="' + esc(origin + localizedPath(option === 'x-default' ? 'en' : option,path)) + '">').join('') : '';
   const articleTags = article ? '<meta property="og:type" content="article">' +
@@ -161,6 +187,6 @@ export function renderPage(origin, route, categories) {
     '"><meta property="og:description" content="' + esc(description) + '"><meta property="og:url" content="' + esc(canonical) + '">' +
     articleTags + '<link rel="canonical" href="' + esc(canonical) + '">' + alternate +
     '<link rel="icon" type="image/x-icon" href="' + favicon + '">' +
-    '<link rel="stylesheet" href="/catalog.css"><script type="module" src="/catalog.js"></script></head><body>' +
+    googleTag + '<link rel="stylesheet" href="/catalog.css"><script type="module" src="/catalog.js"></script></head><body>' +
     top(t,locale,path) + '<main class="container page-' + section + '">' + content + '</main>' + foot(t,locale) + '</body></html>';
 }

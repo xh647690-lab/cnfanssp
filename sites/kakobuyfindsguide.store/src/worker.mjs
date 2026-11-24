@@ -1,9 +1,11 @@
 import { getCatalog, getDetail } from './catalog.mjs';
 import { styles, script, faviconBase64 } from './assets.mjs';
-import { getRoute, renderPage, sourceOrigin } from './pages.mjs';
+import { getRoute, renderPage, renderSitemap, sourceOrigin, siteOrigin, analyticsScriptHash } from './pages.mjs';
 
 const favicon = Uint8Array.from(atob(faviconBase64), char => char.charCodeAt(0));
 const staticFiles = new Map([
+  ['/sitemap.xml', [renderSitemap(), 'application/xml; charset=utf-8']],
+  ['/robots.txt', ['User-agent: *\nDisallow:\nSitemap: ' + siteOrigin + '/sitemap.xml\n', 'text/plain; charset=utf-8']],
   ['/favicon.ico', [favicon, 'image/x-icon']],
   ['/catalog.css', [styles, 'text/css; charset=utf-8']],
   ['/catalog.js', [script, 'text/javascript; charset=utf-8']]
@@ -43,7 +45,7 @@ export default {
     const headers = {
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Content-Security-Policy': "default-src 'self'; img-src 'self' https://www.cnfanssp.com https://nstatic.kakobuy.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' '" + analyticsScriptHash + "' https://www.googletagmanager.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; img-src 'self' https://www.cnfanssp.com https://nstatic.kakobuy.com https://*.google-analytics.com https://*.googletagmanager.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
     };
     if (!['HEAD', 'GET'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...headers, Allow: 'GET, HEAD' } });
@@ -81,7 +83,7 @@ export default {
         console.error('CNFansSP category request:', error.message);
       }
     }
-    return new Response(request.method === 'HEAD' ? null : renderPage('https://kakobuyfindsguide.store', route, categories), {
+    return new Response(request.method === 'HEAD' ? null : renderPage(siteOrigin, route, categories), {
       headers: { ...headers, 'Content-Type': 'text/html; charset=utf-8' }
     });
   }
