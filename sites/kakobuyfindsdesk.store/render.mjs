@@ -156,7 +156,7 @@ function render(url) {
   <link rel="icon" href="https://kakobuy.com/favicon.ico" type="image/x-icon">
   <link rel="canonical" href="${new URL(localePath(canonicalLanguage, path), url).href}">${metadata}
   <link rel="alternate" hreflang="x-default" href="${new URL(localePath('en', path), url).href}">${structured}
-  <link rel="stylesheet" href="/styles.css"><script src="/client.js" defer></script></head>
+  <link rel="stylesheet" href="/styles.css"><script src="/client.js" defer></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C89Z99V3LG');</script></head>
   <body data-product-label="${escapeHtml(words[12])}"><header><div class="wrap nav">
   <a class="logo" href="${localePath(language)}"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>
   <nav aria-label="${escapeHtml(words[1])}">${menu}</nav>

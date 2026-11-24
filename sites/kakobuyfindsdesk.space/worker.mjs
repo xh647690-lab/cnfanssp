@@ -47,7 +47,7 @@ export default {
       'X-Content-Type-Options': 'nosniff',
       ...(!isProduction && { 'X-Robots-Tag': 'noindex, nofollow' }),
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Content-Security-Policy': "default-src 'self'; img-src https://www.cnfanssp.com https://nstatic.kakobuy.com https://kakobuy.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
+      'Content-Security-Policy': "default-src 'self'; img-src https://www.cnfanssp.com https://nstatic.kakobuy.com https://kakobuy.com https://*.google-analytics.com https://*.googletagmanager.com; script-src 'self' https://www.googletagmanager.com 'sha256-Q/NjapcqvyC5xUJD33ym2NZoXeoAec+6ukyjpCQHRx0='; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
     };
     if (!['HEAD', 'GET'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...headers, Allow: 'GET, HEAD' } });

@@ -105,7 +105,7 @@ function shell(lang, t, page, url, robots) {
     '<meta name="robots" content="' + robots + '"><meta name="description" content="' + escape(page.description ?? t.intro) + '">' +
     '<title>' + escape(page.title) + ' · CNFansSP</title><link rel="canonical" href="' + siteOrigin + canonical + '">' +
     '<link rel="icon" type="image/x-icon" href="https://kakobuy.com/favicon.ico">' +
-    alternatives + '<link rel="alternate" hreflang="x-default" href="' + escape(siteOrigin + page.path) + '"><link rel="stylesheet" href="/site.css"></head><body>' +
+    alternatives + '<link rel="alternate" hreflang="x-default" href="' + escape(siteOrigin + page.path) + '"><link rel="stylesheet" href="/site.css">' + (status === 200 && url.hostname === new URL(siteOrigin).hostname ? "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG\"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C89Z99V3LG');</script>" : '') + '</head><body>' +
     '<header class="top"><div class="wrap"><a class="brand" href="' + withLocale(lang) + '"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>' +
     '<nav class="nav" aria-label="' + escape(t.menu) + '">' + nav + '</nav><div class="actions">' +
     languageMenu(lang,t,page.path,url.searchParams) + '<a class="button top-register" href="' + origin + '/reg">' + escape(t.register) + '</a></div></div></header>' +

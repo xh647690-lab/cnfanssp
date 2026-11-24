@@ -100,9 +100,31 @@ async function buy() {
   return Response.redirect(itemUrl || origin + '/AllProducts/6667.html', 302);
 }
 
+const productionOrigin = 'https://kakobuyfindsdesk.store';
+
+function sitemap() {
+  const browsing = Object.keys(localeRows).flatMap(language =>
+    ['', 'spreadsheet/', 'categories/'].map(path => localePath(language, path)));
+  const editorial = localizedEditorial.flatMap(language =>
+    ['faq/', 'guides/', ...guides.map(guide => 'guides/' + guide.slug + '/')]
+      .map(path => localePath(language, path)));
+  return '<?xml version="1.0" encoding="UTF-8"?>' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' +
+    [...browsing, ...editorial].map(path => '<url><loc>' + productionOrigin + path + '</loc></url>').join('') +
+    '</urlset>';
+}
+
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    if (url.pathname === '/robots.txt') {
+      return new Response(request.method === 'HEAD' ? null : 'User-agent: *\nDisallow: /api/\nSitemap: ' + productionOrigin + '/sitemap.xml\n',
+        {headers:{'content-type':'text/plain; charset=utf-8'}});
+    }
+    if (url.pathname === '/sitemap.xml') {
+      return new Response(request.method === 'HEAD' ? null : sitemap(),
+        {headers:{'content-type':'application/xml; charset=utf-8'}});
+    }
     if (url.pathname === '/styles.css') return new Response(styles, {headers:{'content-type':'text/css; charset=utf-8'}});
     if (url.pathname === '/client.js') return new Response(client, {headers:{'content-type':'text/javascript; charset=utf-8'}});
     if (url.pathname === '/favicon.ico') return Response.redirect('https://kakobuy.com/favicon.ico', 302);
