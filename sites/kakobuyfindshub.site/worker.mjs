@@ -106,9 +106,31 @@ function brandAsset(encoded, contentType) {
   });
 }
 
+const productionOrigin = 'https://kakobuyfindshub.site';
+
+function searchMetadata(path) {
+  if (path === '/robots.txt') {
+    return new Response(`User-agent: *\nAllow: /\nSitemap: ${productionOrigin}/sitemap.xml\n`, {
+      headers: { 'content-type': 'text/plain; charset=utf-8' }
+    });
+  }
+  const routes = Object.keys(localeRows).flatMap(language =>
+    navPaths.filter(page => !['faq/', 'guides/'].includes(page) || localizedEditorial.includes(language))
+      .map(page => localePath(language, page))
+      .concat(localizedEditorial.includes(language) ? guides.map(guide => localePath(language, 'guides/' + guide.slug + '/')) : [])
+  );
+  const entries = routes.map(route => `<url><loc>${productionOrigin}${route}</loc></url>`).join('\n');
+  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`, {
+    headers: { 'content-type': 'application/xml; charset=utf-8' }
+  });
+}
+
 export default {
   async fetch(request) {
     const url = new URL(request.url);
+    if (url.origin === productionOrigin && ['/robots.txt', '/sitemap.xml'].includes(url.pathname)) {
+      return searchMetadata(url.pathname);
+    }
     if (url.pathname === '/styles.css') return new Response(styles, {headers:{'content-type':'text/css; charset=utf-8'}});
     if (url.pathname === '/client.js') return new Response(client, {headers:{'content-type':'text/javascript; charset=utf-8'}});
     if (url.pathname === '/brand-logo.png') return brandAsset(brandLogo, 'image/png');

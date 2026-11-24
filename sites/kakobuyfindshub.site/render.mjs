@@ -153,11 +153,14 @@ function render(url) {
   const html = `<!doctype html><html lang="${language === 'zh' ? 'zh-Hans' : language}">
   <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="${escapeHtml(description)}">${noIndex ? '<meta name="robots" content="noindex,nofollow">' : ''}
+  ${noIndex ? '' : `<meta name="google-site-verification" content="HeuwrZCUe8pv8cBagI4ljI2wVl9buFa5bwt1mSW__oA"><meta name="msvalidate.01" content="A966D427AFCEEEC4068828D9F541400A">`}
   <title>${escapeHtml(title)} | CnbuySheet</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="/brand-logo.png">
   <link rel="canonical" href="${new URL(localePath(canonicalLanguage, path), url).href}">${metadata}
   <link rel="alternate" hreflang="x-default" href="${new URL(localePath('en', path), url).href}">${structured}
+  ${noIndex ? '' : `<script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-C89Z99V3LG');</script>`}
   <link rel="stylesheet" href="/styles.css"><script src="/client.js" defer></script></head>
   <body data-product-label="${escapeHtml(words[12])}"><header><div class="wrap nav">
   <a class="logo" href="${localePath(language)}"><img src="/brand-logo.png" width="642" height="162" alt="Kakobuy"></a>
