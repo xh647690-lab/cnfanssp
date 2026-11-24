@@ -1,5 +1,5 @@
 const navPaths = ['', 'spreadsheet/', 'categories/', 'faq/', 'guides/'];
-const datePublished = '2026-11-24';
+const originalPublicationDate = '2026-11-24';
 const english = localeRows.en;
 const localizedEditorial = ['en', 'zh'];
 
@@ -95,6 +95,7 @@ function guidesPage(language, words) {
 
 function guidePage(language, words, guide) {
   const contentLanguage = language === 'zh' ? 'zh' : 'en';
+  const datePublished = guide.datePublished ?? originalPublicationDate;
   const [title, description, ...sections] = guide[contentLanguage];
   return `<article class="wrap reading article section" lang="${contentLanguage}">
     <a class="back" href="${localePath(language, 'guides/')}">${escapeHtml(words[5])}</a>
@@ -146,7 +147,7 @@ function render(url) {
     `<option value="${localePath(code, path)}"${code === language ? ' selected' : ''}>${escapeHtml(row[0])}</option>`).join('');
   const structured = guide ? `<script type="application/ld+json">${JSON.stringify({
     '@context':'https://schema.org', '@type':'Article', headline:title, description,
-    datePublished, inLanguage:language === 'zh' ? 'zh-Hans' : 'en',
+    datePublished:guide.datePublished ?? originalPublicationDate, inLanguage:language === 'zh' ? 'zh-Hans' : 'en',
     mainEntityOfPage:new URL(localePath(canonicalLanguage, path), url).href
   }).replaceAll('<', '\\u003c')}</script>` : '';
   const noIndex = url.hostname !== 'kakobuyfindshub.site';
