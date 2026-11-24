@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kakobuyfindsdesk-space",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-11-24",
+  "workers_dev": false,
+  "preview_urls": false,
+  "build": { "command": "npm run build" },
+  "routes": [
+    { "pattern": "kakobuyfindsdesk.space", "custom_domain": true },
+    { "pattern": "www.kakobuyfindsdesk.space", "custom_domain": true }
+  ]
+}
