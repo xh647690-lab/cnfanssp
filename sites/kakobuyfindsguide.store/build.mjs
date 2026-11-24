@@ -1,9 +1,9 @@
 import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 
 const output = new URL('./dist/server/', import.meta.url);
-const sources = [['styles', 'catalog.css'], ['script', 'catalog.js']];
-const assets = await Promise.all(sources.map(async ([name, file]) => {
-  const content = await readFile(new URL('src/' + file, import.meta.url), 'utf8');
+const sources = [['styles', 'catalog.css'], ['script', 'catalog.js'], ['faviconBase64', 'kakobuy.ico', 'base64']];
+const assets = await Promise.all(sources.map(async ([name, file, encoding = 'utf8']) => {
+  const content = await readFile(new URL('src/' + file, import.meta.url), encoding);
   return 'export const ' + name + ' = ' + JSON.stringify(content) + ';';
 }));
 await mkdir(output, { recursive: true });
