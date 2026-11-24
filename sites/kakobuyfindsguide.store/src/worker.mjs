@@ -7,6 +7,19 @@ const staticFiles = new Map([
   ['/catalog.js', [script, 'text/javascript; charset=utf-8']]
 ]);
 
+const replacedGuides = {
+  'cnfans-spreadsheet-guide': 'kakobuy-spreadsheet-guide',
+  'search-cnfanssp-by-name-or-id': 'kakobuy-spreadsheet-guide',
+  'weidian-jersey-size-checklist': 'kakobuy-shoe-jersey-size-check',
+  'original-weidian-link-vs-agent-link': 'kakobuy-weidian-taobao-1688',
+  'weidian-taobao-1688-shopping-guide': 'kakobuy-weidian-taobao-1688',
+  'cnfanssp-registration-and-login': 'how-to-order-on-kakobuy',
+  'seller-photos-vs-qc-photos': 'kakobuy-qc-photos',
+  'yuan-price-and-shipping-costs': 'kakobuy-fees-total-cost',
+  'shopping-agent-order-and-warehouse': 'kakobuy-warehouse-parcel-tracking',
+  'fix-cnfanssp-product-links': 'kakobuy-weidian-taobao-1688'
+};
+
 async function redirectToSearch(url) {
   let keyword = (url.searchParams.get('q') ?? '').trim().slice(0, 100);
   if (!keyword) return Response.redirect(sourceOrigin + '/AllProducts/', 302);
@@ -28,13 +41,13 @@ export default {
     const headers = {
       'X-Content-Type-Options': 'nosniff',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Content-Security-Policy': "default-src 'self'; img-src https://www.cnfanssp.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
+      'Content-Security-Policy': "default-src 'self'; img-src 'self' https://www.cnfanssp.com https://nstatic.kakobuy.com https://www.kakobuy.com https://kakobuy.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
     };
     if (!['HEAD', 'GET'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...headers, Allow: 'GET, HEAD' } });
     }
     if (url.pathname === '/search/') return redirectToSearch(url);
-    if (url.pathname === '/favicon.ico') return Response.redirect(sourceOrigin + '/favicon.ico', 302);
+    if (url.pathname === '/favicon.ico') return Response.redirect('https://www.kakobuy.com/favicon.ico', 302);
     const asset = staticFiles.get(url.pathname);
     if (asset) {
       return new Response(request.method === 'HEAD' ? null : asset[0], {
@@ -51,6 +64,11 @@ export default {
         console.error('CNFansSP catalog request:', error.message);
         return Response.json({ error: 'CNFansSP is temporarily unavailable' }, { status: 502, headers });
       }
+    }
+    const oldGuide = url.pathname.match(/^(\/(?:[a-z]{2})\/|\/)articles\/([a-z0-9-]+)\/?$/);
+    const updatedSlug = oldGuide && replacedGuides[oldGuide[2]];
+    if (updatedSlug) {
+      return Response.redirect(new URL(oldGuide[1] + 'articles/' + updatedSlug + '/', url.origin), 301);
     }
     const route = getRoute(url.pathname);
     if (!route) return new Response('Page not found', { status: 404, headers });

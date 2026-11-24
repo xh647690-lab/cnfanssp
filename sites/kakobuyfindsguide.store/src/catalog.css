@@ -161,3 +161,7 @@ footer{background:#eef1eb;border-top:1px solid var(--line)}
   .catalog-header :is(h1,h2){overflow-wrap:anywhere}
   .sort-label select{max-width:108px}
 }
+
+.header-inner .brand,.footer-inner .brand{padding:0;background:none}
+.brand img{display:block;width:130px;height:auto;max-width:100%}
+@media(max-width:580px){.brand img{width:99px}.header-actions .signup{max-width:112px}}
