@@ -160,6 +160,6 @@ export function renderPage(origin, route, categories) {
     '"><meta property="og:description" content="' + esc(description) + '"><meta property="og:url" content="' + esc(canonical) + '">' +
     articleTags + '<link rel="canonical" href="' + esc(canonical) + '">' + alternate +
     '<link rel="icon" type="image/x-icon" href="' + favicon + '">' +
-    '<link rel="stylesheet" href="/catalog.css"><script type="module" src="/catalog.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-C89Z99V3LG');</script></head><body>' +
+    '<link rel="stylesheet" href="/catalog.css"><script type="module" src="/catalog.js"></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag(\'js\',new Date());gtag(\'config\',\'G-C89Z99V3LG\');</script></head><body>' +
     top(t,locale,path) + '<main class="container page-' + section + '">' + content + '</main>' + foot(t,locale) + '</body></html>';
 }
