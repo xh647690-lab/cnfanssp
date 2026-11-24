@@ -2,13 +2,13 @@ import { articles, faqs, articleInLocale } from './editorial.mjs';
 import { languageOrder, languageName, languageTag, localizedPath, localizedText, localizedCategory } from './locales.mjs';
 
 export const sourceOrigin = 'https://www.cnfanssp.com';
-const favicon = sourceOrigin + '/favicon.ico';
-const appleIcon = sourceOrigin + '/public/upload/system/2018/05/24/8c675d3dae162ebc1936f3ab43d58960.png';
+const favicon = 'https://kakobuy.com/favicon.ico';
+
 const navigation = [['home','/'], ['catalog','/spreadsheet/'], ['categories','/categories/'], ['faq','/faq/'], ['guides','/articles/']];
 const xmlEscapes = { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' };
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => xmlEscapes[char]);
 const secureLink = (label, url, css = '') => '<a class="' + esc(css) + '" href="' + esc(url) + '">' + esc(label) + '</a>';
-const brand = base => '<a href="' + base + '" class="brand" aria-label="CnbuySheet"><span>Cnbuy</span><span>Sheet</span></a>';
+const brand = base => '<a href="' + base + '" class="brand"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>';
 
 export function getRoute(pathname) {
   const components = pathname.split('/').filter(Boolean);
@@ -136,7 +136,7 @@ export function renderPage(origin, route, categories) {
   const t = localizedText(locale);
   const title = (article?.title ?? (section === 'home' ? 'CNFansSP ' + (locale === 'en' ? 'Shopping Spreadsheet' : t.catalog) : t[section])) + (section === 'home' ? '' : ' | CNFansSP');
   const description = article?.summary ?? (section === 'faq'
-    ? (locale === 'zh' ? '24 个有关 CNFansSP 商品搜索、购买链接、注册和验货的常见问题。' : '24 answers about CNFansSP search, product links, registration, and shopping-agent orders.')
+    ? (locale === 'zh' ? '24 个有关 KakoBuy 下单、物流运费、验货及退换货的常见问题。' : '24 answers about KakoBuy ordering, warehouse QC, shipping and returns.')
     : t.intro);
   const editorial = ['faq','guides','article'].includes(section);
   const canonicalLocale = editorial && locale !== 'zh' ? 'en' : locale;
@@ -159,7 +159,7 @@ export function renderPage(origin, route, categories) {
     '<meta name="description" content="' + esc(description) + '"><meta property="og:title" content="' + esc(title) +
     '"><meta property="og:description" content="' + esc(description) + '"><meta property="og:url" content="' + esc(canonical) + '">' +
     articleTags + '<link rel="canonical" href="' + esc(canonical) + '">' + alternate +
-    '<link rel="icon" type="image/x-icon" href="' + favicon + '"><link rel="apple-touch-icon" href="' + appleIcon + '">' +
+    '<link rel="icon" type="image/x-icon" href="' + favicon + '">' +
     '<link rel="stylesheet" href="/catalog.css"><script type="module" src="/catalog.js"></script></head><body>' +
     top(t,locale,path) + '<main class="container page-' + section + '">' + content + '</main>' + foot(t,locale) + '</body></html>';
 }

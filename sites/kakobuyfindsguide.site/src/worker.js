@@ -104,9 +104,9 @@ function shell(lang, t, page, url, robots) {
   return '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<meta name="robots" content="' + robots + '"><meta name="description" content="' + escape(page.description ?? t.intro) + '">' +
     '<title>' + escape(page.title) + ' · CNFansSP</title><link rel="canonical" href="' + siteOrigin + canonical + '">' +
-    '<link rel="icon" type="image/x-icon" href="' + origin + '/favicon.ico"><link rel="apple-touch-icon" href="' + origin + '/public/upload/system/2018/05/24/8c675d3dae162ebc1936f3ab43d58960.png">' +
+    '<link rel="icon" type="image/x-icon" href="https://kakobuy.com/favicon.ico">' +
     alternatives + '<link rel="alternate" hreflang="x-default" href="' + escape(siteOrigin + page.path) + '"><link rel="stylesheet" href="/site.css"></head><body>' +
-    '<header class="top"><div class="wrap"><a class="brand" aria-label="CnbuySheet – ' + escape(t.home) + '" href="' + withLocale(lang) + '">Cnbuy<span>Sheet</span></a>' +
+    '<header class="top"><div class="wrap"><a class="brand" href="' + withLocale(lang) + '"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>' +
     '<nav class="nav" aria-label="' + escape(t.menu) + '">' + nav + '</nav><div class="actions">' +
     languageMenu(lang,t,page.path,url.searchParams) + '<a class="button top-register" href="' + origin + '/reg">' + escape(t.register) + '</a></div></div></header>' +
     '<main class="wrap">' + page.body + '</main><footer class="footer"><div class="wrap"><p>CNFansSP</p><a href="' + origin + '/">' + escape(t.credit) + '</a></div></footer></body></html>'
@@ -202,7 +202,7 @@ function faqPage(lang,t,rawTopic) {
     const [question,answer] = questionContent(id,lang)
     return '<details id="question-' + (id+1) + '"><summary>' + escape(question) + '</summary><p>' + escape(answer) + '</p></details>'
   }).join('')
-  const groupSources = [['directory','search'],['jersey','weidian','sourceLinks'],['shipping','qc'],['registration','service']]
+  const groupSources = [['picklist','register','purchase'],['official','tools','purchase'],['fees','estimate','purchase'],['returns','estimate','official']]
   return '<section class="page-heading"><h1>' + escape(t.faq) + '</h1></section><div class="editorial-page faq-page" lang="' +
     articleLang + '"><nav class="chips" aria-label="' + escape(t.faq) + '">' + groupLinks + '</nav><div class="faq-entries">' +
     entries + '</div>' + sources(groupSources[group],t) + '</div><script>const target=document.getElementById(location.hash.slice(1));if(target?.tagName==="DETAILS")target.open=true</script>'
@@ -247,7 +247,7 @@ export default {
   async fetch(request) {
     const url = new URL(request.url)
     if (url.pathname === '/site.css') return new Response(styles,{headers:{'Content-Type':'text/css; charset=utf-8','Cache-Control':'public, max-age=300'}})
-    if (url.pathname === '/favicon.ico') return redirect(origin + '/favicon.ico')
+    if (url.pathname === '/favicon.ico') return redirect('https://kakobuy.com/favicon.ico')
     if (url.pathname === '/robots.txt') return new Response('User-agent: *\nAllow: /\nSitemap: ' + siteOrigin + '/sitemap.xml\n', {headers:{'Content-Type':'text/plain; charset=utf-8'}})
     if (url.pathname === '/sitemap.xml') return new Response(sitemap(),{headers:{'Content-Type':'application/xml; charset=utf-8'}})
 

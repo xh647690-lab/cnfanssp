@@ -30,9 +30,9 @@ const locales = {
 const localeKeys = ['name','home','catalog','categories','faq','guides','register','language','search','placeholder','details','latest']
 
 const interfaceText = {
-  en: {intro:'Search CNFansSP or browse a category. Listings open on the source site.',price:'Listed price',all:'View all on CNFansSP',next:'Next',previous:'Previous',source:'Sources',more:'Read more',error:'The source site is temporarily unavailable.',credit:'Product data: CNFansSP',open:'Open CNFansSP',brands:'Shopping spreadsheet',menu:'Menu',back:'All guides',main:'Open category',faqGroup:['Finding products','Checking a listing','Orders and shipping','Accounts and service']},
-  zh: {intro:'搜索 CNFansSP 或按类目浏览，点开商品即可前往主站详情。',price:'主站标价',all:'前往主站查看全部',next:'下一页',previous:'上一页',source:'参考来源',more:'阅读全文',error:'暂时无法读取主站商品。',credit:'商品数据来自 CNFansSP',open:'打开 CNFansSP',brands:'购物选品目录',menu:'菜单',back:'全部指南',main:'打开主站分类',faqGroup:['搜索与分类','核对商品','订单与物流','账号与服务']},
-  es: {intro:'Busca en CNFansSP o elige una categoría. Las fichas se abren en el sitio de origen.',price:'Precio publicado',all:'Ver todo en CNFansSP',next:'Siguiente',previous:'Anterior',source:'Fuentes',more:'Leer más',error:'El sitio de origen no está disponible temporalmente.',credit:'Datos de productos: CNFansSP',open:'Abrir CNFansSP',brands:'Lista de compras',menu:'Menú',back:'Todas las guías',main:'Abrir la categoría',faqGroup:['Buscar productos','Comprobar una ficha','Pedidos y envíos','Cuentas y servicio']}
+  en: {intro:'Search CNFansSP or browse a category. Listings open on the source site.',price:'Listed price',all:'View all on CNFansSP',next:'Next',previous:'Previous',source:'Sources',more:'Read more',error:'The source site is temporarily unavailable.',credit:'Product data: CNFansSP',open:'Open CNFansSP',brands:'Shopping spreadsheet',menu:'Menu',back:'All guides',main:'Open category',faqGroup:['Finding and ordering','Marketplace links and QC','Pricing and warehouse','Packing, returns and tracking']},
+  zh: {intro:'搜索 CNFansSP 或按类目浏览，点开商品即可前往主站详情。',price:'主站标价',all:'前往主站查看全部',next:'下一页',previous:'上一页',source:'参考来源',more:'阅读全文',error:'暂时无法读取主站商品。',credit:'商品数据来自 CNFansSP',open:'打开 CNFansSP',brands:'购物选品目录',menu:'菜单',back:'全部指南',main:'打开主站分类',faqGroup:['选品与下单','卖家链接与验货','费用与仓库','打包、退换与物流']},
+  es: {intro:'Busca en CNFansSP o elige una categoría. Las fichas se abren en el sitio de origen.',price:'Precio publicado',all:'Ver todo en CNFansSP',next:'Siguiente',previous:'Anterior',source:'Fuentes',more:'Leer más',error:'El sitio de origen no está disponible temporalmente.',credit:'Datos de productos: CNFansSP',open:'Abrir CNFansSP',brands:'Lista de compras',menu:'Menú',back:'Todas las guías',main:'Abrir la categoría',faqGroup:['Búsqueda y pedidos','Enlaces e inspección','Precios y almacén','Embalaje, devoluciones y seguimiento']}
 }
 
 function withLocale(lang, path = '/') {
@@ -54,4 +54,4 @@ function siteText(lang) {
   }
 }
 
-const editorialLanguage = lang => Object.hasOwn(interfaceText,lang) ? lang : 'en'
+const editorialLanguage = lang => lang === 'zh' ? 'zh' : 'en'

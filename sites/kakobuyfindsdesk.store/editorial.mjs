@@ -1,154 +1,675 @@
 export const editorialSources = {
-  catalog: ['CNFansSP · All Products','https://www.cnfanssp.com/AllProducts/'],
-  home: ['CNFansSP · About the catalogue','https://www.cnfanssp.com/#faq'],
-  jersey: ['CNFansSP · Jersey-60','https://www.cnfanssp.com/AllProducts/6667.html'],
-  weidian: ['Weidian · Original Jersey-60 listing','https://weidian.com/item.html?itemID=7632511460'],
-  shoes: ['CNFansSP · Shoes','https://www.cnfanssp.com/shoes/'],
-  register: ['CNFansSP · Registration','https://www.cnfanssp.com/reg'],
-  reference: ['Kakobuy Picklist · Spreadsheet','https://kakobuypicklist.com/spreadsheet/'],
-  competitor: ['CNCNFans · Spreadsheet','https://www.cncnfans.com/spreadsheet/'],
-  essentials: ['CSSBuy Buying Essentials · Prices, QC and Delivery','https://cssbuys.store/faq'],
-  agent: ['Superbuy · Shopping agent service','https://www.superbuy.com/en/page/shoppingagent/'],
-  estimator: ['Superbuy · Shipping calculator','https://login.superbuy.com/en/page/query/freight/'],
-  fees: ['Superbuy · Fee composition','https://www.superbuy.com/en/page/guide/feecomposition/']
+  "official": [
+    "KakoBuy 官方网站",
+    "https://kakobuy.com/"
+  ],
+  "purchase": [
+    "KakoBuy · Shopping agent service",
+    "https://www.kakobuy.com/service/purchasing"
+  ],
+  "fees": [
+    "KakoBuy · Cost breakdown",
+    "https://www.kakobuy.com/service/help/question?cid=35&id=74"
+  ],
+  "estimate": [
+    "KakoBuy · Shipping estimate",
+    "https://kakobuy.com/tools/estimate"
+  ],
+  "returns": [
+    "KakoBuy · Return Policy",
+    "https://kakobuy.com/index/information?information_id=10"
+  ],
+  "register": [
+    "KakoBuy · Registration",
+    "https://kakobuy.com/register"
+  ],
+  "picklist": [
+    "Kakobuy Picklist · Spreadsheet and FAQ",
+    "https://kakobuypicklist.com/"
+  ],
+  "tools": [
+    "KakoBuy Help · Independent tool index",
+    "https://kakobuy.help/tools"
+  ],
+  "faq": [
+    "KakoBuy Spreadsheet · Independent FAQ",
+    "https://kakobuy-spreadsheet.com/features/faq?lang=english"
+  ]
 };
 
-// The arrays are ordered by editorial publication order, newest first.
 export const guides = [
   {
-    slug:'cnfanssp-spreadsheet-search', tags:['CNFans spreadsheet','CNFansSP search'], sources:['catalog','reference','competitor','jersey'],
-    en:['How to search the CNFansSP spreadsheet','Start broad, narrow by category and verify the seller listing before ordering.',
-      ['Search by product type first','Try one concrete term such as “jersey”, “hoodie” or “shoes”. CNFansSP’s search opens the main catalogue with that keyword. If a detailed phrase returns little, drop the colour, size or year and use the relevant category to narrow the results. Save promising listings as you go.'],
-      ['Match the detail page to the seller link','Use the catalogue detail page to identify the item and its source. Jersey-60 illustrates the distinction: /AllProducts/6667.html identifies the catalogue page and 7632511460 is the identifier in the Weidian listing. Copy the link you actually want to share, particularly if you plan to paste it into an agent’s order form.'],
-      ['Write down the exact variant','Once you reach the seller, record the colour, size, and any style code beside the URL. If a listing shows several options at different prices, compare identical options instead of comparing the headline figures. The seller page is where to confirm that the option you want is still selectable.']],
-    zh:['怎么搜索 CNFansSP 商品目录','先用商品类型搜索，再按分类缩小范围，最后核对卖家原始页面。',
-      ['先搜商品类型','可以从 jersey、hoodie 或 shoes 这类单词开始。较长的搜索词结果太少时，去掉颜色、尺码或年份，再使用主站对应分类。发现合适的商品就先保留链接。'],
-      ['分清两个编号','以 Jersey-60 为例，/AllProducts/6667.html 是站内详情路径，7632511460 是微店商品 ID。发给朋友可以用详情页，提交代购时则复制代购接受的卖家链接。'],
-      ['记下具体选项','把颜色、尺码和款式代码与卖家链接一起保存。有多个价位时，以同一规格比较，再到卖家页确认该规格仍然可选。']]
+    "slug": "kakobuy-spreadsheet",
+    "tags": [
+      "KakoBuy spreadsheet",
+      "KakoBuy finds"
+    ],
+    "sources": [
+      "picklist",
+      "faq",
+      "official"
+    ],
+    "en": [
+      "How to use a KakoBuy spreadsheet",
+      "Find a seller listing, verify the exact variant and bring the original URL into KakoBuy.",
+      [
+        "Build a shortlist by listing",
+        "Search one product type or model at a time. Open promising cards and record their seller URL, color and size. Compare identical variants rather than the first prices on two cards. Marketplace titles and spreadsheet titles often differ, so match the listing ID and seller before adding an item."
+      ],
+      [
+        "Transfer the original link",
+        "Open the marketplace URL from the catalog detail, then paste that URL into KakoBuy. Check that the imported listing displays the same seller, item and options. If an agent-formatted link fails, the original marketplace link gives you a separate way to check whether the listing is still available."
+      ],
+      [
+        "Check two separate prices",
+        "Record the item subtotal and any domestic delivery charge. Use the official estimate tool for international shipping after choosing your destination. Keep both checks in your notes so a low catalog price does not obscure a high parcel cost."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 商品表怎么用？",
+      "从商品目录找到卖家链接，核对规格后再到 KakoBuy 购买。",
+      [
+        "先做候选清单",
+        "一次搜一个品类或型号，保存卖家原始链接、颜色和尺码。两张卡片都显示起始价时，选到同一规格再比较。目录标题与卖家标题可能不同，用商品编号和店铺核对。"
+      ],
+      [
+        "用卖家原始链接导入",
+        "在目录详情打开电商平台原页，将链接粘贴到 KakoBuy 后核对店铺、图片和可选规格。转链失效时也可从原页确认商品是否在售。"
+      ],
+      [
+        "分开核算商品和包裹费用",
+        "记录商品小计和境内运费。选好目的地后再用官网测算国际运输费用，把两次报价及核对日期一并保留。"
+      ]
+    ]
   },
   {
-    slug:'weidian-taobao-1688-links', tags:['Weidian link','Taobao link','1688 link'], sources:['catalog','jersey','reference','competitor','agent'],
-    en:['Weidian, Taobao and 1688 links explained','Identify the marketplace and verify the product URL before handing it to a shopping agent.',
-      ['Open the direct seller listing','A spreadsheet URL helps you discover an item. A seller URL identifies the listing an agent can look up. Open the source link on the detail page and check the marketplace name, listing title and seller. A short or shared URL can pass through a redirect before it reaches the final page.'],
-      ['Read the variant and quantity conditions','Look for size, colour, unit, and minimum purchase quantity on the listing. This is especially useful when comparing a single-item retail listing with a listing that quotes a price by quantity. Use a quote for the actual quantity you intend to order.'],
-      ['Check the agent’s supported sources','A directory can cover more marketplaces than any particular agent. Use your chosen service’s own shopping instructions to confirm which link types it accepts and whether the requested items need a manual order. Before submitting, check the item ID, seller and selection in the order preview.']],
-    zh:['微店、淘宝与 1688 商品链接怎么认','分清目录链接和卖家链接，再确认代购平台是否接受该来源。',
-      ['打开卖家原始页面','目录用来找商品，卖家链接用来确定具体商品。点开详情页里的来源链接，核对平台、商品标题和店铺。分享短链可能要跳转后才显示完整页面。'],
-      ['看清规格和数量','核对颜色、尺码、计价单位和起订条件。对照单件零售价和按数量报价的链接时，请按实际购买数量比较。'],
-      ['在代购确认页复核','看代购帮助是否支持此平台以及是否需手工下单。提交前复核商品 ID、店铺和已选规格。']]
+    "slug": "weidian-link-to-kakobuy",
+    "tags": [
+      "Weidian link to KakoBuy",
+      "KakoBuy link converter"
+    ],
+    "sources": [
+      "official",
+      "purchase",
+      "tools"
+    ],
+    "en": [
+      "How to open a Weidian, Taobao or 1688 link in KakoBuy",
+      "Use the original marketplace URL to verify what KakoBuy will import.",
+      [
+        "Start from the marketplace",
+        "Open the seller page and copy its complete item URL. A shop homepage, image link or catalog URL cannot always identify the exact item. If a link converter is used, keep the original URL and treat the converted link as a shortcut."
+      ],
+      [
+        "Verify the imported variant",
+        "Compare the seller, photos, style code and available options with the source listing. On a 1688 listing check the minimum quantity and any price tiers. A price for multiple units does not establish the price for the one unit you intend to buy."
+      ],
+      [
+        "Diagnose a failed import",
+        "If KakoBuy cannot read a link, check whether the seller still lists the item, copy a fresh URL and retry the import once. If the result is still unavailable, send support the marketplace URL and exact error. A listing being online does not establish order eligibility."
+      ]
+    ],
+    "zh": [
+      "微店、淘宝和 1688 链接怎么导入 KakoBuy？",
+      "复制卖家商品原始链接，再核对 KakoBuy 导入结果。",
+      [
+        "从卖家商品页复制",
+        "复制完整商品网址，店铺主页、图片地址和目录地址未必能定位具体商品。使用转链工具时，另存一份卖家原链接。"
+      ],
+      [
+        "核对导入的规格",
+        "对比店铺、照片、款号和可选规格。1688 要查起订量和阶梯价，按要买的实际数量核算。"
+      ],
+      [
+        "排查链接失效",
+        "先确认卖家商品仍可打开，复制新链接重试一次。依然失败时，把原网址和报错交给 KakoBuy 客服确认是否支持该商品。"
+      ]
+    ]
   },
   {
-    slug:'warehouse-qc-photos',tags:['QC photos','warehouse quality check'],sources:['essentials','agent'],
-    en:['How to review warehouse QC photos','Use inspection photos to catch visible mismatches before sending the parcel.',
-      ['Confirm identity and quantity','Start with the full-item photo: check the colour, style and count against your order. For a jersey, look at the front, back, neck label and any printing requested. When one image covers several pieces, match each piece to its line item before approving shipment.'],
-      ['Ask for a photo that answers one question','A measurement photo should make both ends of the tape visible. For a visible mark, request a close-up and a wider frame that shows where it sits. For a pair of shoes, ask to see both size tags if a mismatch is suspected. Check whether your agent offers these requests and what they cost.'],
-      ['Decide while the parcel is still in storage','Use the agent’s order page to verify the available return or exchange action. Save the photos and record the order number and relevant dates. Photos can show condition and labels, but the material feel, long-term wear and authenticity may require other evidence.']],
-    zh:['仓库 QC 验货照片怎么看','按订单逐项对照仓库图，在包裹发出前发现可见差异。',
-      ['先核对商品身份和数量','把全景图与订单的颜色、款式和件数对照。球衣可依次看正面、背面、领标及约定印字。同一照片里有多件商品时，先确认每件对应哪个订单。'],
-      ['补拍要能回答具体问题','尺码照要能看清尺带两端。看瑕疵时，请求一张近照和一张能指出位置的远景。补拍是否收费，以代购服务的说明为准。'],
-      ['在出库前作决定','在订单页查看退换入口和期限，保留照片与订单号。照片能帮助判断外观和标识，材质手感、耐用度与真伪通常需要其他证据。']]
+    "slug": "how-to-order-on-kakobuy",
+    "tags": [
+      "how to order on KakoBuy",
+      "KakoBuy buying guide"
+    ],
+    "sources": [
+      "register",
+      "purchase",
+      "fees"
+    ],
+    "en": [
+      "How to order on KakoBuy from listing to parcel",
+      "Follow the purchase, warehouse and international shipping stages of an order.",
+      [
+        "Submit the exact item",
+        "Use the official account, import the seller URL and select size, color and quantity. Save the order reference and your selection when the purchase is submitted. Any notes about a customization should match what the seller or agent has confirmed."
+      ],
+      [
+        "Check the warehouse stage",
+        "Once KakoBuy records that the item arrived, open the order’s available inspection photos. Compare the label, count and visible condition to the selection. If anything differs, use the order’s support entry before authorizing a shipment."
+      ],
+      [
+        "Submit international delivery separately",
+        "Select available warehouse items, enter the destination, then compare the offered routes and packaging. Use the actual packed quote when reviewing the final total. Keep the parcel number as well as the purchase order number."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 怎么下单？从选商品到发包裹",
+      "按采购、仓库验货和国际运输三个环节逐项确认。",
+      [
+        "提交具体商品",
+        "使用 KakoBuy 官网账号，导入原始链接并选好颜色、尺码及数量。提交后保存订单号和已选规格。定制内容以卖家或平台确认的信息为准。"
+      ],
+      [
+        "到仓后核对商品",
+        "货物显示入仓后，查看订单可用的验货照片，核对吊牌、数量和外观。有出入时先通过订单联系售后，再决定是否提交发货。"
+      ],
+      [
+        "单独提交国际包裹",
+        "勾选可出库商品，填目的地，查看适用线路、包装和打包报价。提交后把采购订单号和包裹单号一起保存。"
+      ]
+    ]
   },
   {
-    slug:'shipping-calculator-weight',tags:['shipping calculator','volumetric weight'],sources:['estimator','fees','essentials'],
-    en:['How to use an international shipping calculator','Compare delivery routes with the same parcel weight and packed dimensions.',
-      ['Use a consistent parcel estimate','Enter the destination, estimated packed weight and outside dimensions in the agent’s calculator. Compare routes with the same inputs, including the same city or postal code when the calculator requests it. Record which route and currency the quote uses.'],
-      ['Compare actual and volumetric weight','Some routes charge on whichever figure is higher, using a route-specific volumetric divisor or rounding rule. Bulky shoe boxes can change the billable weight even if the products themselves weigh little. When you consider removing boxes, request an estimate of the packed dimensions and verify the protection the new packing provides.'],
-      ['Recheck with final warehouse measurements','Early results help with budgeting. Before payment, compare the options again using the final packed dimensions and weight. Read the breakdown for handling, packing, insurance and route-specific surcharges so that you compare like with like.']],
-    zh:['国际运费计算器怎么用','用同一组包裹重量和外箱尺寸比较不同线路。',
-      ['先统一输入','输入目的地、预计打包重量和外箱尺寸。线路之间使用相同邮编和数据，记下报价币种与线路名称。'],
-      ['分清实重和体积重','有些线路按较高的一项计费，体积重除数和进位规则由线路决定。鞋盒可能显著增加体积。考虑去盒时，同时确认新的外箱尺寸和保护方式。'],
-      ['发前用实测值再算','仓库打包完成后，用最终重量和尺寸重新比较。逐项查看包装、保险、服务费和线路附加费用。']]
+    "slug": "kakobuy-qc-photos",
+    "tags": [
+      "KakoBuy QC photos",
+      "KakoBuy warehouse inspection"
+    ],
+    "sources": [
+      "purchase",
+      "tools",
+      "returns"
+    ],
+    "en": [
+      "KakoBuy QC photos: what to check before shipping",
+      "Inspect your own warehouse photos before authorizing the parcel.",
+      [
+        "Match photo and order",
+        "Open the inspection attached to your actual order. Check item number, size tag, color and quantity against the confirmation. A seller gallery or an independent QC finder can illustrate what to look for but cannot show the unit in your parcel."
+      ],
+      [
+        "Request a view that answers a question",
+        "If fit matters, ask whether an in-frame measurement is available. For a possible flaw, describe the location and request a clear photo from an appropriate angle. Compare photos taken under similar lighting where possible."
+      ],
+      [
+        "Record the discrepancy before sending",
+        "Save the relevant images and list the differences from the ordered option. Contact KakoBuy through the order while the item is still at the warehouse. Check available return or exchange options before submitting international shipping."
+      ]
+    ],
+    "zh": [
+      "KakoBuy QC 验货照片怎么看？",
+      "用自己订单的仓库照片核对商品，发现问题先处理再提交发货。",
+      [
+        "对应到具体订单",
+        "打开自己订单里的验货记录，核对商品、尺码标签、色号及数量。卖家商品图或第三方 QC 图可以参考，也可能来自不同订单。"
+      ],
+      [
+        "针对问题要求补拍",
+        "担心尺码就确认能否提供带尺测量照片。怀疑有瑕疵时，指出位置并询问能否补拍该角度。比较颜色时注意光照影响。"
+      ],
+      [
+        "在到仓阶段留档",
+        "保存有关照片并写清与订单规格的差异。货物仍在仓库时通过订单联系 KakoBuy，并查看当时可用的退换选项。"
+      ]
+    ]
   },
   {
-    slug:'product-price-total-cost',tags:['product price','total landed cost','domestic shipping'],sources:['essentials','fees','estimator','weidian'],
-    en:['From product price to total delivered cost','Build a cost estimate that distinguishes product, warehouse and international charges.',
-      ['Record the price of the selected option','Capture the seller price for the exact size or colour and the quantity you intend to buy. Add domestic delivery to the warehouse when shown. If an agent quotes a different amount, check the option, currency and included fees before assuming the prices are comparable.'],
-      ['Keep parcel charges separate','For a multi-item parcel, track the parcel charge separately from each product subtotal. Record international freight and any selected packing or insurance. When comparing two products that could use different box sizes, compare the expected parcel totals as well as their item prices.'],
-      ['Keep a range until the order is priced','A working budget can use a low and high freight estimate based on two plausible box sizes. Recalculate once the agent provides packed measurements and current checkout line items. Destination-specific charges may follow separate rules, so use the applicable carrier and customs information when estimating them.']],
-    zh:['如何从商品标价估算到手总成本','按商品、国内运输和国际包裹三个阶段核对费用。',
-      ['记录所选规格价格','保存选中颜色、尺码与数量的卖家报价，另记送仓国内运费。代购报价与卖家价不同，先检查规格、币种和所含费用。'],
-      ['包裹费用单独计算','国际运输、额外包装和保险通常按包裹核算。对比商品时也比较预计打包方案，因为箱子大小会影响最终运费。'],
-      ['最终结算前再计算','预算阶段可用两组合理外箱尺寸估出区间，拿到仓库实测和订单明细后更新。目的地收费按当地规定和承运方规则另外核实。']]
+    "slug": "kakobuy-shipping-calculator",
+    "tags": [
+      "KakoBuy shipping calculator",
+      "volumetric weight"
+    ],
+    "sources": [
+      "estimate",
+      "fees",
+      "tools"
+    ],
+    "en": [
+      "How to use the KakoBuy shipping calculator",
+      "Compare routes using the same destination, weight and parcel size.",
+      [
+        "Start with realistic inputs",
+        "Open the official estimator and enter the destination and available package details. Before packing, use a range for weight and size. Compare the results for multiple scenarios rather than relying on a single optimistic estimate."
+      ],
+      [
+        "Check the weight billed by the line",
+        "Actual weight and dimensional weight answer different questions. For bulky goods, ask which weight the route charges and what limits apply. Use that line’s method rather than assuming every carrier uses the same divisor."
+      ],
+      [
+        "Recalculate when the package is packed",
+        "Replace estimates with packed dimensions and weight when available. Recheck route restrictions, optional protection and final price before paying. Compare the same destination and packaging when deciding between quotes."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 运费测算怎么用？",
+      "用同一目的地、包裹重量和尺寸对比线路。",
+      [
+        "输入合理范围",
+        "打开官方测算工具，输入目的地和手头的包裹数据。尚未打包时可以按不同重量和体积预估两次。"
+      ],
+      [
+        "查看线路按什么重量计费",
+        "实重和体积重含义不同。大件先看线路的计费重量和尺寸上限，体积重规则以选中线路为准。"
+      ],
+      [
+        "用打包数据重算",
+        "有实际打包尺寸和重量后重新测算，付款前查看线路限制、可选保障和最终报价。"
+      ]
+    ]
   },
   {
-    slug:'jersey-size-chart',tags:['jersey size chart','Jersey-60','football jerseys'],sources:['jersey','weidian','essentials'],
-    en:['How to read a jersey size chart','Compare garment measurements and confirm custom lettering before ordering.',
-      ['Measure a jersey you already wear','Lay it flat and note its chest width and back length. Compare those numbers to the seller chart in the same unit. A 52 cm flat chest width corresponds to roughly 104 cm around the garment; treat those as different chart fields. Use the seller’s measuring instructions if they specify a different method.'],
-      ['Confirm cut, variant and printing','Check whether the selected listing has multiple cuts or size charts. Use the chart that applies to the chosen option. If the seller offers custom printing, confirm the exact name, number, placement and any additional charge or change restrictions before submitting. For Jersey-60, the seller directs custom jersey questions to the listing details.'],
-      ['Plan the warehouse check','If measurements affect your decision, request photos showing the measurement points while the item is at the warehouse. Also compare the requested print to the visible front and back before the parcel is submitted.']],
-    zh:['球衣尺码表怎么看','先比成衣实测，再确认版型和定制印字。',
-      ['拿一件合身球衣量一量','平铺后量胸宽和后衣长，用同样单位对照卖家尺码表。平铺胸宽 52 厘米约等于成衣胸围 104 厘米，不能混用。'],
-      ['确认规格和印字','有不同版型时，选择与所购规格匹配的尺码表。定制前核对名字、号码、位置、费用及修改限制。Jersey-60 卖家把定制说明放在原商品详情里。'],
-      ['到仓后检查','需要复核尺寸时，确认照片展示正确测量点。发货前用正反面照片检查印字是否与订单一致。']]
+    "slug": "kakobuy-shipping-cost",
+    "tags": [
+      "KakoBuy shipping cost",
+      "KakoBuy fees"
+    ],
+    "sources": [
+      "fees",
+      "estimate",
+      "purchase"
+    ],
+    "en": [
+      "KakoBuy shipping cost and fees: build a budget",
+      "Add the purchase cost and parcel quote without counting any fee twice.",
+      [
+        "Record the purchase subtotal",
+        "KakoBuy’s official cost breakdown separates the product price and seller-to-warehouse delivery from international freight. Record the exact variant subtotal and domestic charge shown for the order. Use the same currency when comparing options."
+      ],
+      [
+        "Review the parcel quote",
+        "Add the international freight and applicable packaging or selected value-added services. If you plan to split orders across parcels, estimate each shipment separately. Recheck the quote when packaging affects chargeable weight."
+      ],
+      [
+        "Leave room for a changed total",
+        "Use the final amount displayed before checkout. Where relevant, check payment rates and destination charges with the appropriate provider. Record the date and route beside each estimate when comparing costs."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 运费和服务费用怎么估算？",
+      "把采购小计和包裹报价分开记录，避免重复计算。",
+      [
+        "先记采购小计",
+        "官方费用说明区分商品价、卖家到仓的国内运费和国际运费。按所选规格及数量记录商品小计和国内运费。"
+      ],
+      [
+        "加入包裹费用",
+        "把国际运费、适用包装费用和选中的增值服务算入包裹预算。拆成多个包裹时分别计算，打包改变计费重量就重新估算。"
+      ],
+      [
+        "用结算页面收尾",
+        "付款前按当前账单和线路确认总价。需要时另查支付汇率和目的地可能收取的费用，比较时记录币种、日期和线路。"
+      ]
+    ]
   },
   {
-    slug:'shoe-size-chart',tags:['shoe size chart','sneaker spreadsheet','EU shoe sizes'],sources:['shoes','essentials'],
-    en:['How to compare shoe sizes from a spreadsheet','Use measurements and the seller’s chart when product labels use different systems.',
-      ['Identify the measurement being quoted','Measure both feet in the type of socks you expect to wear. Record the longer foot and compare it with the seller’s recommendation for foot length. When a chart gives insole length instead, ask how it was measured and compare to a well-fitting insole if you can measure it the same way. An outsole measurement serves a different purpose.'],
-      ['Check the chosen style’s chart','An EU, US or UK tag can be a starting point. Confirm whether the seller chart covers the selected style, and ask the seller about width or alternate sizes when the numbers are close. Save the chart beside the URL and model colour so you can match the warehouse arrival to the correct order.'],
-      ['Check both shoes before dispatch','If the warehouse offers extra photos, request both size labels and one top view of the pair. Compare the tags with the ordered size and use the agent’s order page to raise a visible mismatch.']],
-    zh:['鞋子尺码怎么核对','使用卖家尺码表对应的测量方式，避免只看欧码和美码标签。',
-      ['先分清脚长和鞋垫长','穿预计搭配的袜子量双脚，记录较长一只。看卖家用的是脚长、鞋垫长还是外底长，比较时使用同一种测量方式。'],
-      ['核对具体款式','同一商品页可能有不同鞋型和尺码表。保存所选配色的链接和尺码表，处在两码之间时向卖家确认鞋宽和建议尺码。'],
-      ['检查两只鞋的尺码标','代购支持补拍时，可请求左右鞋尺码标和一张俯视图。看到标签不符时，用订单页的售后渠道联系处理。']]
+    "slug": "kakobuy-warehouse-consolidation",
+    "tags": [
+      "KakoBuy warehouse",
+      "KakoBuy parcel consolidation"
+    ],
+    "sources": [
+      "purchase",
+      "estimate",
+      "tools"
+    ],
+    "en": [
+      "KakoBuy warehouse and parcel consolidation checklist",
+      "Decide which in-stock warehouse orders can travel together.",
+      [
+        "Group items by shipping needs",
+        "Check order arrival and inspection status. Group items suitable for the same line and destination. Keep any item with an unresolved QC or return issue out of the proposed shipment until support has responded."
+      ],
+      [
+        "Compare packed parcel options",
+        "Check the packaging and weight information available for each plan. Combining several purchases can reduce the number of shipments, while a larger box can change dimensional weight or route eligibility. Compare the actual quotes for both plans."
+      ],
+      [
+        "Confirm the item list before paying",
+        "Review the parcel item count, address and chosen route. Save the parcel reference after submitting. Check deadlines and available storage options in the current KakoBuy warehouse view if you are waiting for more items to arrive."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 仓库合箱核对清单",
+      "按到仓状态、线路限制和打包报价决定哪些商品一起发。",
+      [
+        "按运输需求分组",
+        "先检查到仓和照片确认情况，将适用同一目的地和线路的商品放在一起。仍有验货或退换问题的商品先单独保留。"
+      ],
+      [
+        "比较不同打包方案",
+        "合箱可以减少包裹数，但更大的包装可能改变体积重或线路适用性。比较合箱和分箱各自的打包报价。"
+      ],
+      [
+        "确认清单再付款",
+        "检查件数、地址和线路，保存提交后的包裹单号。等其他商品到仓时，在 KakoBuy 仓库页面确认当前存储选项和期限。"
+      ]
+    ]
   },
   {
-    slug:'warehouse-parcel-submission',tags:['submit parcel','warehouse packing','parcel consolidation'],sources:['agent','estimator','essentials'],
-    en:['From warehouse arrival to parcel submission','Confirm inspection, packing and the shipping route in the order you can act on them.',
-      ['Review each warehouse item','Match each warehouse record to a seller order and check the photos. Resolve visible discrepancies before placing that item into a parcel. If you intend to consolidate, keep track of which items have arrived and which are still within a usable storage period.'],
-      ['Select packing for the contents','Choose protection based on the actual products. A flat garment and a pair of shoes may need different packing. Ask for the estimated effect of optional packing on dimensions if you are choosing between routes or watching a weight threshold.'],
-      ['Check route eligibility and final figures','Use the shipping calculator with the packed dimensions and relevant item types. Review the route’s acceptance rules and the checkout breakdown before submitting. Save the parcel reference and track updates from the agent or carrier after dispatch.']],
-    zh:['从仓库签收到提交国际包裹','按验货、包装和运输线路的顺序处理。',
-      ['逐件复核入库记录','把各入库记录和卖家订单对应起来，再核对仓库图。有规格差异先处理。需要合箱时，记下已到货商品及各自仓储期限。'],
-      ['按商品选择包装','衣物和鞋子需要的防护不同。可选包装会影响外箱尺寸，接近线路重量门槛时，可先请仓库估算。'],
-      ['发前确认线路和数据','使用打包后的尺寸、重量及商品类型核对线路可寄条件和费用。提交后保存包裹编号，以便追踪。']]
+    "slug": "kakobuy-rehearsal-shipping",
+    "tags": [
+      "KakoBuy rehearsal shipping",
+      "parcel packing estimate"
+    ],
+    "sources": [
+      "estimate",
+      "fees",
+      "tools"
+    ],
+    "en": [
+      "KakoBuy rehearsal shipping and packing estimates",
+      "Use the packing information offered on your order to compare parcel plans.",
+      [
+        "Check what is available in the parcel form",
+        "If KakoBuy offers a rehearsal or advance packing option for your parcel, read what is measured and whether it costs extra. Services can differ by order and destination. The estimator is useful before a packed measurement is available."
+      ],
+      [
+        "Compare bundles and packaging",
+        "Keep the destination and item list fixed while comparing packaging choices. Retaining a seller box may protect an item or add bulk. Use the resulting weight and dimensions to see whether that change affects available lines."
+      ],
+      [
+        "Review the final parcel",
+        "Compare the packed quote with the current estimator result, then verify the delivery address and protection options. An advance quote does not establish the final amount until the parcel is submitted and charged."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 预打包和包裹运费怎么估？",
+      "根据订单可用的预打包选项和实测数据比较运输方案。",
+      [
+        "在包裹表单核对可用服务",
+        "如果当前包裹有预打包或预演选项，先看服务会测量什么、是否另收费。没有实测数据前可先用官方运费测算工具。"
+      ],
+      [
+        "固定清单后比较包装",
+        "用同一批商品和目的地对比保留原盒与更换包装等可用选项。根据打包尺寸及重量核对线路是否依然可用。"
+      ],
+      [
+        "按最终包裹报价确认",
+        "核对打包报价、地址和可选保障。提前预估用于对比方案，实际金额在包裹提交及扣费时确认。"
+      ]
+    ]
   },
   {
-    slug:'returns-exchanges-warehouse',tags:['shopping agent returns','warehouse returns','exchange'],sources:['essentials','agent'],
-    en:['How to handle warehouse returns and exchanges','Collect the evidence and use the seller or agent’s applicable order process.',
-      ['Identify who handled payment','For a direct marketplace order, use the relevant seller or marketplace order page. For an agent order, read the agent’s process first, since that agent may need to contact the seller. Keep the order number, variant and a clear description in one record.'],
-      ['Document the issue and check the window','Attach a warehouse photo that shows the mismatch and the variant selected at checkout. Record when the item arrived and check whether the order offers a return or exchange action, any seller conditions and the applicable last date. Storage time and return eligibility are separate terms.'],
-      ['Confirm the cost and preferred outcome','State whether you want a replacement, a different size or a refund, and ask who pays any domestic return postage. If a return decision is pending, check with the agent before including the item in an international parcel.']],
-    zh:['仓库商品退换怎么处理','按实际下单渠道提交证据，及时核对退换期限。',
-      ['确认由谁下单','直购到对应平台的订单页处理，经代购下单则先查代购流程。整理订单号、规格和问题描述。'],
-      ['准备证据并核对期限','保存能看清差异的仓库图和原订单选项，确认到货日期、可申请动作以及截止时间。仓储期限和退换期限分别核对。'],
-      ['确定费用和期望结果','写清要补发、换码还是退款，并确认国内退运费由谁承担。处理中的商品发国际件前先向代购问清。']]
+    "slug": "kakobuy-returns-and-exchanges",
+    "tags": [
+      "KakoBuy return policy",
+      "KakoBuy refunds and exchanges"
+    ],
+    "sources": [
+      "returns",
+      "purchase"
+    ],
+    "en": [
+      "KakoBuy returns and exchanges before international dispatch",
+      "Prepare the order details and verify the current policy for the item.",
+      [
+        "Check the applicable terms",
+        "Read the current KakoBuy Return Policy and the seller’s conditions. Identify whether the item is awaiting purchase, delivered to the warehouse or already dispatched. The available options can depend on the item, seller and order stage."
+      ],
+      [
+        "Provide a specific request",
+        "Send the order reference, original listing, selected variant and the photos showing what arrived. State whether you want a return or exchange and ask support to confirm any deadline or domestic return cost before approving it."
+      ],
+      [
+        "Verify the outcome before another order",
+        "Look for the confirmed resolution in the order record and check whether the return, replacement or refund has actually progressed. Save any agreed conditions. If the parcel already left the warehouse, contact the platform before sending anything back."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 怎么申请退换货？",
+      "先按订单阶段核对条款，再提交具体问题和证据。",
+      [
+        "查适用政策和订单状态",
+        "打开 KakoBuy 当前退货政策并查看卖家条款，确认商品还在采购、已到仓还是已国际发出。商品、卖家和订单阶段可能影响可用选项。"
+      ],
+      [
+        "把诉求写清楚",
+        "提供订单号、卖家链接、所选规格与到仓照片，说明要退货还是换货。请客服确认时限和可能的境内退货运费。"
+      ],
+      [
+        "在订单里核对结果",
+        "核对订单里是否记录退货、换货或退款的进度。已国际发出的包裹，先联系平台确认流程再决定是否寄回。"
+      ]
+    ]
   },
   {
-    slug:'choosing-shopping-agent',tags:['shopping agent comparison','CNFans alternatives','Weidian shopping agent'],sources:['reference','competitor','agent','estimator'],
-    en:['How to compare shopping agents for one product link','Use a repeatable comparison of supported links, warehouse checks and destination routes.',
-      ['Start with link acceptance','Use the same original seller URL and variant with each service. Confirm it accepts the marketplace and item type. For current availability and restrictions, consult the service’s live help or order screen. Comparative directories can help you discover candidates.'],
-      ['Compare the warehouse steps you will use','Ask whether the service provides the inspection views, measurements or packing options relevant to your item. Record which options are included and which require payment. Check the seller-contact and return process before sending money for an item that may need a size exchange.'],
-      ['Compare the same packed parcel','Enter the same destination and estimates into each calculator. Record the route, price, parcel limits and any separate handling charges. Rank the options by the conditions that matter for this purchase, such as measured packing, a specific delivery route or support for return requests.']],
-    zh:['同一个商品链接怎么比较代购平台','用相同链接、规格和包裹数据比较代购服务。',
-      ['先核对商品能否提交','在各平台使用同一个卖家链接和规格，确认支持来源和商品类型。平台实时状态和限制以当时的服务页或下单页为准。'],
-      ['按所需仓库服务比较','记录需要的验货角度、尺码实拍、包装服务以及收费。商品可能要换码时，事先了解退换如何联系卖家。'],
-      ['用相同数据算运费','各计算器填写相同目的地、预计实重和外箱尺寸，再对照线路限制、运费和单列费用，按实际需求选平台。']]
+    "slug": "kakobuy-parcel-tracking",
+    "tags": [
+      "KakoBuy tracking",
+      "KakoBuy parcel status"
+    ],
+    "sources": [
+      "official",
+      "purchase",
+      "tools"
+    ],
+    "en": [
+      "KakoBuy parcel tracking and order status",
+      "Find the right reference for seller delivery or international tracking.",
+      [
+        "Separate the purchase from the parcel",
+        "Use the purchase order to check whether the seller sent the item to the warehouse. After international dispatch, use the parcel reference and carrier tracking number. Recording both helps support locate the stage that needs attention."
+      ],
+      [
+        "Read the last scan with its date",
+        "Check the carrier shown on the parcel and the latest event date. A label, a handover and a delivery event describe different stages. If the route provides different tracking numbers after transfer, keep the number used by the current carrier."
+      ],
+      [
+        "Give support a compact record",
+        "If the event does not match what you expect, save the last scan, its time, the parcel ID and the destination country. Use KakoBuy’s order or parcel support entry to ask what should happen next."
+      ]
+    ],
+    "zh": [
+      "KakoBuy 物流怎么查询？",
+      "分清卖家寄仓的采购订单和国际运输的包裹单号。",
+      [
+        "按状态找对编号",
+        "仓库收货前用采购订单核对境内运输，国际发出后按包裹单号和物流追踪号查询。两个编号都保留便于客服定位。"
+      ],
+      [
+        "核对最新扫描及日期",
+        "查看包裹列出的承运商和最新扫描时间。生成面单、承运商接收和妥投是不同状态。更换承运商后使用系统显示的当前追踪号。"
+      ],
+      [
+        "向客服提供可核对的记录",
+        "需要查询时记录包裹编号、目的地国家、最后一条扫描和时间，再通过 KakoBuy 的订单或包裹入口咨询。"
+      ]
+    ]
   }
 ];
 
 export const faqs = [
-  ['find-jersey-60','How do I find Jersey-60?','Open CNFansSP’s Jersey-60 detail page. Its original Weidian listing uses item ID 7632511460.','怎么找到 Jersey-60？','打开 CNFansSP 的 Jersey-60 详情页，原微店商品 ID 是 7632511460。','jersey'],
-  ['catalogue-search','Where does the search button take me?','It opens the main CNFansSP search results with the keyword you entered. Try “jersey” or “shoes” to check it.','点搜索会打开哪里？','会在 CNFansSP 主站打开你输入关键词的搜索结果，可以试试 jersey 或 shoes。','catalog'],
-  ['price-difference','Why can a seller price differ from the catalogue?','Check the selected colour, size and quantity on the original listing. Verify domestic delivery and service fees separately.','为什么卖家价格和目录会不同？','请在原商品页核对颜色、尺码和数量，再单独核对国内运费和服务费。','essentials'],
-  ['catalogue-purpose','What is CNFansSP?','CNFansSP indexes products and links to their shopping sources. Use the seller or the chosen agent for an actual order.','CNFansSP 是什么？','CNFansSP 整理商品及相关来源链接，下单在卖家或你选择的代购平台完成。','home'],
-  ['register','Where can I register for CNFansSP?','The Register button opens the CNFansSP registration form on the main site.','在哪里注册 CNFansSP？','顶部注册按钮会打开 CNFansSP 主站的注册表单。','register'],
-  ['category-links','Where do the category links go?','Each link opens the same category on CNFansSP, such as Shoes or Jerseys.','分类链接打开哪里？','每个分类打开 CNFansSP 主站相应页面，例如鞋子或球衣。','catalog'],
-  ['product-card','Where do product cards go?','They open source product details on CNFansSP. Look for the original marketplace link there.','点商品卡片去哪里？','会进入 CNFansSP 主站商品详情，原平台链接可在详情里查找。','jersey'],
-  ['different-ids','Why are there two product numbers?','The number in the CNFansSP page path identifies the catalogue entry. The seller item ID identifies the listing on the marketplace.','为何有两个商品编号？','站内路径的编号对应目录条目，卖家 ID 对应原购物平台的商品。','jersey'],
-  ['marketplace','How can I tell which marketplace a link uses?','Open it and check the final domain and store listing. The Jersey-60 detail page labels its original URL as a Weidian link.','怎么看链接属于哪个购物平台？','打开后核对最终域名和店铺页面。Jersey-60 的详情将原链接标记为微店。','jersey'],
-  ['out-of-stock','Where should I check if a variant is available?','Check the original listing for the exact option. If you plan to use an agent, verify the same option in that agent’s order flow.','在哪里看某个规格还有没有货？','请到原商品页查看所选规格。使用代购时也在代购下单页核对一次。','agent'],
-  ['min-order','Where can I check a minimum order quantity?','Read the quantity selector and seller terms for the exact option before comparing prices or requesting an agent quote.','怎么查起订量？','先在卖家页查看所选款式的数量选项和卖家条款，再比价或询问代购报价。','agent'],
-  ['measure-jersey','How should I compare jersey sizes?','Measure the chest width and length of a jersey you wear and compare these with the seller’s chart using the same method.','球衣尺码怎么比较？','取一件合身球衣量胸宽和衣长，并用与卖家尺码表相同的测量方法对照。','essentials'],
-  ['shoe-insole','Is insole length the same as foot length?','They measure different things. Use the input the seller chart calls for and ask about the method if the chart is unclear.','鞋垫长等于脚长吗？','两者测量对象不同。使用卖家尺码表要求的数值，表述不明时向卖家核实。','essentials'],
-  ['custom-print','Where do I check custom jersey printing?','Use the original Weidian listing. Confirm the wording, number and price with the seller before placing an order.','在哪里确认定制球衣印字？','查看微店原商品页，下单前请向卖家确认文字、号码和价格。','weidian'],
-  ['qc-photos','What can warehouse QC photos show?','Photos can show visible condition, labels, colour, quantity and photographed measurements. Match these to the order details.','仓库 QC 图能看什么？','可核对可见外观、标识、颜色、数量和照片中的尺寸，并与订单规格对照。','essentials'],
-  ['extra-qc','Can I ask the warehouse for extra photos?','Check the agent’s inspection services for the angles or measurements you need and any additional charge.','可以要求仓库补拍吗？','查代购验货服务是否支持指定角度和测量，并确认是否额外收费。','agent'],
-  ['fees','Does the product price include international freight?','For an agent order, read the checkout breakdown. Product price and international parcel freight are usually quoted at different stages.','商品价格含国际运费吗？','看代购结算明细，商品价和国际包裹运费通常分阶段报价。','fees'],
-  ['shipping-estimate','What do I need for a shipping estimate?','Use the destination and packed weight. Enter the outside box dimensions if the route calculator asks for them.','查运费需要提供什么？','准备目的地和打包后重量，计算器需要时填写外箱尺寸。','estimator'],
-  ['volume-weight','What is volumetric weight?','It converts box dimensions into a weight figure for billing. The route’s rules determine the divisor, rounding and whether it applies.','什么是体积重？','它把外箱尺寸折算成计费重量。除数、进位和是否适用以线路规则为准。','fees'],
-  ['combine-items','What should I check before combining items?','Make sure the items have arrived, cleared inspection and qualify for the route when shipped together.','合箱之前要确认什么？','确认商品都已入库、已完成验货，并可通过同一线路一起寄出。','agent'],
-  ['storage-return','Does warehouse storage extend the return deadline?','Check the seller and agent return conditions and the action available on the order. Storage and return eligibility follow separate terms.','仓储期限会延长退货期限吗？','请分别查卖家和代购的退货条件，以及订单可用的操作。仓储和可退期限按不同条款核算。','essentials'],
-  ['tracking','Where do I track an international parcel?','Use the parcel record from the agent or the tracking number the chosen carrier provides.','在哪里查国际物流？','在代购平台查包裹记录，或用承运方给的运单号查物流。','agent'],
-  ['restricted','Where do I check route restrictions?','Use the agent’s current calculator or shipping rules and confirm eligibility for the destination and product type.','在哪里查禁寄限制？','查代购平台当前的运费计算器或线路规则，并按目的地与商品类型确认能否寄送。','estimator']
+  [
+    "spreadsheet",
+    "What is a KakoBuy spreadsheet?",
+    "A discovery directory for seller links. Review the original listing and open it in KakoBuy before ordering.",
+    "KakoBuy 商品表是什么？",
+    "它是商品发现目录。先核对卖家原始链接，再到 KakoBuy 核对并下单。",
+    "picklist"
+  ],
+  [
+    "open-link",
+    "How do I paste a Weidian link into KakoBuy?",
+    "Copy the full seller item URL, paste it into KakoBuy and confirm the imported item and variant.",
+    "微店链接怎么导入 KakoBuy？",
+    "复制卖家商品完整地址，在 KakoBuy 粘贴并核对导入的商品和规格。",
+    "official"
+  ],
+  [
+    "estimate",
+    "Where is the official KakoBuy shipping calculator?",
+    "Open KakoBuy → Shipping Estimate. Enter your destination, weight and package dimensions when available.",
+    "KakoBuy 官方运费测算在哪里？",
+    "在 KakoBuy 打开运费测算，填写目的地和可获得的重量、尺寸。",
+    "estimate"
+  ],
+  [
+    "account",
+    "Where can I create a KakoBuy account?",
+    "Go to kakobuy.com/register. A catalog login and a KakoBuy order account are separate.",
+    "在哪里注册 KakoBuy？",
+    "在 kakobuy.com/register 注册。目录账号和 KakoBuy 下单账号分别使用。",
+    "register"
+  ],
+  [
+    "first-order",
+    "What do I need for my first KakoBuy order?",
+    "Keep the seller link, selected size or color, quantity and order reference. Verify the displayed amount before submitting.",
+    "KakoBuy 第一次下单需要什么？",
+    "准备卖家链接、颜色尺码和数量。提交前核对价格，并保存订单号。",
+    "register"
+  ],
+  [
+    "catalog-price",
+    "Why can the KakoBuy price differ from a spreadsheet?",
+    "Check selected variant, quantity and domestic delivery. A spreadsheet may show a starting price.",
+    "为什么 KakoBuy 价格和商品表不一样？",
+    "先核对选中的规格、数量和境内运费。目录可能只显示起始价。",
+    "fees"
+  ],
+  [
+    "taobao",
+    "Can I import a Taobao listing?",
+    "Use the original Taobao item page and check that KakoBuy shows the correct item and option.",
+    "淘宝商品怎么导入？",
+    "用淘宝原商品页链接导入，并核对 KakoBuy 显示的商品和选项。",
+    "official"
+  ],
+  [
+    "minimum-order",
+    "Where do I check 1688 minimum order quantity?",
+    "Read the selected offer on 1688 and confirm the quantity KakoBuy can order. Compare the same quantity in both views.",
+    "1688 起订量去哪看？",
+    "先查 1688 所选报价和起订量，再核对 KakoBuy 可下单的数量。",
+    "official"
+  ],
+  [
+    "link-failed",
+    "What if KakoBuy cannot read my link?",
+    "Check the original seller page and try its current full item URL. If it still fails, give support the URL and exact message.",
+    "KakoBuy 识别不了链接怎么办？",
+    "先打开卖家原页，换用当前完整商品链接。仍失败时把网址和错误提示发给客服。",
+    "official"
+  ],
+  [
+    "seller-details",
+    "Which page is best for checking the exact variant?",
+    "Start from the seller page and then compare the imported option in KakoBuy. Save any size chart or style code you used.",
+    "在哪里确认具体商品规格？",
+    "先看卖家页，再对照 KakoBuy 导入后选中的规格，并保存款号或尺码表。",
+    "picklist"
+  ],
+  [
+    "qc",
+    "What are KakoBuy QC photos?",
+    "They are available inspection images associated with a warehouse order. Check that the order and actual variant match.",
+    "KakoBuy 的 QC 照片是什么？",
+    "是与到仓订单关联的验货照片。打开时核对订单号和实际规格。",
+    "purchase"
+  ],
+  [
+    "listing-photos",
+    "Are listing pictures the same as KakoBuy QC photos?",
+    "Listing pictures show what the seller advertises. QC photos attached to your order show the item received for that order.",
+    "商品展示图就是 KakoBuy 验货照片吗？",
+    "展示图来自卖家页面。订单附带的 QC 照片用于查看该订单实际收到的商品。",
+    "purchase"
+  ],
+  [
+    "measure",
+    "What if I need a size measurement in QC?",
+    "Ask support whether a photo with a measuring tape is available for the dimension you need.",
+    "QC 照片里没有尺码测量怎么办？",
+    "通过订单询问客服能否补拍相应部位的带尺照片。",
+    "purchase"
+  ],
+  [
+    "parcel-weight",
+    "Does KakoBuy always charge actual weight?",
+    "Check the selected line’s terms. Parcel dimensions and chargeable weight rules can affect the quote.",
+    "KakoBuy 总是按实重收费吗？",
+    "查看所选线路规则，包裹尺寸和计费重量可能影响报价。",
+    "estimate"
+  ],
+  [
+    "domestic-charge",
+    "What is domestic freight on a KakoBuy order?",
+    "It is the seller-to-warehouse delivery charge. International parcel shipping is calculated separately.",
+    "KakoBuy 订单里的国内运费是什么？",
+    "是卖家寄到仓库的运费，国际包裹的运输费另行计算。",
+    "fees"
+  ],
+  [
+    "final-price",
+    "Does the shipping estimate include every fee?",
+    "Check the checkout breakdown for freight, packaging and any selected services. The estimate helps compare options.",
+    "运费测算是否包含全部费用？",
+    "到结算页核对国际运费、包装及已选服务。测算结果用于比较方案。",
+    "fees"
+  ],
+  [
+    "combine",
+    "Can I send several KakoBuy orders in one parcel?",
+    "Check eligible warehouse orders and route restrictions in parcel submission. Compare the packed quote for combining versus splitting.",
+    "KakoBuy 的几个订单可以一起寄吗？",
+    "在提交包裹页看哪些到仓订单和线路可用，比较合箱和分箱报价。",
+    "purchase"
+  ],
+  [
+    "storage",
+    "Where do I check KakoBuy warehouse storage time?",
+    "Check the warehouse view and the current terms for your items. Use the dates shown on the actual order.",
+    "KakoBuy 仓库存放期限在哪看？",
+    "在仓库页面和当前条款里核对，以对应订单显示的期限为准。",
+    "purchase"
+  ],
+  [
+    "rehearsal",
+    "Where do I check KakoBuy rehearsal shipping?",
+    "Open the package submission options and check whether your order offers advance packing or measurement and what it costs.",
+    "在哪里看 KakoBuy 预打包？",
+    "在包裹提交选项查看当前订单是否提供预打包或测量，以及费用。",
+    "estimate"
+  ],
+  [
+    "packaging",
+    "Does removing a seller box always lower shipping cost?",
+    "Compare the packed measurements and route quotes. Retaining a box can also affect protection, so verify the available options.",
+    "去掉卖家原盒一定能省运费吗？",
+    "比较不同包装的实测尺寸和线路报价，也要考虑商品保护。",
+    "estimate"
+  ],
+  [
+    "return",
+    "How do I request a KakoBuy return?",
+    "Use the order’s support entry and provide the seller link, order reference and relevant QC photos. Verify seller terms and costs.",
+    "怎么申请 KakoBuy 退货？",
+    "从订单售后入口提交原链接、订单号和有关验货照片，再核对卖家条款与费用。",
+    "returns"
+  ],
+  [
+    "refund",
+    "When will a KakoBuy refund arrive?",
+    "Check the order-specific refund status and applicable terms. Timing can depend on the seller, order stage and payment method.",
+    "KakoBuy 退款多久能到账？",
+    "查对应订单的退款状态及当前条款。时长可能取决于卖家、订单阶段和支付方式。",
+    "returns"
+  ],
+  [
+    "track",
+    "Where do I track a KakoBuy parcel?",
+    "Use the parcel’s assigned carrier and tracking number after dispatch. Keep the purchase reference for warehouse-stage questions.",
+    "KakoBuy 包裹怎么查物流？",
+    "发出后用包裹对应的承运商和追踪编号。查询入仓状态时保留采购订单号。",
+    "official"
+  ],
+  [
+    "support",
+    "What should I send to KakoBuy support about a parcel?",
+    "Share the parcel reference, last carrier scan and date, destination country and what you want support to check.",
+    "包裹咨询要给 KakoBuy 客服哪些信息？",
+    "说明要核对的问题，并提供包裹编号、最新物流记录及日期、目的地国家。",
+    "official"
+  ]
 ];

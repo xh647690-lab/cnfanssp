@@ -47,7 +47,7 @@ export default {
       'X-Content-Type-Options': 'nosniff',
       ...(!isProduction && { 'X-Robots-Tag': 'noindex, nofollow' }),
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Content-Security-Policy': "default-src 'self'; img-src https://www.cnfanssp.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
+      'Content-Security-Policy': "default-src 'self'; img-src https://www.cnfanssp.com https://nstatic.kakobuy.com https://kakobuy.com; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self' https://www.cnfanssp.com"
     };
     if (!['HEAD', 'GET'].includes(request.method)) {
       return new Response(null, { status: 405, headers: { ...headers, Allow: 'GET, HEAD' } });
@@ -68,7 +68,7 @@ export default {
       });
     }
     if (url.pathname === '/search/') return redirectToSearch(url);
-    if (url.pathname === '/favicon.ico') return Response.redirect(sourceOrigin + '/favicon.ico', 302);
+    if (url.pathname === '/favicon.ico') return Response.redirect('https://kakobuy.com/favicon.ico', 302);
     const asset = staticFiles.get(url.pathname);
     if (asset) {
       return new Response(request.method === 'HEAD' ? null : asset[0], {

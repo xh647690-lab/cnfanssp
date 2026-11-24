@@ -1,5 +1,8 @@
 export const sources = {
   agent: ['Kakobuy official site', 'https://www.kakobuy.com/'],
+  purchase: ['KakoBuy official purchase and inspection service', 'https://www.kakobuy.com/service/purchasing'],
+  estimate: ['KakoBuy official shipping estimate', 'https://kakobuy.com/tools/estimate'],
+  returns: ['KakoBuy official Return Policy', 'https://kakobuy.com/index/information?information_id=10'],
   costs: ['Kakobuy official cost breakdown', 'https://www.kakobuy.com/service/help/question?cid=35&id=74'],
   catalog: ['CNFansSP product catalog', 'https://www.cnfanssp.com/AllProducts/'],
   picklist: ['Kakobuy Picklist catalog', 'https://kakobuypicklist.com/'],
@@ -25,7 +28,7 @@ export const articles = [
     slug: 'kakobuy-qc-photos',
     title: 'Kakobuy QC photos: what to check before shipping',
     description: 'Use your warehouse photos to confirm the item, measure fit and resolve defects before dispatch.',
-    refs: ['agent', 'guide', 'topics'],
+    refs: ['purchase', 'agent', 'guide', 'topics'],
     sections: [
       ['Use photos of your order', 'A listing gallery shows a product as advertised. A QC gallery on your Kakobuy order shows the unit received at the warehouse. Match the order number and option before inspecting details. A cached QC photo from another buyer can help you decide which views to request.'],
       ['Inspect the high-cost mistakes first', 'Check size tags, selected color, quantity and whether the item is visibly damaged. Then inspect the areas that matter for the product: seams on clothing, sole edges and left–right symmetry on shoes, or closures and hardware on bags.'],
@@ -37,7 +40,7 @@ export const articles = [
     slug: 'kakobuy-shipping-cost',
     title: 'How to estimate Kakobuy shipping costs',
     description: 'Build an estimate from seller freight, packed dimensions, route quotes and optional extras.',
-    refs: ['costs', 'agent', 'topics'],
+    refs: ['estimate', 'costs', 'agent', 'topics'],
     sections: [
       ['Split the total into two stages', 'Record the seller price and domestic freight first. International shipping is a separate quote once you know the destination and parcel details. Include selected packaging and paid extras in your final comparison. Keep both stages in the same currency when comparing alternatives.'],
       ['Compare the same parcel across routes', 'Enter the same destination and packed dimensions in each estimate. Compare the billing basis, weight and size limits, restrictions and tracking details before comparing the displayed price. A route that accepts a light shirt may have different conditions for electronics or bulks of shoes.'],
@@ -61,7 +64,7 @@ export const articles = [
     slug: 'how-to-order-on-kakobuy',
     title: 'How to place your first Kakobuy order',
     description: 'A first-order checklist from seller link through warehouse review and international shipping.',
-    refs: ['agent', 'order', 'guide'],
+    refs: ['purchase', 'agent', 'order', 'guide'],
     sections: [
       ['Choose one known item', 'Start with a listing that has an identifiable seller, a clear variant and a usable size chart. Paste its source URL into Kakobuy, select the option and enter any measurement or packaging note you need. Review the order summary for the item and domestic shipping.'],
       ['Track the warehouse leg', 'Kakobuy buys the item from the seller. The seller ships to the agent warehouse. An order marked as sent at this stage can be on the domestic leg, so check whether it has actually been received before expecting QC photos.'],
@@ -85,7 +88,7 @@ export const articles = [
     slug: 'kakobuy-warehouse-consolidation',
     title: 'Kakobuy warehouse and parcel consolidation',
     description: 'Track items by warehouse status and group approved orders into a parcel that fits your route.',
-    refs: ['agent', 'guide', 'topics'],
+    refs: ['purchase', 'agent', 'guide', 'topics'],
     sections: [
       ['Use a warehouse checklist', 'List each order with its seller, variant and warehouse status. Add a column for QC approved, waiting for another photo, or waiting on a return decision. Only include items you have reviewed when building a parcel.'],
       ['Choose what travels together', 'Consolidation can simplify tracking and may reduce duplicate packaging. Compare one parcel against smaller alternatives if you are close to a size or weight limit. Check that the route accepts every product in the group.'],
@@ -97,7 +100,7 @@ export const articles = [
     slug: 'kakobuy-rehearsal-shipping',
     title: 'Kakobuy rehearsal shipping and volumetric weight',
     description: 'Use measured package dimensions to compare international shipping routes before dispatch.',
-    refs: ['costs', 'guide', 'topics'],
+    refs: ['estimate', 'costs', 'guide', 'topics'],
     sections: [
       ['Ask what the route bills', 'Some shipping routes use packed dimensions to calculate volumetric weight. Actual weight and volumetric weight are different inputs, and the divisor or rounding may depend on the route. Read the line’s current terms before estimating.'],
       ['Use a measured packing estimate', 'If the account offers a rehearsal or prepacking option for your parcel, check the displayed fee and scope. Ask for the packed length, width, height and scale weight. Use those values for the route you actually plan to pay for.'],
@@ -109,7 +112,7 @@ export const articles = [
     slug: 'kakobuy-returns-and-exchanges',
     title: 'How to request a Kakobuy return or exchange',
     description: 'Document a warehouse mismatch and verify the seller’s terms before shipping the parcel.',
-    refs: ['agent', 'guide', 'topics'],
+    refs: ['returns', 'agent', 'guide', 'topics'],
     sections: [
       ['Identify the reason early', 'Compare the warehouse entry with your order and seller listing. Record whether you received the wrong size or color, a visibly damaged item, or a product that simply does not suit you. Save the order number, variant and photos.'],
       ['Use the order’s after-sales options', 'Open the relevant order and read the currently available return or exchange options. If you need help, send a concise note describing the difference and point out the photo that shows it. Ask about the applicable deadline before waiting for a reply.'],
@@ -121,7 +124,7 @@ export const articles = [
     slug: 'kakobuy-fees-and-budget',
     title: 'Kakobuy fees and a first-haul budget',
     description: 'Track product prices, domestic freight, parcel shipping and optional services in one estimate.',
-    refs: ['costs', 'agent', 'topics'],
+    refs: ['estimate', 'costs', 'agent', 'topics'],
     sections: [
       ['Create two subtotals', 'List each product with its selected variant price and seller freight. Add a separate parcel subtotal for international transport, packing and any optional services you plan to use. The official cost breakdown explains these categories.'],
       ['Check currency and timing', 'When copying figures from a spreadsheet, confirm whether the currency is a display estimate or what checkout charges. Record the date and rate you used. Compare actual payment and balance costs on the official checkout before buying.'],

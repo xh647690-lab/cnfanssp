@@ -105,7 +105,7 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === '/styles.css') return new Response(styles, {headers:{'content-type':'text/css; charset=utf-8'}});
     if (url.pathname === '/client.js') return new Response(client, {headers:{'content-type':'text/javascript; charset=utf-8'}});
-    if (url.pathname === '/favicon.ico') return Response.redirect(origin + '/favicon.ico', 302);
+    if (url.pathname === '/favicon.ico') return Response.redirect('https://kakobuy.com/favicon.ico', 302);
     if (url.pathname === '/buy/7632511460') return buy();
     if (url.pathname !== '/api/catalogue') return render(url);
     try {

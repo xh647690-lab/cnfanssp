@@ -85,6 +85,7 @@ header{background:#fff;border-bottom:1px solid var(--line)}.top{min-height:73px;
 @media(max-width:850px){.wrap{width:calc(100% - 38px)}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{grid-template-columns:1fr}.hero form{max-width:480px}}@media(max-width:570px){.wrap{width:calc(100% - 26px)}.nav{display:none}.top{gap:8px;min-height:61px}.tools{gap:6px}.signup{min-height:36px;padding:0 8px}.hero{margin-top:15px;gap:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card-text{padding:8px 10px 12px}.detail{grid-template-columns:1fr}.heading a{font-size:14px}.section{margin-top:24px}.categories{gap:5px}.pill{padding:6px 9px}}
 `;
 
+const brandCss = '.brand{display:inline-flex;padding:0;background:none;border:0}.brand img{display:block;width:112px;max-width:100%;height:auto}@media(max-width:650px){.brand img{width:92px}}';
 const compactCss = `
 .brand{background:#0a192f;color:#fff;font-family:Arial,sans-serif;border-radius:9px;padding:4px 10px;font-size:1.6rem;font-weight:700;letter-spacing:normal}.brand span{color:#25d366}
 .top{gap:17px}.nav{gap:16px}.language div{width:min(325px,calc(100vw - 30px));max-height:min(430px,70vh);overflow:auto;display:grid;grid-template-columns:1fr 1fr}.language a{display:flex;justify-content:space-between;gap:5px}.language small{font-size:11px;color:var(--muted);align-self:center}.nav a[aria-current]{text-decoration:underline;text-underline-offset:5px}
@@ -118,9 +119,9 @@ function layout(url, path, lang, title, body, status = 200, description = '') {
     : '<meta name="robots" content="noindex,nofollow">';
   const metadata = description ? `<meta name="description" content="${escape(description)}">` : '';
   const currentLanguage = languageList[lang];
-  return new Response(`<!doctype html><html lang="${lang === 'zh' ? 'zh-Hans' : lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${pageMeta}<link rel="icon" href="${origin}/favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="${origin}/public/upload/system/2018/05/24/8c675d3dae162ebc1936f3ab43d58960.png"><title>${escape(title)} · CNFansSP</title>${metadata}<style>${css}${compactCss}</style></head><body><header><div class="top wrap"><a class="brand" href="${localizedPath('/',lang)}">Cnbuy<span>Sheet</span></a><nav class="nav">${nav}</nav><div class="tools"><details class="language"><summary aria-label="${language}: ${currentLanguage[0]}">${currentLanguage[1]}</summary><div>${languages}</div></details><a class="signup" href="${origin}/reg">${register}</a></div></div></header><main class="wrap">${body}</main><footer><div class="wrap"><a href="${origin}/">${t[21]}</a></div></footer></body></html>`,{status,headers:{
+  return new Response(`<!doctype html><html lang="${lang === 'zh' ? 'zh-Hans' : lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${pageMeta}<link rel="icon" href="https://kakobuy.com/favicon.ico" type="image/x-icon"><title>${escape(title)} · CNFansSP</title>${metadata}<style>${css}${compactCss}${brandCss}</style></head><body><header><div class="top wrap"><a class="brand" href="${localizedPath('/',lang)}"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a><nav class="nav">${nav}</nav><div class="tools"><details class="language"><summary aria-label="${language}: ${currentLanguage[0]}">${currentLanguage[1]}</summary><div>${languages}</div></details><a class="signup" href="${origin}/reg">${register}</a></div></div></header><main class="wrap">${body}</main><footer><div class="wrap"><a href="${origin}/">${t[21]}</a></div></footer></body></html>`,{status,headers:{
     'content-type':'text/html; charset=utf-8',
-    'content-security-policy':"default-src 'none'; img-src https://www.cnfanssp.com https://cnfanssp.com; style-src 'unsafe-inline'; form-action https://www.cnfanssp.com; base-uri 'none'; frame-ancestors 'none'",
+    'content-security-policy':"default-src 'none'; img-src https://www.cnfanssp.com https://cnfanssp.com https://nstatic.kakobuy.com https://kakobuy.com; style-src 'unsafe-inline'; form-action https://www.cnfanssp.com; base-uri 'none'; frame-ancestors 'none'",
     'referrer-policy':'strict-origin-when-cross-origin',
   }});
 }
@@ -183,13 +184,13 @@ function faqPage(url,path,lang) {
     const guide = guideTopics[guideIndex];
     return `<details class="faq-item" id="question-${groupIndex+1}-${index+1}" name="faq"${url.searchParams.get('question') === groupIndex+1 + '-' + (index+1) ? ' open' : ''}><summary>${escape(question)}</summary><p>${escape(answer)}</p><a href="${localizedPath('/guides/' + guide.slug,lang)}">${escape(guide.title)}</a></details>`;
   }).join('')}</section>`).join('');
-  return layout(url,path,lang,'CNFans Spreadsheet FAQ',`<section class="section"><div class="heading"><h1>FAQ</h1></div>${englishEdition(lang)}<div lang="en" class="questions">${groups}</div></section>`,200,'24 answers about CNFansSP listings, marketplace links, CNFans QC, sizing, delivery and returns.');
+  return layout(url,path,lang,'KakoBuy FAQ',`<section class="section"><div class="heading"><h1>FAQ</h1></div>${englishEdition(lang)}<div lang="en" class="questions">${groups}</div></section>`,200,'24 answers about KakoBuy listings, marketplace links, warehouse QC, delivery and returns.');
 }
 
 function guidesPage(url,path,lang) {
   const label = navigationLabels[lang][3];
   const cards = guideTopics.map(guide => guideCard(guide,lang,'h2')).join('');
-  return layout(url,path,lang,label,`<section class="section guide-index"><div class="heading"><h1>${label}</h1></div>${englishEdition(lang)}<div class="stories">${cards}</div></section>`,200,'Buying guides for the CNFans spreadsheet, Weidian links, QC photos, shipping costs, sizing and returns.');
+  return layout(url,path,lang,label,`<section class="section guide-index"><div class="heading"><h1>${label}</h1></div>${englishEdition(lang)}<div class="stories">${cards}</div></section>`,200,'KakoBuy buying guides covering Weidian links, warehouse QC, shipping costs and returns.');
 }
 
 function guidePage(url,path,lang,guide) {
@@ -229,7 +230,7 @@ export default {
       const entries = pages.map(page => '<url><loc>' + production + page + '</loc></url>').join('');
       return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + entries + '</urlset>', {headers:{'content-type':'application/xml; charset=utf-8'}});
     }
-    if (path === '/favicon.ico') return Response.redirect(origin + '/favicon.ico',302);
+    if (path === '/favicon.ico') return Response.redirect('https://kakobuy.com/favicon.ico',302);
     if (path === '/faq') return faqPage(url,path,lang);
     if (path === '/guides') return guidesPage(url,path,lang);
     if (path.startsWith('/guides/')) {

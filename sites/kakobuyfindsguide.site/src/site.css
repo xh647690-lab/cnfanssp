@@ -92,3 +92,7 @@
   .language-options {right:-65px;width:min(280px,calc(100vw - 27px))}
   .guide-grid .editorial-card h2 {font-size:.97rem}
 }
+
+.top .brand{display:inline-flex;align-items:center;padding:0;background:none;border:0}
+.top .brand img{display:block;width:112px;max-width:100%;height:auto;object-fit:contain}
+@media(max-width:650px){.top .brand img{width:92px}}

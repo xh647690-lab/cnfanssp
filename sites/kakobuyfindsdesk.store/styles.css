@@ -85,3 +85,7 @@ footer .logo{font-size:1.2rem}footer .source{color:#d9e8e0}
   .hero h1,.search button,.section-head a{overflow-wrap:anywhere}
   .featured-meta{min-width:0}
 }
+
+.logo{display:inline-flex;align-items:center;padding:0;background:none;border:0}
+.logo img{display:block;width:112px;max-width:100%;height:auto;object-fit:contain}
+@media(max-width:650px){.logo img{width:92px}}

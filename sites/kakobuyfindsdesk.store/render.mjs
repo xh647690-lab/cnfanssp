@@ -152,18 +152,17 @@ function render(url) {
   const html = `<!doctype html><html lang="${language === 'zh' ? 'zh-Hans' : language}">
   <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="${escapeHtml(description)}">
-  <title>${escapeHtml(title)} | CnbuySheet</title>
-  <link rel="icon" href="${origin}/favicon.ico" type="image/x-icon">
-  <link rel="apple-touch-icon" href="${origin}/public/upload/system/2018/05/24/8c675d3dae162ebc1936f3ab43d58960.png">
+  <title>${escapeHtml(title)} | KakoBuy Finds</title>
+  <link rel="icon" href="https://kakobuy.com/favicon.ico" type="image/x-icon">
   <link rel="canonical" href="${new URL(localePath(canonicalLanguage, path), url).href}">${metadata}
   <link rel="alternate" hreflang="x-default" href="${new URL(localePath('en', path), url).href}">${structured}
   <link rel="stylesheet" href="/styles.css"><script src="/client.js" defer></script></head>
   <body data-product-label="${escapeHtml(words[12])}"><header><div class="wrap nav">
-  <a class="logo" href="${localePath(language)}">Cnbuy<span>Sheet</span></a>
+  <a class="logo" href="${localePath(language)}"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>
   <nav aria-label="${escapeHtml(words[1])}">${menu}</nav>
   <div class="tools"><select id="language" aria-label="${escapeHtml(words[7])}">${options}</select>${sourceLink('/reg', words[6], 'register')}</div>
   </div></header><main>${main}</main>
-  <footer><div class="wrap"><a class="logo" href="${localePath(language)}">Cnbuy<span>Sheet</span></a>${sourceLink('/', words[13], 'source')}</div></footer>
+  <footer><div class="wrap"><a class="logo" href="${localePath(language)}"><img src="https://nstatic.kakobuy.com/banner/202602/22/1080564df2b8f006455d32460b53b7d9.png" width="642" height="162" alt="KakoBuy"></a>${sourceLink('/', words[13], 'source')}</div></footer>
   </body></html>`;
   return new Response(html, { headers:{ 'content-type':'text/html; charset=utf-8' } });
 }

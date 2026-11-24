@@ -24,7 +24,7 @@ const home = homePaths[lang] ?? '/';
   </head>
   <body>
     <header class="top"><div class="wrap header">
-      <a class="brand" href={home}><img alt="Kakobuy" src="/kakobuy-logo.png" /><span>Spreadsheet</span></a>
+      <a class="brand" href={home}><img alt="KakoBuy" src="/kakobuy-logo.png" width="642" height="162" /></a>
       <nav aria-label={labels.menu}>{navigation.map(([key, href]) => <a href={href} aria-current={key === page ? 'page' : undefined}>{labels[key]}</a>)}</nav>
       <details class="language">
         <summary aria-label={labels.langLabel}><span>{labels.name}</span> <small>{lang.toUpperCase()}</small></summary>
