@@ -1,0 +1,14 @@
+{
+  "name": "kakobuyfindsdesk-fun",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-11-24",
+  "build": {
+    "command": "npm run build"
+  },
+  "routes": [
+    {
+      "pattern": "kakobuyfindsdesk.fun",
+      "custom_domain": true
+    }
+  ]
+}
