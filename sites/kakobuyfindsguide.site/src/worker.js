@@ -102,8 +102,6 @@ function shell(lang, t, page, url, robots, status) {
   const alternatives = Object.keys(isEditorial ? interfaceText : locales)
     .map(code => '<link rel="alternate" hreflang="' + code + '" href="' + escape(siteOrigin + withLocale(code,page.path)) + '">').join('')
   return '<!doctype html><html lang="' + lang + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
-    '<meta name="google-site-verification" content="zTOsZ3kmDwQWGN3UStsZv85v_2q6M_CVQDcN2i-Q9UE">' +
-    '<meta name="msvalidate.01" content="A966D427AFCEEEC4068828D9F541400A">' +
     '<meta name="robots" content="' + robots + '"><meta name="description" content="' + escape(page.description ?? t.intro) + '">' +
     '<title>' + escape(page.title) + ' · CNFansSP</title><link rel="canonical" href="' + siteOrigin + canonical + '">' +
     '<link rel="icon" type="image/x-icon" href="https://kakobuy.com/favicon.ico">' +
