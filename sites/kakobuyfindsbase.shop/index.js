@@ -178,7 +178,15 @@ function render(url, lang, path, products, categories, purchase) {
   ).join('');
   return new Response(`<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="canonical" href="${esc(new URL(local(lang, path), siteOrigin))}"><meta name="description" content="${esc(pageDescription)}"><title>${esc(pageTitle)} | Kakobuy Catalogue</title>
-  <link rel="icon" href="/favicon.ico"><link rel="alternate" hreflang="x-default" href="${esc(new URL(local('en', path), siteOrigin))}">${alternates}<style>${css}</style></head>
+  <link rel="icon" href="/favicon.ico"><link rel="alternate" hreflang="x-default" href="${esc(new URL(local('en', path), siteOrigin))}">${alternates}<style>${css}</style>
+  ${url.origin === siteOrigin ? `<script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C89Z99V3LG');
+  </script>` : ''}
+</head>
   <body><header><nav class="wrap nav"><a class="brand" href="${local(lang)}"><img src="/kakobuy-logo.png" width="642" height="162" alt="Kakobuy"></a>
   <details class="language"><summary aria-label="${esc(language)}">${esc(words[0])}</summary><div class="languages">${languages}</div></details>
   <a class="button" href="https://www.kakobuy.com/register">${esc(signup)}</a></nav><nav class="wrap page-nav">${nav}</nav></header>
