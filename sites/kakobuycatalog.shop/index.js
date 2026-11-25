@@ -163,7 +163,15 @@ function render(lang, page, products, categories, purchase, pageNumber, robots) 
     description = entry.summary;
     content = `<article class="page" lang="en"><h1>${esc(entry.title)}</h1><p>${esc(entry.summary)}</p>${entry.sections.map(([title,body])=>`<h2>${esc(title)}</h2><p>${esc(body)}</p>`).join('')}<p>${editorialSource(entry.source)}</p></article>`;
   }
-  return `<!doctype html><html lang="${lang==='zh'?'zh-Hans':lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="${robots}"><link rel="canonical" href="${productionOrigin + localPath(lang,page) + (pageNumber>1?'?page='+pageNumber:'')}"><meta name="description" content="${esc(description)}"><link rel="icon" href="/favicon.ico"><title>${esc(pageTitle)} | Kakobuy Finds</title><style>${css}</style></head>
+  return `<!doctype html><html lang="${lang==='zh'?'zh-Hans':lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="${robots}"><link rel="canonical" href="${productionOrigin + localPath(lang,page) + (pageNumber>1?'?page='+pageNumber:'')}"><meta name="description" content="${esc(description)}"><link rel="icon" href="/favicon.ico"><title>${esc(pageTitle)} | Kakobuy Finds</title><style>${css}</style>
+  ${robots !== 'noindex' ? `<script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C89Z99V3LG');
+  </script>` : ''}
+</head>
 <body><header><div class="wrap nav"><a class="brand" href="${localPath(lang)}"><img src="/brand/logo.png" alt="Kakobuy" width="642" height="162"></a><nav class="header-pages" aria-label="${menu}">${links}</nav><details class="small-menu"><summary>${menu}</summary><nav class="languages">${links}</nav></details>
 <details><summary>${locales[lang]}</summary><nav class="languages">${Object.entries(locales).map(([key,label]) => `<a href="${localPath(key,page)}${pageNumber>1?'?page='+pageNumber:''}" lang="${key}" ${key===lang?'aria-current="page"':''}>${label}</a>`).join('')}</nav></details><a class="button" href="${esc(registration)}">${signup}</a></div></header>
 <main class="wrap">${content}</main><footer><div class="wrap">Kakobuy Finds · <a href="${source}/">CNFansSP</a></div></footer></body></html>`;
