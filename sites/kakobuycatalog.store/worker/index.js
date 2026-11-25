@@ -306,7 +306,15 @@ function render(locale, page, data, buy, listPage, production) {
     return `<div class="page-head"><h1>${catalogLabel}</h1>${searchForm}</div>${catalogSection}`;
   };
   const localeLinks = options.map(([code,label]) => `<a href="${path(page,code)}${pageSuffix}" lang="${code}" ${locale === code ? 'aria-current="page"' : ''}>${label} <small>${code.toUpperCase()}</small></a>`).join('');
-  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${production ? '' : '<meta name="robots" content="noindex, follow">'}<link rel="icon" href="/brand/favicon.ico"><title>${page ? esc(pageTitle) + ' | Kakobuy Catalog' : 'Kakobuy Spreadsheet | Kakobuy Catalog'}</title>${production ? '<link rel="canonical" href="' + productionUrl + path(page) + pageSuffix + '">' : ''}${currentArticle ? '<meta name="description" content="' + esc(currentArticle.summary) + '">' : ''}<style>${styles}${feature ? '' : '.hero{grid-template-columns:1fr}'}</style></head><body>
+  return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${production ? '' : '<meta name="robots" content="noindex, follow">'}<link rel="icon" href="/brand/favicon.ico"><title>${page ? esc(pageTitle) + ' | Kakobuy Catalog' : 'Kakobuy Spreadsheet | Kakobuy Catalog'}</title>${production ? '<link rel="canonical" href="' + productionUrl + path(page) + pageSuffix + '">' : ''}${currentArticle ? '<meta name="description" content="' + esc(currentArticle.summary) + '">' : ''}<style>${styles}${feature ? '' : '.hero{grid-template-columns:1fr}'}</style>
+  ${production ? `<script async src="https://www.googletagmanager.com/gtag/js?id=G-C89Z99V3LG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-C89Z99V3LG');
+  </script>` : ''}
+</head><body>
 <header class="top"><div class="wrap bar"><a class="brand" href="${path()}"><img src="/brand/logo.png" alt="Kakobuy" width="134" height="32"></a><div class="toolbar"><details class="locale"><summary aria-label="${language}">${options.find(([code])=>code===locale)[1]}</summary><div>${localeLinks}</div></details><a class="button" rel="sponsored" href="${register}">${signup}</a></div></div>
 <nav class="wrap navigation">${[[home,''],[catalogLabel,'catalog'],[browse,'categories'],[guides,'guides'],[faq,'faq']].map(([label,route])=>`<a href="${path(route)}" ${page===route || (route && page.startsWith(route+'/')) ? 'aria-current="page"' : ''}>${label}</a>`).join('')}</nav></header>
 <main class="wrap">${page ? inner() : homePage()}</main><footer class="wrap footer"><strong>Kako Finds</strong><a href="${source}">CNFansSP</a></footer></body></html>`;
