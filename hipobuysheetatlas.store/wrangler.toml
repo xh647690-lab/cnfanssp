@@ -1,3 +1,7 @@
 name = "hipobuysheetatlas-store"
 pages_build_output_dir = "./public"
 compatibility_date = "2026-11-24"
+
+[vars]
+GA4_MEASUREMENT_ID = "G-GT68E51S76"
+BING_VERIFICATION = "A966D427AFCEEEC4068828D9F541400A"
