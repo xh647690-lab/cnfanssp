@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hipobuy Finds</title><link rel="icon" sizes="32x32" type="image/png" href="https://hipobuy.com/static/favicon/32x32.png">
+<style>
+:root{font:16px system-ui,sans-serif;color:#212922;background:#f7f8f4}*{box-sizing:border-box}body{margin:0}a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}main,nav,footer{width:min(1160px,92%);margin:auto}header{background:white;border-bottom:1px solid #e0e5db}nav{display:flex;align-items:center;gap:20px;min-height:72px;flex-wrap:wrap;padding:12px 0}.brand{font-size:23px;font-weight:850;letter-spacing:-.06em;margin-right:auto}.brand span{color:#457148}.btn,button{display:inline-block;border:0;border-radius:9px;background:#c7f69d;color:#17291b;padding:12px 17px;font:inherit;font-weight:750;cursor:pointer}select,input{font:inherit;padding:11px;border:1px solid #cbd3ca;border-radius:8px;background:white;color:#253424}.hero{margin:28px 0 35px;padding:clamp(26px,6vw,74px);border-radius:22px;background:radial-gradient(ellipse at top right,#386548,#142d22 65%);color:#fff}.hero h1{margin:0;font-size:clamp(42px,7vw,82px);letter-spacing:-.065em;line-height:1.05}.hero p{color:#d4e7d7;line-height:1.6;max-width:550px}.hero form{display:flex;gap:8px;max-width:570px;margin-top:25px}.hero input{flex:1;min-width:0}h2{font-size:27px;letter-spacing:-.035em}.chips{display:flex;gap:8px;flex-wrap:wrap}.chips a{background:#fff;border:1px solid #dce3d8;border-radius:50px;padding:9px 15px}.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:25px}.section-head>a{color:#386248}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{overflow:hidden;background:white;border:1px solid #e0e5db;border-radius:14px}.card>a:first-child{display:block;background:#eef0eb}.card img{display:block;width:100%;aspect-ratio:4/3;object-fit:contain}.info{padding:13px;display:grid;gap:7px}.info strong{color:#365b40}.buy{margin-top:5px;font-size:.9rem;justify-self:start}footer{padding:28px 0;margin-top:32px;border-top:1px solid #dfe5db;color:#48604e}@media(max-width:700px){nav{gap:10px}.grid{grid-template-columns:repeat(2,1fr)}.hero{margin-top:16px}.brand{flex:1}.nav-cats{display:none}}@media(max-width:350px){.hero form{flex-wrap:wrap}}
+.brand{display:flex;align-items:center;gap:8px}.brand img{width:96px;height:34px;object-fit:contain}.inner{min-height:50vh;padding-top:22px}.inner article{max-width:720px;line-height:1.65}.inner h1{line-height:1.15;font-size:clamp(28px,5vw,45px);margin-bottom:18px}.editorial{margin-top:32px}.editorial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.editorial-card,details,.paging a{display:block;background:white;border:1px solid #dce3d8;border-radius:10px;padding:12px}.editorial-card small{display:block;margin-top:4px;color:#48604e}.questions{display:grid;gap:6px}summary{cursor:pointer;font-weight:650}.paging{display:flex;gap:8px;margin-top:12px}.paging [aria-current]{background:#c7f69d}@media(max-width:700px){.nav-cats{display:inline}.editorial-grid{grid-template-columns:1fr}.editorial-card{padding:9px 12px}nav{column-gap:14px}nav .brand{flex:0;margin-right:auto}.grid.compact{grid-template-columns:repeat(3,1fr)}.grid.compact .info{padding:7px;font-size:.85rem}.grid.compact img{aspect-ratio:1}} </style>
+<header><nav aria-label="Navigation"><a href="/" class="brand" aria-label="Hipobuy Finds home"><img src="https://app.hipobuy.com/logo.png" alt="Hipobuy"></a><a class="nav-cats" href="/categories/" data-t="categories">Categories</a><a href="/products/" data-t="all">All products</a><a href="/faq/">FAQ</a><a href="/guides/" data-t="guides">Guides</a><select id="language" aria-label="Language"><option value="en">English EN</option><option value="zh">中文 ZH</option><option value="fr">Français FR</option><option value="es">Español ES</option><option value="de">Deutsch DE</option></select><a class="btn" href="https://hipobuy.com/register" data-t="join">Sign up</a></nav></header>
+<main><section class="hero"><h1 data-t="title">Hipobuy Spreadsheet</h1><p data-t="intro">Explore the CNFansSP catalog and use Hipobuy to order items from Weidian.</p><form action="https://www.cnfanssp.com/search.html"><input type="hidden" name="channelid" value="2"><input type="search" name="keywords" required placeholder="Search the CNFansSP catalog" aria-label="Search the CNFansSP catalog"><button data-t="search">Search</button></form></section>
+<section id="categories"><h2 data-t="categories">Categories</h2><div class="chips" id="chips"></div></section>
+<section><div class="section-head"><h2 data-t="latest">Latest products</h2><a href="https://www.cnfanssp.com/AllProducts/" data-t="all">All products</a></div><p id="status" role="status"></p><div class="grid" id="products"></div></section><!-- editorial --></main>
+<footer><a href="https://www.cnfanssp.com/" data-t="source">Catalog source · CNFansSP</a></footer>
+<script>
+const labels=['title','intro','categories','all','join','search','latest','source','buy','loading','error','placeholder'];
+const translations={
+en:['Hipobuy Spreadsheet','Explore the CNFansSP catalog and use Hipobuy to order items from Weidian.','Categories','All products','Sign up','Search','Latest products','Catalog source · CNFansSP','Open in Hipobuy','Loading products…','Catalog unavailable. Open CNFansSP to browse.','Search the CNFansSP catalog'],
+zh:['Hipobuy 商品目录','浏览 CNFansSP 商品目录，通过 Hipobuy 代购微店商品。','分类','全部商品','注册','搜索','最新商品','数据来源 · CNFansSP','在 Hipobuy 打开','正在加载商品…','暂时无法加载，请前往 CNFansSP 浏览。','搜索 CNFansSP 商品'],
+fr:['Catalogue Hipobuy','Explorez le catalogue CNFansSP et commandez des articles Weidian via Hipobuy.','Catégories','Tous les produits','Inscription','Rechercher','Derniers produits','Source du catalogue · CNFansSP','Ouvrir dans Hipobuy','Chargement…','Catalogue indisponible. Consultez CNFansSP.','Rechercher dans CNFansSP'],
+es:['Catálogo Hipobuy','Explora el catálogo CNFansSP y compra artículos de Weidian con Hipobuy.','Categorías','Todos los productos','Registro','Buscar','Últimos productos','Fuente del catálogo · CNFansSP','Abrir en Hipobuy','Cargando…','Catálogo no disponible. Consulta CNFansSP.','Buscar en CNFansSP'],
+de:['Hipobuy-Katalog','Entdecke den CNFansSP-Katalog und bestelle Weidian-Artikel über Hipobuy.','Kategorien','Alle Produkte','Registrieren','Suchen','Neueste Produkte','Katalogquelle · CNFansSP','In Hipobuy öffnen','Wird geladen…','Katalog nicht verfügbar. Besuche CNFansSP.','Im CNFansSP-Katalog suchen']};
+const language=document.querySelector('#language'), status=document.querySelector('#status');
+const requested=location.pathname.split('/')[1];
+language.value=Object.hasOwn(translations,requested)?requested:'en';
+const localPath=location.pathname.replace(/^\/(en|zh|fr|es|de)(?=\/)/,'');
+const extras={en:['Guides','All questions','All guides'],zh:['指南','全部问题','全部指南'],fr:['Guides','Toutes les questions','Tous les guides'],es:['Guías','Todas las preguntas','Todas las guías'],de:['Ratgeber','Alle Fragen','Alle Ratgeber']};
+const chips=document.querySelector('#chips'), productsGrid=document.querySelector('#products');
+for(const link of document.querySelectorAll('a[href^="/"]')){
+ if(language.value!=='en') link.href='/'+language.value+link.getAttribute('href');
+}
+if(productsGrid && localPath==='/products/') productsGrid.classList.add('compact');
+let state='loading';
+function translate(){
+ const t=Object.fromEntries(labels.map((label,i)=>[label,translations[language.value][i]]));
+ [t.guides,t.allFaq,t.allGuides]=extras[language.value];
+ document.documentElement.lang=language.value;
+ document.querySelectorAll('[data-t]').forEach(el=>el.textContent=t[el.dataset.t]);
+ const input=document.querySelector('input[type=search]');
+ if(input){input.placeholder=t.placeholder;input.setAttribute('aria-label',t.placeholder);}
+ if(status) status.textContent=t[state]||'';
+}
+language.addEventListener('change',()=>{
+ location.href=(language.value==='en'?'':'/'+language.value)+localPath;
+});
+function element(tag,props={},children=[]){
+ const node=Object.assign(document.createElement(tag),props);
+ node.append(...children);
+ return node;
+}
+translate();
+if(chips || productsGrid) fetch('/catalog.json').then(async response=>{
+ if(!response.ok) throw Error('Catalog unavailable');
+ const {categories,products}=await response.json();
+ chips?.append(...categories.map(({name,url})=>element('a',{href:url,textContent:name})));
+ for(const product of products){
+  const image=element('img',{src:product.image,alt:product.name,loading:'lazy'});
+  const info=element('div',{className:'info'},[
+   element('a',{href:product.url,textContent:product.name}),
+   element('strong',{textContent:product.price?'¥'+product.price:''})
+  ]);
+  if(product.buy){
+   const buy=element('a',{href:product.buy,className:'btn buy'});
+   buy.dataset.t='buy';
+   info.append(buy);
+  }
+  productsGrid?.append(element('article',{className:'card'},[element('a',{href:product.url},[image]),info]));
+ }
+ state='';
+}).catch(()=>{state='error'}).finally(translate);
+</script></html>
