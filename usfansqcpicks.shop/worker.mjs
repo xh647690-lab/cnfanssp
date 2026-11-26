@@ -59,7 +59,7 @@ function card(item, detail, buy) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request) {
     const url = new URL(request.url);
     const live = url.origin === production;
     const {pathname} = url;
@@ -82,7 +82,7 @@ export default {
     if (!live) headers.set('x-robots-tag','noindex, follow');
     if (request.method === 'HEAD') return new Response(null, {headers});
     const canonical = path.replace(/^\/(?:de|es|fr|zh)\/(?=(?:faq|guides)\/)/, '/');
-    const measurement = live ? (env?.GA4_MEASUREMENT_ID ?? '') : '';
+    const measurement = live ? 'G-VG61TFMY5D' : '';
     const tag = /^G-[A-Z0-9]{6,20}$/.test(measurement)
       ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${measurement}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${measurement}');</script>` : '';
     const metadata = live ? `<link rel="canonical" href="${production+canonical}">${tag}` : '';
