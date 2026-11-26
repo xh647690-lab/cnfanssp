@@ -1,0 +1,1 @@
+{"name":"usfans-25-preview","private":true,"type":"module","scripts":{"build":"astro build"},"dependencies":{"astro":"latest"}}

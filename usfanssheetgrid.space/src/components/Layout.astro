@@ -1,0 +1,37 @@
+---
+import { languages } from '../copy.mjs'
+import { labels, route } from '../navigation.mjs'
+import './site.css'
+const { code, page = '', title, description } = Astro.props
+const t = languages[code]
+const nav = labels[code]
+const items = [['',t.home],['catalog',t.catalog],['categories',t.categories],['faq',nav.faq],['articles',nav.articles]]
+const origin = Astro.site ?? Astro.url
+---
+<!doctype html>
+<html lang={code}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description ?? t.intro} />
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+  <link rel="icon" href="https://www.usfans.com/favicon.png" type="image/png" />
+  <title>{title ? title + ' | USFans Spreadsheet' : 'USFans Spreadsheet | CNFansSP'}</title>
+  {Object.keys(languages).map(lang => <link rel="alternate" hreflang={lang} href={new URL(route(lang, page), origin)} />)}
+  <link rel="alternate" hreflang="x-default" href={new URL(route('en', page), origin)} />
+</head>
+<body>
+  <header><div class="wrap top">
+    <a href={route(code)} class="wordmark"><img src="https://media.usfans.com/webresource/v1/app/7f2439bb1554488bb7a14afb3f638c3e.webp" class="brand-icon" width="110" height="36" alt="USFans" /><span class="brand-sub">Spreadsheet</span></a>
+    <nav aria-label={t.home}>{items.map(([path, label]) => <a href={route(code,path)} aria-current={page === path ? 'page' : undefined}>{label}</a>)}</nav>
+    <div class="controls">
+      <details class="language"><summary aria-label={nav.language + ': ' + t.label}>{t.label} <small>{code.toUpperCase()}</small></summary><ul>
+        {Object.entries(languages).map(([lang, copy]) => <li><a href={route(lang,page)} lang={lang} aria-current={lang === code ? 'page' : undefined}>{copy.label} <small>{lang.toUpperCase()}</small></a></li>)}
+      </ul></details>
+      <a class="button register" href="https://usfans.com/register">{t.register}</a>
+    </div>
+  </div></header>
+  <slot />
+  <footer><div class="wrap"><a href="https://www.cnfanssp.com/">{t.source}</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,37 @@
+---
+import Layout from './Layout.astro'
+import { articles, faq, sources } from '../editorial.mjs'
+import { labels, route } from '../navigation.mjs'
+const { code, page, slug } = Astro.props
+const news = page === 'articles'
+const article = articles.find(item => item.slug === slug)
+const nav = labels[code]
+const title = article?.title ?? (news ? nav.articles : nav.faq)
+---
+<Layout code={code} page={slug ? page + '/' + slug : page} title={title} description={article?.description}>
+  <main class="wrap editorial">
+    <h1 lang={article ? 'en' : undefined}>{title}</h1>
+    {nav.english && <p class="language-note">{nav.english}</p>}
+    {article ? <div lang="en">
+      <p class="article-intro">{article.description}</p>
+      {article.sections.map(([heading, text]) => <section><h2>{heading}</h2><p>{text}</p></section>)}
+      <section class="references"><h2>Sources</h2><ul>{article.refs.map(key => <li><a href={sources[key][1]}>{sources[key][0]}</a></li>)}</ul></section>
+      <a class="browse" href={route(code, 'articles')}>{nav.articles}</a>
+    </div> : news ? <div class="guide-list" lang="en">
+      {articles.map(item => <a href={route(code,'articles/' + item.slug)}><h2>{item.title}</h2><p>{item.description}</p></a>)}
+    </div> : <div class="faq-groups" lang="en">
+      {faq.map(([heading, entries]) => <section>
+        <h2>{heading}</h2>
+        {entries.map(([id, question, answer, ref]) => <details id={id}><summary>{question}</summary><p>{answer} <a href={sources[ref][1]}>{sources[ref][0]}</a></p></details>)}
+      </section>)}
+    </div>}
+  </main>
+</Layout>
+<script>
+  function openQuestion() {
+    const question = document.getElementById(location.hash.slice(1))
+    if (question instanceof HTMLDetailsElement) question.open = true
+  }
+  openQuestion()
+  window.addEventListener('hashchange', openQuestion)
+</script>

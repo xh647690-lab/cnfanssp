@@ -1,0 +1,21 @@
+---
+import Catalog from '../components/Catalog.astro'
+import Editorial from '../components/Editorial.astro'
+import { languages } from '../copy.mjs'
+import { articles } from '../editorial.mjs'
+
+export function getStaticPaths() {
+  const pages = ['', 'catalog', 'categories', 'faq', 'articles']
+  return Object.keys(languages).flatMap(code => {
+    const prefix = code === 'en' ? '' : code
+    const specs = [...pages.map(page => ({ page })), ...articles.map(({ slug }) => ({ page: 'articles', slug }))]
+    return specs.map(({ page, slug }) => ({
+      params: { path: [prefix, page, slug].filter(Boolean).join('/') || undefined },
+      props: { code, page, slug },
+    }))
+  })
+}
+
+const { code, page, slug } = Astro.props
+---
+{page === 'articles' || page === 'faq' ? <Editorial {code} {page} {slug} /> : <Catalog {code} {page} />}

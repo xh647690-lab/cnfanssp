@@ -1,0 +1,74 @@
+---
+import { loadCatalog } from '../catalog.mjs'
+import { languages } from '../copy.mjs'
+import { articles, faq } from '../editorial.mjs'
+import { route, labels } from '../navigation.mjs'
+import Layout from './Layout.astro'
+import Search from './Search.astro'
+const { code, page = "" } = Astro.props
+const nav = labels[code]
+const t = languages[code]
+const { categories, products } = await loadCatalog()
+const sample = products.find(product => product.url.endsWith('/6667.html'))
+const shown = products.slice(0, 6)
+const main = 'https://www.cnfanssp.com'
+const categoryKeys = ['shoes','hoodies-sweaters','t-shirts','jackets','pants-shorts','headwear','accessories','jersey','electronics','other-stuff']
+function formatPrice(product) {
+  if (!product.price || !product.currency) return
+  return new Intl.NumberFormat(code, { style:'currency', currency:product.currency }).format(Number(product.price))
+}
+---
+<Layout code={code} page={page}>
+  <main class="wrap">
+    {page && <Search {t} />}
+    {!page && <section class="hero">
+      <div>
+        <p class="eyebrow">USFans Spreadsheet</p>
+        <h1>{t.hero}</h1>
+        <p class="intro">{t.intro}</p>
+        <Search {t} />
+        <a class="browse" href={route(code, "catalog")}>{t.all}</a>
+      </div>
+      {sample && <aside class="sample">
+        <a href={sample.url} class="photo">
+          {sample.image && <img src={sample.image} alt={sample.name} referrerpolicy="no-referrer" fetchpriority="high" />}
+        </a>
+        <div class="sample-info">
+          <div><span class="small">{t.example}</span><strong>{sample.name}</strong></div>
+          <a href="https://usfans.com/product/3/7632511460">{t.buy}</a>
+        </div>
+      </aside>}
+    </section>}
+    {page !== "catalog" && <section id="categories" class="section">
+      {page === "categories" ? <h1>{t.categories}</h1> : <h2>{t.featured}</h2>}
+      <ul class="categories">
+        {categories.map(category => <li><a href={category.url}>{t.names[categoryKeys.indexOf(new URL(category.url).pathname.toLowerCase().split('/')[1])] || category.name}</a></li>)}
+      </ul>
+    </section>}
+    {page !== "categories" && <section id="catalog" class="section">
+      <div class="heading">{page === "catalog" ? <h1>{t.catalog}</h1> : <h2>{t.catalog}</h2>}<a class="browse" href={main + '/AllProducts/'}>{t.all}</a></div>
+      <div class="products">
+        {shown.map(product => <article>
+          <a href={product.url} class="photo">
+            {product.image && <img loading="lazy" src={product.image} alt={product.name} referrerpolicy="no-referrer" />}
+          </a>
+          <div class="info">
+            <h3><a href={product.url}>{product.name}</a></h3>
+            <span class="price">{formatPrice(product)}</span>
+            <a class="detail" href={product.url}>{t.details}</a>
+          </div>
+        </article>)}
+      </div>
+    </section>}
+    {!page && <div class="editorial-preview">
+      <section class="section">
+        <div class="heading"><h2>{nav.faq}</h2><a class="browse" href={route(code, 'faq')}>{nav.more}</a></div>
+        <ul class="editorial-cards" lang="en">{faq[0][1].slice(0, 3).map(([id, title]) => <li><a href={route(code, 'faq') + '#' + id}>{title}</a></li>)}</ul>
+      </section>
+      <section class="section">
+        <div class="heading"><h2>{nav.articles}</h2><a class="browse" href={route(code, 'articles')}>{nav.more}</a></div>
+        <ul class="editorial-cards" lang="en">{articles.slice(0, 3).map(article => <li><a href={route(code, 'articles/' + article.slug)}>{article.title}</a></li>)}</ul>
+      </section>
+    </div>}
+  </main>
+</Layout>
