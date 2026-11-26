@@ -1,3 +1,6 @@
 name = "usfanssheetlist-store"
 pages_build_output_dir = "./dist"
 compatibility_date = "2026-11-25"
+
+[vars]
+GA4_MEASUREMENT_ID = "G-DCS97CTB5H"
