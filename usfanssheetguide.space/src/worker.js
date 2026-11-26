@@ -151,7 +151,7 @@ export default {
       }
     }
     const topic = url.searchParams.get('topic');
-    return new Response(render(lang,page,data,topic,production,env?.GA4_MEASUREMENT_ID), {headers:{
+    return new Response(render(lang,page,data,topic,production,env?.GA4_MEASUREMENT_ID ?? 'G-MCVF9K3F6H'), {headers:{
       'Content-Type':'text/html; charset=utf-8',
       ...(!production && {'X-Robots-Tag':'noindex'}),
     }});
