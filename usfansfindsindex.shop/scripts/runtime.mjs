@@ -51,6 +51,8 @@ export default {
       return Response.redirect(search.href, 302);
     }
     if (path === '/robots.txt' || path === '/sitemap.xml') return env.ASSETS.fetch(request);
+    const analytics = url.hostname === 'usfansfindsindex.shop';
+    if (analytics && path === '/analytics.js') return new Response("window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-RTVYTM5LYG');", {headers:{'content-type':'application/javascript; charset=utf-8'}});
     const page = pages[path];
     if (!page) return new Response('Not found', {status:404});
     let cards = '';
@@ -59,6 +61,7 @@ export default {
       const products = readProducts(await loadPage('/AllProducts/')).slice(0, 12);
       cards = products.map(({path,name,photo,price}) => `<a class="card" href="${origin}${escape(path)}">${photo ? `<img src="${escape(photo)}" alt="" loading="lazy">` : ''}<div><h3>${escape(name)}</h3><p>${escape(price)}</p><span>${detail}</span></div></a>`).join('');
     } catch {}
-    return new Response(page.replace('<!--CATALOG-->', () => cards), {headers:{'content-type':'text/html; charset=utf-8','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; img-src https://cnfanssp.com https://www.cnfanssp.com https://media.usfans.com https://www.usfans.com; form-action 'self' https://www.cnfanssp.com"}});
+    const document = analytics ? page.replace('</head>', '<script async src="https://www.googletagmanager.com/gtag/js?id=G-RTVYTM5LYG"></script><script src="/analytics.js"></script></head>') : page;
+    return new Response(document.replace('<!--CATALOG-->', () => cards), {headers:{'content-type':'text/html; charset=utf-8','content-security-policy':"default-src 'none'; script-src 'self' https://www.googletagmanager.com; connect-src https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; style-src 'unsafe-inline'; img-src https://cnfanssp.com https://www.cnfanssp.com https://media.usfans.com https://www.usfans.com; form-action 'self' https://www.cnfanssp.com"}});
   }
 };
