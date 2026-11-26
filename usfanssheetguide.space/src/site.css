@@ -8,7 +8,7 @@ a:hover{text-decoration:underline}
 header{background:#fff;border-bottom:1px solid var(--line)}
 .top,.actions,header nav{display:flex;align-items:center;gap:20px}
 .top{min-height:76px;justify-content:space-between}
-.brand{font-weight:900;font-size:24px;letter-spacing:-.04em;white-space:nowrap}
+.brand{display:inline-flex;flex:none;align-items:center;padding:3px 8px;background:#15233b;border-radius:8px}
 .brand span{color:var(--blue);font-size:15px;margin-inline-start:7px}
 header nav a[aria-current]{color:var(--blue);font-weight:700}
 details{position:relative}
@@ -39,7 +39,7 @@ input{border:1px solid var(--line);background:white;border-radius:8px;font:inher
 footer{padding-block:24px;border-top:1px solid var(--line)}
 @media(max-width:850px){.top{flex-wrap:wrap;padding-block:12px;gap:10px}.top nav{order:3;width:100%;gap:14px;flex-wrap:wrap}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:550px){.wrap{width:calc(100% - 28px)}.hero{margin-top:16px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.brand span{display:none}.actions{gap:9px}.register,button{padding:9px}.card h3{font-size:1rem}}
-.brand img{display:block;width:120px;height:auto}
+.brand img{display:block;width:120px;height:auto;object-fit:contain}
 .languages{max-height:min(60vh,390px);overflow:auto;min-width:175px}
 .languages a{display:flex;justify-content:space-between;gap:10px}
 .languages a[aria-current]{background:#edf2ff;border-radius:6px;font-weight:700}
