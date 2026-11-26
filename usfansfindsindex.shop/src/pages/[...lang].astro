@@ -1,0 +1,71 @@
+---
+import {articles, faqs, sources} from '../editorial.mjs';
+export function getStaticPaths() {
+  const pages = ['', 'catalog', 'categories', 'faq', 'faq/2', 'faq/3', 'faq/4', 'articles', 'articles/2', ...articles.map(([slug]) => 'articles/' + slug)];
+  return ['', 'de', 'es', 'fr', 'zh'].flatMap(locale => pages.map(page => ({
+    params: {lang: [locale,page].filter(Boolean).join('/') || undefined},
+    props: {lang:locale || 'en', page},
+  })));
+}
+const {lang,page} = Astro.props;
+const prefix = lang === 'en' ? '/' : '/' + lang + '/';
+const [section, subpage] = page.split('/');
+const article = articles.find(([slug]) => section === 'articles' && slug === subpage);
+const faqPage = Number(subpage || 1);
+const navCopy = {
+en:['Home','Categories','FAQ','Guides','View all','Sources','Editorial material is available in English.'],
+de:['Startseite','Kategorien','FAQ','Ratgeber','Alle ansehen','Quellen','Die redaktionellen Inhalte sind auf Englisch verfügbar.'],
+es:['Inicio','Categorías','Preguntas','Guías','Ver todo','Fuentes','El contenido editorial está disponible en inglés.'],
+fr:['Accueil','Catégories','FAQ','Guides','Tout voir','Sources','Le contenu éditorial est disponible en anglais.'],
+zh:['首页','分类','常见问题','选购指南','查看全部','来源','问答及指南正文目前提供英文版。'],
+}[lang];
+const faqLink = index => prefix + 'faq/' + (index < 6 ? '' : (Math.floor(index/6)+1) + '/') + '#question-' + (index+1);
+const selectedArticles = articles.slice(subpage === '2' ? 0 : 5, subpage === '2' ? 5 : 10).reverse();
+const pagination = (key, count) => Array.from({length:count}, (_, i) => prefix + key + '/' + (i ? (i+1) + '/' : ''));
+const title = article?.[1] || ({faq:navCopy[2], articles:navCopy[3], categories:navCopy[1]})[section];
+const labels = {
+  en:['Browse catalog','Register','Discover your next find','Browse the CNFansSP catalog and open the products you like in USFans.','Search by product name or ID','Search','Browse by category','Latest listings','View catalog','View details','Open in USFans','The live catalog is temporarily unavailable.','Try product 7632511460','Shoes','Hoodies','T-shirts','Jackets','Accessories','Jerseys'],
+  de:['Katalog','Registrieren','Entdecke deinen nächsten Fund','Durchsuche den CNFansSP-Katalog und öffne Produkte in USFans.','Produktname oder ID','Suchen','Nach Kategorie stöbern','Neue Produkte','Katalog ansehen','Details','In USFans öffnen','Der Katalog ist vorübergehend nicht verfügbar.','Produkt 7632511460 ansehen','Schuhe','Kapuzenpullover','T-Shirts','Jacken','Accessoires','Trikots'],
+  es:['Catálogo','Registrarse','Descubre tu próximo hallazgo','Explora el catálogo de CNFansSP y abre los productos en USFans.','Nombre o ID del producto','Buscar','Explorar categorías','Últimos productos','Ver catálogo','Ver detalles','Abrir en USFans','El catálogo no está disponible temporalmente.','Ver producto 7632511460','Calzado','Sudaderas','Camisetas','Chaquetas','Accesorios','Equipaciones'],
+  fr:['Catalogue','Inscription','Découvrez votre prochaine trouvaille','Parcourez le catalogue CNFansSP et ouvrez les produits dans USFans.','Nom ou identifiant du produit','Rechercher','Explorer les catégories','Derniers produits','Voir le catalogue','Voir les détails','Ouvrir dans USFans','Le catalogue est temporairement indisponible.','Voir le produit 7632511460','Chaussures','Sweats','T-shirts','Vestes','Accessoires','Maillots'],
+  zh:['浏览目录','注册','找到你的下一件好物','浏览 CNFansSP 商品目录，在 USFans 打开你选中的商品。','输入商品名称或 ID','搜索','按分类浏览','最新商品','查看完整目录','查看详情','前往 USFans','商品目录暂时无法加载。','查看商品 7632511460','鞋履','卫衣','T 恤','夹克','配饰','球衣'],
+};
+const t = labels[lang];
+const main = 'https://www.cnfanssp.com';
+const catalog = main + '/AllProducts/';
+const languages = {en:'English',de:'Deutsch',es:'Español',fr:'Français',zh:'简体中文'};
+const paths = ['shoes','hoodies-sweaters','t-shirts','jackets','accessories','Jersey'];
+---
+<!doctype html>
+<html lang={lang}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="canonical" href={'https://usfansfindsindex.shop' + prefix + (page ? page + '/' : '')}><link rel="icon" href="https://www.usfans.com/favicon.png"><title>{title ? title + ' | USFans Spreadsheet' : 'USFans Spreadsheet'}</title>{article && <meta name="description" content={article[2]}/>}</head>
+<body>
+<header><div class="wrap bar"><a class="brand" href={prefix}><img width="132" height="35" src="https://media.usfans.com/webresource/v1/app/7f2439bb1554488bb7a14afb3f638c3e.webp" alt="USFans"/></a><nav aria-label={navCopy[0]}>
+<a href={prefix}>{navCopy[0]}</a><a href={prefix+'catalog/'}>{t[0]}</a><a href={prefix+'categories/'}>{navCopy[1]}</a><a href={prefix+'faq/'}>{navCopy[2]}</a><a href={prefix+'articles/'}>{navCopy[3]}</a>
+<details><summary>{languages[lang]}</summary><div class="languages">{Object.entries(languages).map(([key,name]) => <a lang={key} href={(key === 'en' ? '/' : '/' + key + '/') + (page ? page+'/' : '')} hreflang={key} aria-current={key === lang ? 'page' : undefined}>{name}</a>)}</div></details><a class="button" href="https://www.usfans.com/register">{t[1]}</a></nav></div></header>
+<main class="wrap">
+{(!section || section === 'catalog') && <>
+<section class="hero"><div class="eyebrow">USFANS SPREADSHEET</div><h1>{section ? t[0] : t[2]}</h1><p>{t[3]}</p>
+<form action={prefix + 'search/'}><input type="search" name="keywords" required maxlength="200" aria-label={t[4]} placeholder={t[4]}><button>{t[5]}</button></form></section>
+</>}
+{(!section || section === 'categories') && <section class="categories">{section ? <h1 class="page-title">{t[6]}</h1> : <h2>{t[6]}</h2>}<div>{paths.map((path,i) => <a href={main + '/' + path + '/'}>{t[13+i]}</a>)}</div><p><a href={catalog}>{t[8]}</a></p></section>}
+{(!section || section === 'catalog') && <section id="catalog"><div class="section"><h2>{t[7]}</h2><a href={catalog}>{t[8]}</a></div><div class="grid" data-detail={t[9]}><!--CATALOG--></div><p class="unavailable">{t[11]}</p></section>}
+{section === 'catalog' && <aside><a href={main + '/AllProducts/6667.html'}>{t[12]}</a><a href="https://www.usfans.com/product/3/7632511460">{t[10]}</a></aside>}
+{!section && <div class="editorial-home">
+<section><div class="section"><h2>{navCopy[2]}</h2><a href={prefix+'faq/'}>{navCopy[4]}</a></div><div class="editorial-grid" lang="en">{faqs.slice(-3).reverse().map(([question], i) => <a href={faqLink(faqs.length-1-i)}>{question}</a>)}</div></section>
+<section><div class="section"><h2>{navCopy[3]}</h2><a href={prefix+'articles/'}>{navCopy[4]}</a></div><div class="editorial-grid" lang="en">{articles.slice(-3).reverse().map(([slug,name]) => <a href={prefix+'articles/'+slug+'/'}>{name}</a>)}</div></section>
+</div>}
+{section === 'faq' && <section class="reading"><h1 class="page-title">{navCopy[2]}</h1>{lang !== 'en' && <p>{navCopy[6]}</p>}
+<div class="faq" lang="en">{faqs.slice((faqPage-1)*6, faqPage*6).map(([question, answer, source],i) => <details id={'question-'+((faqPage-1)*6+i+1)}><summary>{question}</summary><p>{answer}</p><a href={sources[source][1]}>{sources[source][0]}</a></details>)}</div>
+<nav class="pagination" aria-label={navCopy[2]}>{pagination('faq',4).map((href,i) => <a href={href} aria-current={faqPage===i+1 ? 'page' : undefined}>{i+1}</a>)}</nav></section>}
+{section === 'articles' && !article && <section class="reading"><h1 class="page-title">{navCopy[3]}</h1>{lang !== 'en' && <p>{navCopy[6]}</p>}
+<div class="article-list" lang="en">{selectedArticles.map(([slug,name,description]) => <a href={prefix+'articles/'+slug+'/'}><strong>{name}</strong><span>{description}</span></a>)}</div>
+<nav class="pagination" aria-label={navCopy[3]}>{pagination('articles',2).map((href,i) => <a href={href} aria-current={(subpage==='2'?2:1)===i+1 ? 'page' : undefined}>{i+1}</a>)}</nav></section>}
+{article && <article class="reading" lang="en"><a href={prefix+'articles/'}>All guides</a><h1 class="page-title">{article[1]}</h1><p class="intro">{article[2]}</p>
+{article[4].map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}<div class="references"><a href={sources[article[3]][1]}>{sources[article[3]][0]}</a>{article[3] !== 'order' && <a href={sources.order[1]}>{sources.order[0]}</a>}</div></article>}
+</main><footer class="wrap"><span>USFans Spreadsheet</span><a href={main}>CNFansSP</a></footer></body></html>
+<style is:inline>
+*{box-sizing:border-box}body{margin:0;background:#f7f8f9;color:#182229;font:16px system-ui,sans-serif}a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}button,input,summary{font:inherit}.wrap{width:min(1160px,calc(100% - 36px));margin:auto}header{background:white;border-bottom:1px solid #dce2e3}.bar,nav,.section,footer,aside{display:flex;align-items:center;justify-content:space-between;gap:18px}.bar{min-height:68px}.brand{font-weight:850;font-size:22px;letter-spacing:-.045em}.brand span{font-size:15px;color:#50636a}nav{font-size:14px}details{position:relative}summary{cursor:pointer}.languages{position:absolute;right:0;display:grid;gap:9px;background:#fff;z-index:2;padding:15px;border:1px solid #dce2e3;border-radius:8px;min-width:130px}.button,button{background:#d2ff83;color:#182229;border:0;border-radius:8px;padding:10px 15px;font-weight:750;cursor:pointer}.hero{margin:28px 0;background:#13252a;color:white;border-radius:22px;padding:clamp(24px,6vw,70px);background-image:radial-gradient(ellipse at right top,#294e48,transparent 60%)}.eyebrow{color:#d2ff83;font-weight:750;font-size:14px;letter-spacing:.13em}h1{font-size:clamp(38px,7vw,78px);line-height:1;letter-spacing:-.06em;margin:14px 0}p{line-height:1.5}.hero p{color:#d0e1df}form{display:flex;gap:6px;padding:6px;border-radius:11px;background:white;max-width:540px;margin-top:24px}input{min-width:0;flex:1;border:0;padding:8px}.categories div{display:flex;gap:8px;flex-wrap:wrap}.categories a,aside,.unavailable{background:white;border:1px solid #dce2e3;border-radius:10px;padding:10px 14px}.section a,aside a,footer a{color:#245f51;font-weight:700}h2{font-size:24px;letter-spacing:-.025em}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:white;overflow:hidden;border:1px solid #dce2e3;border-radius:12px;display:grid;align-content:start}.card img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#edf1f1}.card div{padding:12px}.card h3{margin:0 0 8px;font-size:16px}.card p{margin:0}.grid:has(.card)+.unavailable{display:none}aside{margin-top:24px;flex-wrap:wrap}footer{margin-top:30px!important;padding:20px 0;border-top:1px solid #dce2e3;font-size:14px}@media(max-width:640px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bar{flex-wrap:wrap;padding:12px 0;gap:9px}.hero{margin-top:16px}nav{gap:10px}}
+
+.brand{display:flex;align-items:center;gap:9px;white-space:nowrap}.brand img{object-fit:contain}.bar nav{flex-wrap:wrap;justify-content:flex-end}.bar nav a{white-space:nowrap}.editorial-home{margin-top:26px}.editorial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.editorial-grid a,.article-list a,.faq details{background:white;border:1px solid #dce2e3;border-radius:10px;padding:13px 14px;font-weight:650}.reading{max-width:740px;margin:30px auto}.page-title{font-size:clamp(32px,6vw,54px);line-height:1.08;margin:20px 0 15px}.intro{color:#50636a;font-size:18px}.reading h2{font-size:21px;margin:21px 0 7px}.reading p{margin:7px 0 12px}.faq,.article-list{display:grid;gap:8px}.faq a,.reading>a,.references a{color:#245f51;text-decoration:underline}.faq details p,.faq details a{font-weight:400}.article-list a{display:grid;gap:5px}.article-list span{font-weight:400;color:#50636a}.pagination,.references{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:10px;margin-top:20px}.pagination a{background:white;border:1px solid #dce2e3;border-radius:8px;padding:9px 13px}.pagination a[aria-current]{color:white;background:#13252a}.card span{display:block;margin-top:6px;color:#245f51;font-weight:650}.card img{display:block}
+@media(max-width:640px){.bar nav{justify-content:flex-start}.editorial-grid{grid-template-columns:1fr}.grid .card:nth-child(n+7){display:none}.reading{margin:18px auto}.faq details,.article-list a,.editorial-grid a{padding:10px 12px}.section{gap:8px}.section h2{font-size:21px}.reading h2{margin-top:16px}}
+</style>
