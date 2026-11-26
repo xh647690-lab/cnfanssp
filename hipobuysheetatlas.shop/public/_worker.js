@@ -142,9 +142,9 @@ export default {
     const html = path === '/' ? page : page.replace(/<main class="wrap">[\s\S]*?<\/main>/, content)
       .replace('<title>HipoBuy Finds · Product Spreadsheet</title>', '<title>' + titles.get(path.replace(/\/$/, '')) + ' · HipoBuy Finds</title>');
     const canonical = '<link rel="canonical" href="' + domain + (path.replace(/\/$/, '') || '/') + '">';
-    const measurement = env.GA4_MEASUREMENT_ID;
+    const measurement = env.GA4_MEASUREMENT_ID || 'G-9M41ER3D1E';
     const analytics = /^G-[A-Z0-9]+$/.test(measurement || '') ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${measurement}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${measurement}');</script>` : '';
-    return new Response(html.replace('</head>', canonical + analytics + '</head>'), { headers: {
+    return new Response(html.replace('</head>', canonical + analytics + '<meta name="msvalidate.01" content="A966D427AFCEEEC4068828D9F541400A"></head>'), { headers: {
       'Content-Type': 'text/html; charset=utf-8',
     } });
   },
