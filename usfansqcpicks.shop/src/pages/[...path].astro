@@ -1,0 +1,146 @@
+---
+import { articles, faqs, sources } from '../editorial.mjs';
+
+const languages = {
+  en: ['English','Home','Categories','USFans Spreadsheet','Find your next piece.','Browse the latest listings from CNFansSP and open USFans when you’re ready to shop.','Search products','Search','Browse categories','Latest listings','Full catalog','Register on USFans','View on CNFansSP','Buy on USFans','The catalog is temporarily unavailable.','Language','Independent catalog. Product data from CNFansSP.'],
+  de: ['Deutsch','Startseite','Kategorien','USFans Spreadsheet','Finde dein nächstes Stück.','Entdecke neue Angebote von CNFansSP und öffne USFans zum Einkaufen.','Produkte suchen','Suchen','Kategorien entdecken','Neueste Angebote','Alle Produkte','Bei USFans registrieren','Auf CNFansSP ansehen','Bei USFans kaufen','Der Katalog ist vorübergehend nicht verfügbar.','Sprache','Unabhängiger Katalog. Produktdaten von CNFansSP.'],
+  es: ['Español','Inicio','Categorías','USFans Spreadsheet','Encuentra tu próxima compra.','Explora las novedades de CNFansSP y abre USFans cuando quieras comprar.','Buscar productos','Buscar','Explorar categorías','Últimos productos','Catálogo completo','Registrarse en USFans','Ver en CNFansSP','Comprar en USFans','El catálogo no está disponible temporalmente.','Idioma','Catálogo independiente. Datos de productos de CNFansSP.'],
+  fr: ['Français','Accueil','Catégories','USFans Spreadsheet','Trouvez votre prochain article.','Découvrez les nouveautés de CNFansSP et ouvrez USFans pour faire vos achats.','Rechercher des produits','Rechercher','Parcourir les catégories','Derniers articles','Catalogue complet','S’inscrire sur USFans','Voir sur CNFansSP','Acheter sur USFans','Le catalogue est temporairement indisponible.','Langue','Catalogue indépendant. Données produits fournies par CNFansSP.'],
+  zh: ['简体中文','首页','分类','USFans 商品清单','发现下一件好物','浏览 CNFansSP 的最新商品，选好后前往 USFans 下单。','搜索商品','搜索','浏览分类','最新商品','全部商品','注册 USFans','在 CNFansSP 查看','前往 USFans 购买','目录暂时无法加载。','语言','独立目录，商品数据来自 CNFansSP。']
+};
+const editorialLabels = {
+  en:['FAQ','Guides','Latest questions','Latest guides','Previous','Next','Sources','Editorial content in English'],
+  de:['FAQ','Ratgeber','Neueste Fragen','Neueste Ratgeber','Zurück','Weiter','Quellen','Redaktionelle Inhalte auf Englisch'],
+  es:['Preguntas frecuentes','Guías','Últimas preguntas','Últimas guías','Anterior','Siguiente','Fuentes','Contenido editorial en inglés'],
+  fr:['FAQ','Guides','Dernières questions','Derniers guides','Précédent','Suivant','Sources','Contenu éditorial en anglais'],
+  zh:['常见问题','购物指南','最新问题','最新指南','上一页','下一页','来源','正文为英文']
+};
+export function getStaticPaths() {
+  const routes = [
+    {section:''}, {section:'categories/'},
+    ...[1,2,3].map(page => ({section:'spreadsheet/', page})),
+    ...[1,2,3].map(page => ({section:'faq/', page})),
+    ...[1,2].map(page => ({section:'guides/', page})),
+    ...articles.map(article => ({section:'guides/', article}))
+  ];
+  return ['en','de','es','fr','zh'].flatMap(lang => routes.map(({section, page = 1, article}) => {
+    const suffix = article ? section + article.slug + '/' : section + (page > 1 ? 'page/' + page + '/' : '');
+    return {
+      params: {path: ((lang === 'en' ? '' : lang + '/') + suffix).replace(/\/$/,'') || undefined},
+      props: {lang, section, page, article, suffix}
+    };
+  }));
+}
+const {lang, section, page, article, suffix} = Astro.props;
+const [language,home,categories,brand,title,intro,placeholder,search,browse,latest,all,register,detail,buy,error,languageLabel,footer] = languages[lang];
+const [faqLabel,guidesLabel,recentFaq,recentGuides,previous,next,sourceLabel,english] = editorialLabels[lang];
+const route = (code, target = suffix) => '/' + (code === 'en' ? '' : code + '/') + target;
+const pageRoute = (target, number) => route(lang, target + (number > 1 ? 'page/' + number + '/' : ''));
+const upstream = 'https://www.cnfanssp.com';
+const listingPage = section === 'spreadsheet/';
+const faqPage = section === 'faq/';
+const guidePage = section === 'guides/' && !article;
+const editorial = faqPage || guidePage || article;
+const heading = article?.title || (faqPage ? faqLabel : guidePage ? guidesLabel : section === 'categories/' ? categories : listingPage ? all : brand);
+const pages = guidePage ? Math.ceil(articles.length/5) : faqPage ? Math.ceil(faqs.length/8) : 3;
+const orderedGuides = articles.slice().reverse();
+const latestFaq = faqs.slice(-3).reverse();
+const officialLogo = 'https://media.usfans.com/webresource/v1/app/7f2439bb1554488bb7a14afb3f638c3e.webp';
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={article?.summary || intro} />
+  <title>{section ? heading + ' · ' : ''}{brand}</title>
+  <link rel="icon" href="https://www.usfans.com/favicon.png" type="image/png" />
+  <link rel="alternate" hreflang="x-default" href={'https://usfansqcpicks.shop' + route('en')} />
+  {Object.keys(languages).map(code => <link rel="alternate" hreflang={code} href={'https://usfansqcpicks.shop' + route(code)} />)}
+</head>
+<body>
+<header><div class="wrap bar">
+  <a class="brand" href={route(lang,'')}><img src={officialLogo} alt={brand} width="102" height="31" referrerpolicy="no-referrer" /></a>
+  <nav aria-label={brand}><a href={route(lang,'')}>{home}</a><a href={route(lang,'spreadsheet/')}>{all}</a><a href={route(lang,'categories/')}>{categories}</a><a href={route(lang,'faq/')}>{faqLabel}</a><a href={route(lang,'guides/')}>{guidesLabel}</a></nav>
+  <details class="languages"><summary aria-label={languageLabel}>{language}</summary><ul>{Object.entries(languages).map(([code, values]) => <li><a href={route(code)} lang={code} hreflang={code} aria-current={code === lang ? 'page' : undefined}>{values[0]}</a></li>)}</ul></details>
+  <a class="register" href="https://www.usfans.com/register">{register}</a>
+</div></header>
+<main class="wrap">
+  {!editorial && <section class:list={['hero',section && 'compact']}>
+    <h1>{heading}</h1>
+    {!section && <><h2>{title}</h2><p>{intro}</p></>}
+    <form action={upstream + '/search.html'} method="get">
+      <input name="keywords" type="search" maxlength="200" required placeholder={placeholder} aria-label={placeholder} />
+      <input name="channelid" type="hidden" value="2" />
+      <button>{search}</button>
+    </form>
+    {!section && <a class="hero-link" href={route(lang,'categories/')}>{browse}</a>}
+  </section>}
+  {(!section || section === 'categories/') && <section class="content">
+    {!section && <h2>{browse}</h2>}
+    <div class="chips" id="categories"><a href={upstream+'/AllProducts/'}>{all}</a></div>
+  </section>}
+  {(!section || listingPage) && <section class="content">
+    <div class="section-head"><h2>{latest}</h2><a href={upstream+'/AllProducts/'}>{all}</a></div>
+    <div class:list={['products', !section && 'home-products']} id="products" data-detail={detail} data-buy={buy} data-offset={(page-1)*8} data-limit="8"><p>{error}</p></div>
+  </section>}
+  {editorial && <section class="editorial">
+    {article && <a class="back" href={route(lang,'guides/')}>{guidesLabel}</a>}
+    {lang !== 'en' && <p class="language-note">{english}</p>}
+    <h1 lang={article ? 'en' : lang}>{heading}</h1>
+    {faqPage && <div class="faq-list" lang="en">
+      {faqs.slice((page-1)*8,page*8).map(([question,answer,source],index) => <details id={'faq-'+((page-1)*8 + index + 1)}>
+        <summary>{question}</summary><p>{answer}</p><p><a href={sources[source][1]}>{sources[source][0]}</a></p>
+      </details>)}
+    </div>}
+    {guidePage && <div class="guide-list" lang="en">
+      {orderedGuides.slice((page-1)*5,page*5).map(guide => <a class="editorial-card" href={route(lang,'guides/'+guide.slug+'/')}>
+        <strong>{guide.title}</strong><span>{guide.summary}</span>
+      </a>)}
+    </div>}
+    {article && <article lang="en">
+      <p class="article-summary">{article.summary}</p>
+      {article.sections.map(([subheading,paragraph]) => <section><h2>{subheading}</h2><p>{paragraph}</p></section>)}
+      <h2 lang={lang}>{sourceLabel}</h2>
+      <ul class="source-list">{article.sources.map(source => <li><a href={sources[source][1]}>{sources[source][0]}</a></li>)}</ul>
+    </article>}
+  </section>}
+  {(listingPage || faqPage || guidePage) && <nav class="pagination" aria-label={heading}>
+    {page > 1 && <a rel="prev" href={pageRoute(section,page-1)}>{previous}</a>}
+    {Array.from({length:pages},(_,index) => <a href={pageRoute(section,index+1)} aria-current={page === index+1 ? 'page' : undefined}>{index+1}</a>)}
+    {page < pages && <a rel="next" href={pageRoute(section,page+1)}>{next}</a>}
+  </nav>}
+  {!section && <div class="editorial-home">
+    <section class="content">
+      <div class="section-head"><h2>{recentFaq}</h2><a href={route(lang,'faq/')}>{faqLabel}</a></div>
+      <div class="editorial-grid" lang="en">{latestFaq.map(([question], index) =>
+        <a class="editorial-card" href={pageRoute('faq/', Math.ceil((faqs.length-index)/8)) + '#faq-' + (faqs.length-index)}>{question}</a>
+      )}</div>
+    </section>
+    <section class="content">
+      <div class="section-head"><h2>{recentGuides}</h2><a href={route(lang,'guides/')}>{guidesLabel}</a></div>
+      <div class="editorial-grid" lang="en">{orderedGuides.slice(0,3).map(guide =>
+        <a class="editorial-card" href={route(lang,'guides/'+guide.slug+'/')}>{guide.title}</a>
+      )}</div>
+    </section>
+  </div>}
+</main>
+<footer><div class="wrap">{footer}</div></footer>
+<script is:inline>
+  function revealQuestion() {
+    const id = location.hash.slice(1);
+    const question = document.getElementById(id);
+    if (question instanceof HTMLDetailsElement) question.open = true;
+  }
+  revealQuestion();
+  addEventListener('hashchange', revealQuestion);
+</script>
+<style is:inline>
+*{box-sizing:border-box}body{margin:0;color:#182637;background:#f6f8fc;font:16px/1.55 system-ui,sans-serif}a{color:inherit;text-decoration:none}a:hover{text-decoration:underline}button,input,summary{font:inherit}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #9b65e9;outline-offset:3px}.wrap{width:min(1180px,calc(100% - 48px));margin:auto}header{background:white;border-bottom:1px solid #e0e6f0}.bar{display:flex;align-items:center;gap:24px;min-height:72px}.brand{display:flex;align-items:center;gap:9px;font-weight:800;white-space:nowrap}.bar nav{display:flex;gap:20px;margin-left:auto}.bar nav a,.languages,.register{font-size:14px;font-weight:650}.register{background:#ebe6ff;color:#3e279e;padding:8px 13px;border-radius:8px}.languages{position:relative}.languages summary{cursor:pointer;white-space:nowrap}.languages ul{position:absolute;z-index:2;right:0;min-width:145px;margin:8px 0;padding:8px;list-style:none;background:white;border:1px solid #dfe4ef;border-radius:8px;box-shadow:0 8px 24px #12172b22}.languages a{display:block;padding:5px 8px}.languages a[aria-current]{background:#ebe6ff;border-radius:4px}.hero{margin-top:30px;padding:clamp(24px,6vw,70px);border-radius:22px;background:radial-gradient(ellipse at 100% 0,#593ac4 0,transparent 66%),#1d2350;color:white}.hero h1{margin:0;font-size:clamp(2rem,6vw,4.5rem);line-height:1.04;letter-spacing:-.055em}.hero h2{margin:12px 0 0;font-size:clamp(1.15rem,3vw,1.55rem);color:#e2d9ff}.hero p{max-width:620px;margin:8px 0 22px;color:#edf0ff}.hero form{display:flex;gap:8px;max-width:570px;margin-top:20px}.hero input[type=search]{min-width:0;flex:1;border:0;border-radius:8px;padding:11px 13px;background:white;color:#192540}.hero button{cursor:pointer;border:0;border-radius:8px;background:#c3f072;color:#182b12;font-weight:750;padding:10px 17px}.hero-link{display:inline-block;margin-top:16px;text-decoration:underline}.compact{padding-block:32px}.content{margin-block:28px 36px}.content h2{margin:0 0 12px;letter-spacing:-.03em}.chips{display:flex;flex-wrap:wrap;gap:8px}.chips a{background:white;border:1px solid #dce3f0;border-radius:9px;padding:8px 12px;font-size:14px}.chips a:hover{border-color:#7356ce}.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px}.section-head>a,.buy{font-weight:700;color:#4b31ad}.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.products>p{grid-column:1/-1}.product{display:flex;flex-direction:column;background:white;border:1px solid #dce3f0;border-radius:12px;overflow:hidden}.product img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#edf0f7}.product>div{padding:12px 14px}.product h3{margin:0 0 5px;font-size:1rem}.product p{margin:0 0 6px}.product .buy{display:inline-block;font-size:14px;margin-top:3px}footer{border-top:1px solid #dce3f0;padding-block:22px;color:#4e5b70;font-size:14px}@media(max-width:850px){.bar{flex-wrap:wrap;gap:12px;padding-block:10px}.bar nav{order:3;width:100%;margin:0}.languages{margin-left:auto}.products{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){.wrap{width:calc(100% - 28px)}.bar{gap:9px}.brand{font-size:14px;gap:6px}.register{padding:5px 8px}.hero{margin-top:16px}.products{gap:9px}.product>div{padding:8px 10px}}
+
+.brand img{display:block;width:102px;height:31px;object-fit:contain;object-position:left}
+.editorial{max-width:730px;margin:40px auto 24px}.editorial h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.12;letter-spacing:-.045em;margin:12px 0 18px}.editorial article h2{font-size:1.2rem;line-height:1.25;margin:21px 0 5px}.editorial article p{margin:0 0 10px}.editorial .article-summary{font-size:1.12rem;color:#4e5b70}.language-note{font-size:.875rem;color:#4e5b70;margin:8px 0}.back,.editorial a:not(.editorial-card){color:#4b31ad;text-decoration:underline;text-underline-offset:2px}.faq-list,.guide-list,.editorial-grid{display:grid;gap:9px}.faq-list details,.editorial-card{background:white;border:1px solid #dce3f0;border-radius:10px}.faq-list summary{cursor:pointer;padding:11px 13px;font-weight:650}.faq-list details p{margin:0 13px 10px}.source-list{margin:0;padding-left:22px}.editorial-card{display:block;font-weight:650;padding:12px 14px}.editorial-card span{display:block;font-weight:400;color:#4e5b70;margin-top:3px}.editorial-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pagination{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:22px auto 30px}.pagination a{min-width:40px;text-align:center;background:#fff;border:1px solid #dce3f0;border-radius:8px;padding:6px 9px}.pagination a[aria-current]{background:#4b31ad;color:white}
+@media(max-width:650px){.bar nav{display:flex;gap:8px 13px;flex-wrap:wrap}.bar nav a{font-size:.875rem}.hero{padding:20px 16px}.hero h1{font-size:clamp(1.8rem,8vw,2.65rem)}.hero form{margin-top:12px}.hero p{margin-bottom:10px}.editorial-grid{grid-template-columns:1fr;gap:6px}.editorial-home .content{margin:19px 0}.editorial-home .editorial-card{padding:7px 10px;font-size:.875rem}.content{margin-block:19px 25px}.product img{aspect-ratio:5/3}.product>div{padding:7px 9px;font-size:.875rem}.product h3{font-size:.93rem}.home-products .product:nth-child(n+5){display:none}.editorial{margin:24px auto 17px}.editorial h1{margin-bottom:14px}.editorial article h2{margin-top:16px}.editorial article p{font-size:1rem;line-height:1.5}.editorial-card{padding:9px 11px}.faq-list summary{padding:9px 11px}.editorial .source-list{font-size:.9rem}footer{padding-block:15px}}
+</style>
+</body>
+</html>
