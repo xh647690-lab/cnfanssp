@@ -1,0 +1,9 @@
+---
+import Home from '../components/Home.astro'
+import { locales } from '../locales.mjs'
+export function getStaticPaths() {
+  return Object.keys(locales).filter(lang => lang !== 'en').map(lang => ({ params: { lang:lang.toLowerCase() }, props: { lang } }))
+}
+const { lang } = Astro.props
+---
+<Home lang={lang} />
