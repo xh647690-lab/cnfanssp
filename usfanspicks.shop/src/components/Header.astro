@@ -1,0 +1,49 @@
+---
+import { locales, localePath, editorialLabels } from '../locales.mjs'
+const {lang, section = ''} = Astro.props
+const t = locales[lang]
+const labels = editorialLabels[lang]
+const root = localePath(lang)
+const brand = 'https://media.usfans.com/webresource/v1/app/7f2439bb1554488bb7a14afb3f638c3e.webp'
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={root} aria-label={labels.home}><img src={brand} alt="USFans" /><small>Spreadsheet</small></a>
+    <nav class="primary" aria-label={t.categories}>
+      <a href={root} aria-current={!section ? 'page' : undefined}>{labels.home}</a>
+      <a href={root + 'faq/'} aria-current={section === 'faq/' ? 'page' : undefined}>{labels.faq}</a>
+      <a href={root + 'guides/'} aria-current={section.startsWith('guides/') ? 'page' : undefined}>{labels.articles}</a>
+    </nav>
+    <div class="tools">
+      <details class="language"><summary>{t.language}</summary>
+        <ul>{Object.entries(locales).map(([code, copy]) => <li><a href={localePath(code) + section} lang={code} hreflang={code} aria-current={code === lang ? 'page' : undefined}>{copy.language}</a></li>)}</ul>
+      </details>
+      <a class="join" href="https://www.usfans.com/register">{t.register}</a>
+    </div>
+  </div>
+</header>
+<style is:global>
+  .site-header { background:#fffdf8; border-bottom:1px solid var(--line); }
+  .site-header .bar { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:70px; }
+  .brand { display:flex; align-items:center; gap:9px; white-space:nowrap; }
+  .brand img { display:block; width:118px; height:32px; object-fit:contain; }
+  .brand small { font-size:.84rem; font-weight:650; color:#655c4d; }
+  .primary, .tools { display:flex; align-items:center; gap:14px; font-size:.9rem; font-weight:650; }
+  .primary a { padding:8px 2px; }
+  .primary a[aria-current] { text-decoration:underline; text-underline-offset:.35em; }
+  .join, .language summary { display:block; padding:9px 11px; border-radius:8px; white-space:nowrap; }
+  .join { background:var(--accent); }
+  .language { position:relative; }
+  .language summary { display:list-item; cursor:pointer; border:1px solid var(--line); }
+  .language ul { z-index:3; position:absolute; top:30px; right:0; width:145px; padding:6px; list-style:none; border:1px solid var(--line); border-radius:10px; background:white; }
+  .language li a { display:block; padding:8px; border-radius:5px; }
+  .language [aria-current] { background:#fff3c6; }
+  @media(max-width:850px) { .brand small { display:none; } }
+  @media(max-width:700px) {
+    .site-header .bar { flex-wrap:wrap; gap:3px 8px; min-height:0; padding-block:8px; }
+    .brand img { width:88px; height:27px; }
+    .primary { order:3; flex-basis:100%; gap:16px; padding-inline:1px; }
+    .tools { gap:5px; }
+    .join, .language summary { padding:7px; font-size:.8rem; }
+  }
+</style>
