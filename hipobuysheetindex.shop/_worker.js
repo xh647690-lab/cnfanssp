@@ -103,7 +103,7 @@ Object.assign(copy,{
 });
 const languages = {en:'English',de:'Deutsch',es:'Español',fr:'Français',it:'Italiano',pl:'Polski',pt:'Português',zh:'简体中文'};
 export default {
-  async fetch(request, env = {}) {
+  async fetch(request) {
     const origin = 'https://hipobuysheetindex.shop';
     const pathname = new URL(request.url).pathname;
     if (pathname === '/robots.txt') return new Response('User-agent: *\nAllow: /\nSitemap: '+origin+'/sitemap.xml\n');
@@ -111,7 +111,7 @@ export default {
       const paths = ['/', '/spreadsheet', '/categories', '/faq', '/guides', ...guides.map(([slug]) => '/guides/'+slug)];
       return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+paths.map(path=>'<url><loc>'+origin+path+'</loc></url>').join('')+'</urlset>', {headers:{'Content-Type':'application/xml; charset=utf-8'}});
     }
-    const measurement = /^G-[A-Z0-9]+$/.test(env.GA4_MEASUREMENT_ID || '') ? env.GA4_MEASUREMENT_ID : '';
+    const measurement = new URL(request.url).origin === origin ? 'G-07M7RYJNHW' : '';
     const analytics = measurement ? '<script async src="https://www.googletagmanager.com/gtag/js?id='+measurement+'"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","'+measurement+'");</script>' : '';
     const url = new URL(request.url);
     const lang = Object.hasOwn(copy, url.searchParams.get('lang')) ? url.searchParams.get('lang') : 'en';
