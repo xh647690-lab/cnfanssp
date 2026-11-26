@@ -1,0 +1,1 @@
+{"name":"usfans-21-preview","private":true,"type":"module","scripts":{"build":"astro build && node scripts/package-worker.mjs"},"dependencies":{"astro":"latest"}}
