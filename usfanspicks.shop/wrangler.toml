@@ -1,3 +1,6 @@
 name = "usfanspicks-shop"
 pages_build_output_dir = "./dist"
 compatibility_date = "2026-11-26"
+
+[vars]
+GA4_MEASUREMENT_ID = "G-B1CYVYXF0K"
