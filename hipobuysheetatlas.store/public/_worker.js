@@ -1,4 +1,4 @@
-import { officialLogo } from './logo.js';
+import { officialLogo, officialFavicon } from './logo.js';
 import { sources, guides, faq } from './editorial.js';
 
 const production = 'https://hipobuysheetatlas.store';
@@ -82,7 +82,7 @@ Object.assign(categoryLabels, {
   pt:['Calçado','Sweatshirts e camisolas','T-shirts','Casacos','Calças e calções','Chapéus','Acessórios','Camisolas desportivas','Eletrónica','Outros']
 });
 const extraCss = `
-.brand{display:flex;align-items:center;gap:9px;letter-spacing:normal;font-size:15px}.brand img{width:125px;height:auto;display:block}.brand span{border-left:1px solid #e5ddef;padding-left:9px}.nav{gap:14px;flex-wrap:wrap}.nav a[aria-current=page]{color:#5428c4;text-decoration:underline;text-underline-offset:5px}.langs{position:relative}.langs summary{cursor:pointer;border:1px solid #e5ddef;border-radius:10px;padding:7px 10px;white-space:nowrap}.langs ul{position:absolute;z-index:4;right:0;top:calc(100% + 3px);width:178px;margin:0;padding:5px;list-style:none;background:#fff;border:1px solid #e5ddef;border-radius:12px;box-shadow:0 10px 30px #25174124}.langs a{display:flex;justify-content:space-between;padding:6px;border-radius:6px}.langs a:hover,.langs a[aria-current=true]{background:#efe8ff}.langs small{color:#695483}.page{max-width:850px;margin:32px auto}.page h1{font-size:clamp(30px,5vw,54px);line-height:1.08;letter-spacing:-.045em;margin:12px 0 18px}.page h2{font-size:22px;margin:23px 0 5px}.article p{margin:0 0 11px}.article .lead{color:#625673}.source-list{display:flex;gap:8px 18px;flex-wrap:wrap;padding:0;list-style:none}.source-list a,.back,.faq-list p a{color:#5428c4;text-decoration:underline}.editorial{margin-top:32px}.resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.resource-grid a,.guide-list a,.faq-list details{background:#fff;border:1px solid #eae4ef;border-radius:12px;padding:11px 14px;display:block}.resource-grid a strong,.guide-list a strong{display:block}.guide-list,.faq-list{display:grid;gap:7px}.faq-list summary{cursor:pointer;font-weight:650}.faq-list p{margin:7px 0 0}.pagination{display:flex;gap:8px;margin:18px 0}.pagination a{border:1px solid #e5ddef;border-radius:8px;padding:5px 11px}.pagination a[aria-current=page]{background:#efe8ff}.exclusive{max-width:760px}.catalog-header .search{border:1px solid #e5ddef}.editorial-note{color:#625673;font-size:14px}.category-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.category-list a{padding:10px 12px;border:1px solid #e5ddef;border-radius:10px;background:white}
+.brand{display:flex;align-items:center;gap:9px;letter-spacing:normal;font-size:15px}.brand img{width:125px;height:auto;display:block;background:#271646;border-radius:8px;padding:5px 8px;box-sizing:content-box}.brand span{border-left:1px solid #e5ddef;padding-left:9px}.nav{gap:14px;flex-wrap:wrap}.nav a[aria-current=page]{color:#5428c4;text-decoration:underline;text-underline-offset:5px}.langs{position:relative}.langs summary{cursor:pointer;border:1px solid #e5ddef;border-radius:10px;padding:7px 10px;white-space:nowrap}.langs ul{position:absolute;z-index:4;right:0;top:calc(100% + 3px);width:178px;margin:0;padding:5px;list-style:none;background:#fff;border:1px solid #e5ddef;border-radius:12px;box-shadow:0 10px 30px #25174124}.langs a{display:flex;justify-content:space-between;padding:6px;border-radius:6px}.langs a:hover,.langs a[aria-current=true]{background:#efe8ff}.langs small{color:#695483}.page{max-width:850px;margin:32px auto}.page h1{font-size:clamp(30px,5vw,54px);line-height:1.08;letter-spacing:-.045em;margin:12px 0 18px}.page h2{font-size:22px;margin:23px 0 5px}.article p{margin:0 0 11px}.article .lead{color:#625673}.source-list{display:flex;gap:8px 18px;flex-wrap:wrap;padding:0;list-style:none}.source-list a,.back,.faq-list p a{color:#5428c4;text-decoration:underline}.editorial{margin-top:32px}.resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.resource-grid a,.guide-list a,.faq-list details{background:#fff;border:1px solid #eae4ef;border-radius:12px;padding:11px 14px;display:block}.resource-grid a strong,.guide-list a strong{display:block}.guide-list,.faq-list{display:grid;gap:7px}.faq-list summary{cursor:pointer;font-weight:650}.faq-list p{margin:7px 0 0}.pagination{display:flex;gap:8px;margin:18px 0}.pagination a{border:1px solid #e5ddef;border-radius:8px;padding:5px 11px}.pagination a[aria-current=page]{background:#efe8ff}.exclusive{max-width:760px}.catalog-header .search{border:1px solid #e5ddef}.editorial-note{color:#625673;font-size:14px}.category-list{display:grid;grid-template-columns:1fr 1fr;gap:8px}.category-list a{padding:10px 12px;border:1px solid #e5ddef;border-radius:10px;background:white}
 @media(max-width:830px){.bar{display:block;padding:12px 0}.nav{margin-top:10px;gap:7px 13px}.brand img{width:110px}.langs ul{right:auto;left:0}.nav>a:first-child{display:inline}.nav .button{padding:7px 10px}}
 @media(max-width:620px){.page{margin:21px auto}.page h1{margin:7px 0 12px}.page h2{font-size:20px;margin-top:16px}.resource-grid{grid-template-columns:1fr}.resource-grid a,.faq-list details,.guide-list a{padding:8px 11px}.editorial{margin-top:24px}.editorial .section-head{margin-bottom:8px}.home .card:nth-child(n+5){display:none}.article{font-size:16px}.article .source-list{gap:5px 12px}.catalog-header{margin-bottom:10px}}
 `;
@@ -100,6 +100,16 @@ export default {
     const url = new URL(request.url);
     if (url.hostname === 'www.' + productionHost) {
       return Response.redirect(production + url.pathname + url.search, 301);
+    }
+    const brandImages = {
+      '/hipobuy-logo.png': officialLogo,
+      '/favicon.png': officialFavicon
+    };
+    if (Object.hasOwn(brandImages, url.pathname)) {
+      const encoded = brandImages[url.pathname].split(',')[1];
+      return new Response(Uint8Array.from(atob(encoded), character => character.charCodeAt(0)), {
+        headers: {'Content-Type':'image/png', 'Cache-Control':'public, max-age=86400'}
+      });
     }
     const isProduction = url.hostname === productionHost;
     if (url.pathname === '/robots.txt') {
@@ -201,8 +211,8 @@ export default {
     const verification = [['google-site-verification',env.GSC_VERIFICATION],['msvalidate.01',env.BING_VERIFICATION]]
       .filter(([,code]) => isProduction && code)
       .map(([name,code]) => `<meta name="${name}" content="${escape(code)}">`).join('');
-    return new Response(`<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${indexable ? `<link rel="canonical" href="${canonical}">` : '<meta name="robots" content="noindex">'}${verification}${analytics}<meta name="description" content="${escape(description)}"><link rel="icon" type="image/png" sizes="32x32" href="${agent}/static/favicon/32x32.png"><title>${escape(title)}${title==='HipoBuy Spreadsheet'?'':' | HipoBuy Finds'}</title><style>${css}${extraCss}</style></head><body>
-<header><div class="wrap bar"><a class="brand" href="${link('/')}"><img src="${officialLogo}" alt="HipoBuy" width="125" height="29"><span>Finds</span></a><nav class="nav">${menu}<details class="langs"><summary aria-label="${n[6]}: ${languages[lang]}">${languages[lang]}</summary><ul>${languageLinks}</ul></details><a class="button" href="${agent}/register">${t[1]}</a></nav></div></header>
+    return new Response(`<!doctype html><html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${indexable ? `<link rel="canonical" href="${canonical}">` : '<meta name="robots" content="noindex">'}${verification}${analytics}<meta name="description" content="${escape(description)}"><link rel="icon" type="image/png" sizes="32x32" href="/favicon.png"><title>${escape(title)}${title==='HipoBuy Spreadsheet'?'':' | HipoBuy Finds'}</title><style>${css}${extraCss}</style></head><body>
+<header><div class="wrap bar"><a class="brand" href="${link('/')}"><img src="/hipobuy-logo.png" alt="HipoBuy" width="125" height="29"><span>Finds</span></a><nav class="nav">${menu}<details class="langs"><summary aria-label="${n[6]}: ${languages[lang]}">${languages[lang]}</summary><ul>${languageLinks}</ul></details><a class="button" href="${agent}/register">${t[1]}</a></nav></div></header>
 <main class="wrap ${path==='/'?'home':''}">${body}<footer>${t[13]} · <a href="${main}">CNFansSP</a></footer></main></body></html>`,
       {status,headers:{'Content-Type':'text/html; charset=utf-8',...(!indexable ? {'X-Robots-Tag':'noindex'} : {})}});
   }
