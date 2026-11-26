@@ -3,7 +3,8 @@ import { copyFile, mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 const dist = new URL('../dist/', import.meta.url)
 const output = new URL('server/', dist)
 const pages = {}
-for (const entry of await readdir(dist, { recursive:true })) {
+for (const file of await readdir(dist, { recursive:true })) {
+  const entry = file.replaceAll('\\', '/')
   if (!entry.endsWith('index.html')) continue
   const path = '/' + entry.slice(0, -'index.html'.length)
   const html = await readFile(new URL(entry, dist), 'utf8')
