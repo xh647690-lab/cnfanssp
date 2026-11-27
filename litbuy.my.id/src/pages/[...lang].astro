@@ -1,0 +1,139 @@
+---
+import { locales, main, registration } from '../content.mjs';
+import { articles, faq, help } from '../editorial.mjs';
+export function getStaticPaths() {
+  const routes = ['', 'catalogue', 'categories', 'faq', 'guides', ...articles.map(([slug]) => 'guides/' + slug)];
+  return Object.keys(locales).flatMap(lang => routes.map(route => ({
+    params: { lang: [lang === 'en' ? '' : lang, route].filter(Boolean).join('/') || undefined },
+    props: { lang, route }
+  })));
+}
+const { lang, route } = Astro.props;
+const [, browse, signup, intro, placeholder, search, categories, latest, all, , , , credit, language] = locales[lang];
+const url = (code, path = '') => '/' + [code === 'en' ? '' : code, path].filter(Boolean).join('/') + (path || code !== 'en' ? '/' : '');
+const labels = {
+ en:['Home','Guides','Frequently asked questions','Latest guides','Sources','Editorial content in English'],
+ zh:['首页','选购指南','常见问题','最新指南','参考资料','文章和问答正文为英语'],
+ de:['Start','Ratgeber','Häufige Fragen','Neue Ratgeber','Quellen','Redaktionelle Inhalte auf Englisch'],
+ es:['Inicio','Guías','Preguntas frecuentes','Últimas guías','Fuentes','Contenido editorial en inglés'],
+ fr:['Accueil','Guides','Questions fréquentes','Derniers guides','Sources','Contenu éditorial en anglais'],
+ it:['Home','Guide','Domande frequenti','Ultime guide','Fonti','Contenuti editoriali in inglese'],
+ pt:['Início','Guias','Perguntas frequentes','Guias recentes','Fontes','Conteúdo editorial em inglês'],
+ pl:['Start','Poradniki','Częste pytania','Najnowsze poradniki','Źródła','Treści redakcyjne w języku angielskim'],
+};
+const [home, guide, questions, newGuides, sources, editorialNote] = labels[lang];
+const activeArticle = articles.find(([slug]) => route === 'guides/' + slug);
+const nav = [['', home], ['catalogue', browse], ['categories', categories], ['faq', 'FAQ'], ['guides', guide]];
+const title = activeArticle?.[1] ?? ({catalogue:browse,categories,faq:questions,guides:guide})[route] ?? 'LitBuy Spreadsheet';
+const description = activeArticle?.[2] ?? (route ? title + ' · LitBuy Spreadsheet' : intro);
+const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.length - index]);
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="canonical" href={'https://litbuy.my.id' + url(activeArticle ? 'en' : lang, route)}>
+{!activeArticle && Object.keys(locales).map(code => <link rel="alternate" hreflang={code} href={'https://litbuy.my.id' + url(code, route)} />)}
+<meta name="robots" content={activeArticle && lang !== 'en' ? 'noindex, follow' : 'index, follow'}>
+<title>{title}{route ? " | LitBuy Spreadsheet" : ""}</title>
+<meta name="description" content={description}>
+<link rel="icon" type="image/png" href="/favicon.ico">
+</head>
+<body>
+<header class="bar"><div class="frame header">
+<a href={url(lang)} class="brand"><img src="/litbuy-logo.png" width="36" height="36" alt=""><b>LitBuy</b><span>Spreadsheet</span></a>
+<div class="actions">
+<details><summary aria-label={language}>{locales[lang][0]} <span aria-hidden="true">⌄</span></summary>
+<ul>{Object.entries(locales).map(([code, words]) => <li><a lang={code} href={url(code, route)} aria-current={lang === code ? 'page' : undefined}>{words[0]}</a></li>)}</ul>
+</details>
+<a class="register" href={registration}>{signup}</a>
+</div>
+</div><nav class="frame" aria-label="Navigation">{nav.map(([path, label]) => <a aria-current={route === path ? "page" : undefined} href={url(lang,path)}>{label}</a>)}</nav></header>
+<main class:list={["frame", route ? "inner" : "home"]}>
+{!route && <section class="hero">
+<h1>LitBuy<br><span>Spreadsheet</span></h1>
+<p>{intro}</p>
+<form action={main + '/search.html'} method="get" role="search">
+<input type="hidden" name="channelid" value="2">
+<input type="search" required name="keywords" aria-label={placeholder} placeholder={placeholder}>
+<button type="submit">{search}</button>
+</form>
+</section>}
+{(!route || route === 'categories') && <section class="section" id="categories">
+  <div class="section-header"><h2>{categories}</h2>{!route && <a href={url(lang,'categories')}>{all}</a>}</div>
+  <Fragment set:html={'<!--CATEGORIES-->'} />
+</section>}
+{(!route || route === 'catalogue') && <section class="section" id="catalogue">
+  <div class="section-header"><h2>{latest}</h2><a href={route ? main + '/AllProducts/' : url(lang,'catalogue')}>{all}</a></div>
+  <Fragment set:html={'<!--CATALOGUE-->'} />
+</section>}
+{!route && <div class="editorial-home">
+  <section class="section"><div class="section-header"><h2>{questions}</h2><a href={url(lang,'faq')}>{all}</a></div>
+    <div class="editorial-cards" lang="en">{previewFaq.map(([[question], number]) => <a href={url(lang,'faq') + '#q'+number}>{question}</a>)}</div>
+  </section>
+  <section class="section"><div class="section-header"><h2>{newGuides}</h2><a href={url(lang,'guides')}>{all}</a></div>
+    <div class="editorial-cards" lang="en">{articles.slice(-3).reverse().map(([slug, name]) => <a href={url(lang,'guides/' + slug)}>{name}</a>)}</div>
+  </section>
+</div>}
+{route === 'faq' && <section class="reading">
+  <h1>{questions}</h1>{lang !== 'en' && <p>{editorialNote}</p>}
+  <div class="faq" lang="en">{faq.map(([question, answer], index) => <details name="litbuy-faq" id={'q'+(index+1)}><summary>{question}</summary><p>{answer}</p></details>)}</div>
+  <p><a href={help}>LitBuy Help Center</a></p>
+</section>}
+{route === 'guides' && <section class="reading">
+  <h1>{guide}</h1>{lang !== 'en' && <p>{editorialNote}</p>}
+  <ol class="guide-list" lang="en">{articles.map(([slug, name, description]) => <li><a href={url(lang,'guides/' + slug)}>{name}</a><p>{description}</p></li>)}</ol>
+</section>}
+{activeArticle && <article class="reading story" lang="en">
+  <a href={url(lang,'guides')}>{guide}</a>
+  <h1>{activeArticle[1]}</h1><p class="dek">{activeArticle[2]}</p>
+  {activeArticle[3].map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}
+  <section><h2>{sources}</h2><ul>{activeArticle[4].map(source => <li><a href={source}>{new URL(source).hostname}</a></li>)}</ul></section>
+</article>}
+</main>
+<footer><div class="frame"><a href={main}>{credit}</a><a href={help}>LitBuy Help Center</a></div></footer>
+</body>
+</html>
+<style is:global>
+:root{color-scheme:light;--ink:#191817;--accent:#973b0c;--edge:#e8dfd6;--paper:#faf8f5;--white:#fff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
+a{color:inherit;text-underline-offset:.23em} a:hover{color:var(--accent)}
+.frame{max-width:1200px;margin:auto;padding-inline:26px}
+.bar{background:var(--white);border-bottom:1px solid var(--edge)}
+.header{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{text-decoration:none;white-space:nowrap}.brand b{font-size:1.35rem;letter-spacing:-.07em;color:var(--accent)}.brand span{font-size:.88rem;font-weight:650}
+nav,.actions{display:flex;gap:18px;align-items:center}nav a,.register{text-decoration:none;font-size:.9rem;font-weight:650}
+.register{padding:9px 13px;border:1px solid var(--edge);border-radius:9px}
+details{position:relative;font-size:.9rem}summary{cursor:pointer;white-space:nowrap;list-style:none}summary::-webkit-details-marker{display:none}
+details ul{position:absolute;right:0;background:white;padding:6px;list-style:none;margin:8px 0 0;min-width:140px;border:1px solid var(--edge);border-radius:10px;z-index:2;box-shadow:0 10px 25px #1635221a}
+details a{display:block;padding:5px 9px;text-decoration:none}details a:hover,details a[aria-current]{background:#fff2e4}
+.hero{margin-top:28px;padding:clamp(26px,6vw,72px);border-radius:22px;color:white;background:radial-gradient(ellipse at 96% 87%,#a44818 0%,#40251e 41%,#201919 73%);}
+h1,h2,h3,p{margin:0}h1{font-size:clamp(3rem,8vw,6.2rem);letter-spacing:-.075em;line-height:.92}h1 span{color:#ffb870}.hero p{margin-top:18px;color:#f4e5dc}
+form{display:flex;max-width:555px;margin-top:25px;gap:5px;background:white;padding:5px;border-radius:12px}
+input,button{font:inherit}input[type=search]{width:100%;min-width:0;border:0;padding:10px;border-radius:6px;color:var(--ink)}button{border:0;border-radius:8px;background:#ffb870;color:#122d20;padding:8px 16px;cursor:pointer;font-weight:700}
+.section{margin-block:28px}.section-header{display:flex;align-items:center;justify-content:space-between;gap:12px}.section-header a{color:var(--accent)}h2{font-size:1.35rem;letter-spacing:-.025em;margin-bottom:12px}
+.categories{display:flex;flex-wrap:wrap;gap:7px}.categories a{border:1px solid var(--edge);background:white;text-decoration:none;padding:6px 12px;border-radius:20px;font-size:.9rem}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+article{background:var(--white);border:1px solid var(--edge);border-radius:13px;overflow:hidden}
+article img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#f5f0eb}
+.info{padding:12px;display:grid;gap:5px}.info h3{font-size:.98rem;overflow-wrap:anywhere}.info p{font-size:.9rem}.info a{font-size:.87rem;color:var(--accent)}
+footer{padding:19px 0;border-top:1px solid var(--edge);font-size:.9rem;color:#415b4c}
+@media(max-width:800px){nav{display:flex}.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:540px){.frame{padding-inline:14px}.header{min-height:60px}.brand span{display:none}.actions{gap:9px}.register{padding:6px 8px}.hero{margin-top:14px}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}}
+
+.brand{display:flex;align-items:center;gap:8px}.brand img{border-radius:8px}.brand b{color:var(--ink);letter-spacing:-.045em}
+nav{gap:24px;overflow:auto;white-space:nowrap}nav a{padding:10px 0;border-bottom:2px solid transparent}nav a[aria-current]{border-color:#b64e19;color:var(--accent)}
+.actions details{position:relative}.section h2{margin-bottom:8px}
+.editorial-home{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.editorial-cards{display:grid;gap:6px}
+.editorial-cards a,.faq details,.guide-list li{background:white;border:1px solid var(--edge);border-radius:9px;padding:8px 11px;font-size:.92rem}
+.editorial-cards a{text-decoration:none;font-weight:650}
+.reading{max-width:770px;margin:28px auto}.reading h1{font-size:clamp(1.8rem,5vw,3.15rem);line-height:1.08;letter-spacing:-.045em;margin:8px 0 14px}
+.faq{display:grid;gap:3px;margin-block:12px}.faq details{padding:0}.faq summary{display:block;padding:8px 11px;min-height:40px;white-space:normal;font-weight:650}.faq summary:after{content:'+';float:right}.faq details[open] summary:after{content:'−'}.faq details:target{outline:2px solid #c65f27}.faq details p{margin:0 11px 10px}
+.guide-list{list-style:none;padding:0;display:grid;gap:6px}.guide-list a{font-weight:700}.guide-list p,.dek{color:#644d40}
+.story{padding:clamp(17px,4vw,32px);overflow:visible}.story section{margin-top:19px}.story h2{font-size:1.13rem;margin-bottom:4px}.story ul{margin:0;padding-left:19px}.story p{max-width:68ch}
+footer .frame{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+@media(max-width:540px){nav{gap:14px}nav a{font-size:.85rem}.home .products article:nth-child(n+5){display:none}.editorial-home{display:block}.home .section{margin-block:17px}.hero h1{font-size:clamp(2.65rem,13vw,4rem)}.hero p{margin-top:11px}.hero form{margin-top:14px}.hero{padding:22px}.reading{margin-block:19px}.story section{margin-top:13px}.inner .products img{aspect-ratio:1.55}.header .brand img{width:31px;height:31px}}
+</style>

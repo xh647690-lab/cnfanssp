@@ -1,0 +1,1 @@
+{"private":true,"type":"module","scripts":{"build":"astro build && node scripts/build-worker.mjs"},"dependencies":{"astro":"7.4.13"}}
