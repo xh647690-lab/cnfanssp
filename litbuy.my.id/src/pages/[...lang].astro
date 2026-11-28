@@ -11,6 +11,8 @@ export function getStaticPaths() {
 const { lang, route } = Astro.props;
 const [, browse, signup, intro, placeholder, search, categories, latest, all, , , , credit, language] = locales[lang];
 const url = (code, path = '') => '/' + [code === 'en' ? '' : code, path].filter(Boolean).join('/') + (path || code !== 'en' ? '/' : '');
+// Version internal navigation while old registrar responses expire in browsers.
+const navigationUrl = (code, path) => url(code, path) + '?v=storefront';
 const labels = {
  en:['Home','Guides','Frequently asked questions','Latest guides','Sources','Editorial content in English'],
  zh:['首页','选购指南','常见问题','最新指南','参考资料','文章和问答正文为英语'],
@@ -42,14 +44,14 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
 </head>
 <body>
 <header class="bar"><div class="frame header">
-<a href={url(lang)} class="brand"><img src="/litbuy-logo.png" width="36" height="36" alt=""><b>LitBuy</b><span>Spreadsheet</span></a>
+<a href={navigationUrl(lang)} class="brand"><img src="/litbuy-logo.png" width="36" height="36" alt=""><b>LitBuy</b><span>Spreadsheet</span></a>
 <div class="actions">
 <details><summary aria-label={language}>{locales[lang][0]} <span aria-hidden="true">⌄</span></summary>
-<ul>{Object.entries(locales).map(([code, words]) => <li><a lang={code} href={url(code, route)} aria-current={lang === code ? 'page' : undefined}>{words[0]}</a></li>)}</ul>
+<ul>{Object.entries(locales).map(([code, words]) => <li><a lang={code} href={navigationUrl(code, route)} aria-current={lang === code ? 'page' : undefined}>{words[0]}</a></li>)}</ul>
 </details>
 <a class="register" href={registration}>{signup}</a>
 </div>
-</div><nav class="frame" aria-label="Navigation">{nav.map(([path, label]) => <a aria-current={route === path ? "page" : undefined} href={url(lang,path)}>{label}</a>)}</nav></header>
+</div><nav class="frame" aria-label="Navigation">{nav.map(([path, label]) => <a aria-current={route === path ? "page" : undefined} href={navigationUrl(lang,path)}>{label}</a>)}</nav></header>
 <main class:list={["frame", route ? "inner" : "home"]}>
 {!route && <section class="hero">
 <h1>LitBuy <span>Spreadsheet</span></h1>
@@ -59,10 +61,10 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
 <input type="search" required name="keywords" aria-label={placeholder} placeholder={placeholder}>
 <button type="submit">{search}</button>
 </form>
-<div class="hero-actions"><a href={url(lang,'catalogue')}>{browse}</a><a href={registration}>{signup}</a></div>
+<div class="hero-actions"><a href={navigationUrl(lang,'catalogue')}>{browse}</a><a href={registration}>{signup}</a></div>
 </section>}
 {(!route || route === 'categories') && <section class="section" id="categories">
-  <div class="section-header"><h2>{categories}</h2>{!route && <a href={url(lang,'categories')}>{all}</a>}</div>
+  <div class="section-header"><h2>{categories}</h2>{!route && <a href={navigationUrl(lang,'categories')}>{all}</a>}</div>
   <Fragment set:html={'<!--CATEGORIES-->'} />
 </section>}
 {(!route || route === 'catalogue') && <section class="section" id="catalogue">
@@ -70,11 +72,11 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
   <Fragment set:html={'<!--CATALOGUE-->'} />
 </section>}
 {!route && <div class="editorial-home">
-  <section class="section"><div class="section-header"><h2>{questions}</h2><a href={url(lang,'faq')}>{all}</a></div>
-    <div class="editorial-cards" lang="en">{previewFaq.map(([[question], number]) => <a href={url(lang,'faq') + '#q'+number}>{question}</a>)}</div>
+  <section class="section"><div class="section-header"><h2>{questions}</h2><a href={navigationUrl(lang,'faq')}>{all}</a></div>
+    <div class="editorial-cards" lang="en">{previewFaq.map(([[question], number]) => <a href={navigationUrl(lang,'faq') + '#q'+number}>{question}</a>)}</div>
   </section>
-  <section class="section"><div class="section-header"><h2>{newGuides}</h2><a href={url(lang,'guides')}>{all}</a></div>
-    <div class="editorial-cards" lang="en">{articles.slice(-3).reverse().map(([slug, name]) => <a href={url(lang,'guides/' + slug)}>{name}</a>)}</div>
+  <section class="section"><div class="section-header"><h2>{newGuides}</h2><a href={navigationUrl(lang,'guides')}>{all}</a></div>
+    <div class="editorial-cards" lang="en">{articles.slice(-3).reverse().map(([slug, name]) => <a href={navigationUrl(lang,'guides/' + slug)}>{name}</a>)}</div>
   </section>
 </div>}
 {route === 'faq' && <section class="reading">
@@ -84,10 +86,10 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
 </section>}
 {route === 'guides' && <section class="reading">
   <h1>{guide}</h1>{lang !== 'en' && <p>{editorialNote}</p>}
-  <ol class="guide-list" lang="en">{articles.map(([slug, name, description]) => <li><a href={url(lang,'guides/' + slug)}>{name}</a><p>{description}</p></li>)}</ol>
+  <ol class="guide-list" lang="en">{articles.map(([slug, name, description]) => <li><a href={navigationUrl(lang,'guides/' + slug)}>{name}</a><p>{description}</p></li>)}</ol>
 </section>}
 {activeArticle && <article class="reading story" lang="en">
-  <a href={url(lang,'guides')}>{guide}</a>
+  <a href={navigationUrl(lang,'guides')}>{guide}</a>
   <h1>{activeArticle[1]}</h1><p class="dek">{activeArticle[2]}</p>
   {activeArticle[3].map(([heading, body]) => <section><h2>{heading}</h2><p>{body}</p></section>)}
   <section><h2>{sources}</h2><ul>{activeArticle[4].map(source => <li><a href={source}>{new URL(source).hostname}</a></li>)}</ul></section>
