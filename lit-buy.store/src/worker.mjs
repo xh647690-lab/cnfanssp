@@ -127,6 +127,14 @@ body{background:#f7f6f3;color:#24231f}header{border-color:#ebe6dc}.top{gap:20px}
 @media(max-width:370px){.register{font-size:12px;padding:5px 7px}.brand img{width:90px;height:auto}.top{gap:8px}.locale{font-size:13px}}
 `;
 
+const storefrontStyles = `
+.storefront{background:#f5f5f5}.storefront header{border-bottom:0}.storefront .top{min-height:69px}.storefront .brand img{width:126px;height:auto}.storefront nav a:hover{color:#785300}.storefront .register{border-radius:999px;padding:8px 16px}.storefront .locale summary{padding:7px 10px;border:1px solid #e7e4dd;border-radius:999px}
+.storefront .hero{position:relative;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.85fr);align-items:center;gap:28px;margin-top:20px;padding:28px clamp(23px,4vw,52px);min-height:314px;overflow:hidden;border-radius:18px;background:linear-gradient(115deg,#fff2a7 4%,#ffdc55 61%,#ffc800 100%)}
+.storefront .hero h1{font-size:clamp(37px,5vw,65px);max-width:650px;line-height:1.02}.storefront .hero p{margin-bottom:19px}.storefront .search{border:0;border-radius:999px;box-shadow:0 3px 12px #6c49001c}.storefront .search input{padding-inline:16px}.storefront .search button{border-radius:999px;min-width:100px}.feature{justify-self:center;width:min(100%,274px);padding:10px;background:#fffdf4;border:1px solid #fff;border-radius:20px;box-shadow:0 12px 32px #80590024;display:block;transform:rotate(-3deg)}.feature img{display:block;width:100%;height:clamp(130px,19vw,230px);object-fit:contain;background:#fff;border-radius:13px}.feature strong{display:block;padding:5px 9px 2px;font-size:15px}.hero:has(.hero-copy:only-child){grid-template-columns:1fr}
+.storefront .category-shelf{background:white;padding:15px 18px;border-radius:14px;margin:16px 0 22px}.storefront .category-shelf h2{font-size:19px}.storefront .category-shelf .heading{margin-bottom:8px}.storefront .chips a{background:#f6f5f1;border-color:transparent}.storefront .chips a:hover{background:#fff1b8}.storefront .cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.storefront .card{border-radius:12px;border-color:#ededeb}.storefront .card img{background:#fff;aspect-ratio:1.47}.storefront .card .details{color:#735300}.storefront .editor-card{border-color:#ebebeb}
+@media(max-width:740px){.storefront .top{min-height:auto;gap:9px 12px}.storefront .brand img{width:100px}.storefront .register{padding:6px 9px}.storefront .locale summary{padding:5px 7px}.storefront .hero{grid-template-columns:1fr;min-height:0;gap:0;margin-top:12px;padding:23px 16px}.storefront .hero h1{font-size:clamp(31px,8.3vw,43px);margin-bottom:9px}.storefront .hero p{margin-bottom:12px}.storefront .feature{display:none}.storefront .search button{min-width:auto}.storefront .search input{padding-inline:9px}.storefront .category-shelf{padding:10px 11px}.storefront .chips{gap:5px}.storefront .chips a{padding:4px 8px}.storefront .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.storefront .card img{aspect-ratio:1.75}}
+`;
+
 const ui = {
   en: ['Home','FAQ','Guides','Latest FAQs','Latest guides','All questions','All guides','Back to guides','Sources','English content'],
   zh: ['首页','常见问题','购物指南','最新问答','最新指南','全部问答','全部指南','返回指南','参考来源','正文为英文'],
@@ -185,8 +193,10 @@ function render(lang, path, {categories, products}, analytics, isLive) {
   } else if (path === 'categories') {
     content = `<div class="page"><h1>${category}</h1><section>${categoryBlock}</section></div>`;
   } else {
-    content = `<div class="hero"><h1>LitBuy Spreadsheet</h1><p>${intro}</p>${searchForm}</div>
-    <section>${sectionHeading(category, all, link('categories'))}${categoryBlock}</section>
+    const featured = products.find(product => product.image);
+    const feature = featured ? `<a class="feature" href="${escape(featured.url)}"><img src="${escape(featured.image)}" alt="" width="274" height="230" fetchpriority="high"><strong>${escape(featured.title)}</strong></a>` : '';
+    content = `<div class="hero"><div class="hero-copy"><h1>LitBuy Spreadsheet</h1><p>${intro}</p>${searchForm}</div>${feature}</div>
+    <section class="category-shelf">${sectionHeading(category, all, link('categories'))}${categoryBlock}</section>
     <section>${sectionHeading(latest, all, catalogLink)}${catalogBlock}</section>
     <section>${sectionHeading(recentFaq, allFaq, link('faq'))}<div class="editor-grid" lang="en">
       ${faq.slice(0, 3).map(([slug, question]) => `<a class="editor-card" href="${link('faq')}#${slug}"><strong>${question}</strong></a>`).join('')}
@@ -194,8 +204,8 @@ function render(lang, path, {categories, products}, analytics, isLive) {
     <section>${sectionHeading(recentGuides, allGuides, link('guides'))}<div class="editor-grid" lang="en">${articleCards(articles.slice(0, 3))}</div></section>`;
   }
   return `<!doctype html>
-<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${isLive ? `<link rel="canonical" href="${production}${routeLink(lang,path)}">` : '<meta name="robots" content="noindex,nofollow">'}${analytics ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${analytics}"></script><script src="/analytics.js" defer></script>` : ''}<meta name="description" content="${escape(description)}"><title>${escape(title)}${path ? ' | LitBuy Spreadsheet' : ''}</title><link rel="icon" href="${favicon}">${alt}<style>${styles}${extraStyles}</style></head>
-<body><header><div class="wrap top"><a class="brand" href="${link('')}" aria-label="LitBuy Spreadsheet"><img src="${logo}" width="112" height="29" alt="LitBuy"></a>
+<html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${isLive ? `<link rel="canonical" href="${production}${routeLink(lang,path)}">` : '<meta name="robots" content="noindex,nofollow">'}${analytics ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${analytics}"></script><script src="/analytics.js" defer></script>` : ''}<meta name="description" content="${escape(description)}"><title>${escape(title)}${path ? ' | LitBuy Spreadsheet' : ''}</title><link rel="icon" href="${favicon}">${alt}<style>${styles}${extraStyles}${path ? '' : storefrontStyles}</style></head>
+<body${path ? '' : ' class="storefront"'}><header><div class="wrap top"><a class="brand" href="${link('')}" aria-label="LitBuy Spreadsheet"><img src="${logo}" width="112" height="29" alt="LitBuy"></a>
 <nav aria-label="${catalog}"><a href="${link('')}">${home}</a><a href="${link('catalog')}">${catalog}</a><a href="${link('categories')}">${category}</a><a href="${link('faq')}">${faqTitle}</a><a href="${link('guides')}">${guidesTitle}</a></nav>
 <a class="register" href="https://litbuy.com/register">${register}</a>
 <details class="locale"><summary aria-label="${language}">${translations[lang][0]}</summary><ul>${localeLinks}</ul></details></div></header>
