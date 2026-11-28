@@ -14,7 +14,7 @@ const navLabels = {
 const [spreadsheet, guides] = navLabels[language];
 const home = languagePath(language);
 const page = Astro.url.pathname;
-const measurementId = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const measurementId = 'G-RRTF72V129';
 const analytics = /^G-[A-Z0-9]+$/.test(measurementId ?? '') ? measurementId : undefined;
 ---
 <!doctype html>
