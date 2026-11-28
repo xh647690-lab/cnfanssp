@@ -1,0 +1,22 @@
+---
+import Frame from '../../components/Frame.astro';
+import { guides } from '../../lib/editorial.mjs';
+
+export function getStaticPaths() {
+  return guides.map((guide) => ({ params: { slug: guide.slug }, props: { guide } }));
+}
+const { guide } = Astro.props;
+---
+<Frame title={guide.title} description={guide.description}>
+  <main class="content reading">
+    <a class="back" href="/guides/">All guides</a>
+    <article>
+      <h1>{guide.title}</h1>
+      <p class="intro">{guide.description}</p>
+      {guide.sections.map(([heading, body]) => (
+        <section class="article-section"><h2>{heading}</h2><p>{body}</p></section>
+      ))}
+      <p class="sources"><a href={guide.source}>{new URL(guide.source).hostname === 'litbuy.com' ? 'LitBuy reference' : 'CNFansSP catalog'}</a></p>
+    </article>
+  </main>
+</Frame>

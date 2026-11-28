@@ -1,0 +1,62 @@
+---
+import Frame from './Frame.astro';
+import { languages } from '../lib/languages.mjs';
+import { loadCatalog, main } from '../lib/catalog.mjs';
+import { guides, faq } from '../lib/editorial.mjs';
+
+const { language, section } = Astro.props;
+const [, title, description, searchLabel, search, categoryTitle, latest, viewAll] = languages[language];
+const { products, categories } = await loadCatalog();
+const latestFaq = faq.flatMap(([, items], group) => items.map(([question, answer], index) => ({
+  question, answer, id: `question-${group + 1}-${index + 1}`,
+}))).slice(-3).reverse();
+const latestGuides = guides.slice(-3).reverse();
+---
+<Frame language={language} title={section === 'products' ? latest : section === 'categories' ? categoryTitle : title} description={description}>
+  <main id="main-content">
+    {!section && <section class="hero">
+      <div class="hero-inner">
+        <h1>{title}</h1>
+        <p>{description}</p>
+        <form action={main + '/search.html'} method="get" role="search">
+          <input type="search" name="keywords" aria-label={searchLabel} placeholder={searchLabel} required />
+          <input type="hidden" name="channelid" value="2" />
+          <button>{search}</button>
+        </form>
+      </div>
+    </section>}
+    <div class="content">
+      {section !== 'products' && <section id="categories">
+        {section === 'categories' ? <h1>{categoryTitle}</h1> : <h2>{categoryTitle}</h2>}
+        <div class="categories">
+          {categories.map(({ url, label }) => <a href={url}>{label}</a>)}
+        </div>
+      </section>}
+      {section !== 'categories' && <section id="products">
+        <div class="section-heading">
+          {section === 'products' ? <h1>{latest}</h1> : <h2>{latest}</h2>}
+          <a href={main + '/AllProducts/'}>{viewAll}</a>
+        </div>
+        <div class="grid">
+          {products.map(({ url, name, image }, index) => (
+            <article class="product">
+              <a href={url}>
+              <img src={image} alt="" loading={index < 4 ? 'eager' : 'lazy'} decoding="async" width="320" height="320" />
+              <h3>{name}</h3>
+              </a>
+              {url === main + '/AllProducts/6667.html' && <a class="purchase" href="https://litbuy.com/products/details?channel=WEIDIAN&id=7632511460">LitBuy</a>}
+            </article>
+          ))}
+        </div>
+      </section>}
+      {!section && <div class="editorial-home" lang="en">
+        <section><div class="section-heading"><h2>FAQ</h2><a href="/faq/">All questions</a></div>
+          <div class="editorial-cards">{latestFaq.map(({question, answer, id}) => <a href={`/faq/#${id}`}><strong>{question}</strong><span>{answer}</span></a>)}</div>
+        </section>
+        <section><div class="section-heading"><h2>LitBuy guides</h2><a href="/guides/">All guides</a></div>
+          <div class="editorial-cards">{latestGuides.map((guide) => <a href={`/guides/${guide.slug}/`}><strong>{guide.title}</strong><span>{guide.description}</span></a>)}</div>
+        </section>
+      </div>}
+    </div>
+  </main>
+</Frame>

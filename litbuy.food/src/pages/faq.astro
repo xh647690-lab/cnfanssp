@@ -1,0 +1,30 @@
+---
+import Frame from '../components/Frame.astro';
+import { faq, help, estimator } from '../lib/editorial.mjs';
+---
+<Frame title="LitBuy Spreadsheet FAQ" description="Answers about LitBuy links, quality checks, warehouse storage, international shipping and returns.">
+  <main class="content reading">
+    <h1>LitBuy Spreadsheet FAQ</h1>
+    <p>Answers about product links, quality checks, warehouse storage and shipping.</p>
+    {faq.map(([heading, items], group) => (
+      <section class="faq-group">
+        <h2>{heading}</h2>
+        {items.map(([question, answer], index) => (
+          <details id={`question-${group + 1}-${index + 1}`} name="litbuy-faq">
+            <summary>{question}</summary>
+            <p>{answer}</p>
+          </details>
+        ))}
+      </section>
+    ))}
+    <p class="sources"><a href={help}>LitBuy Help Center</a> · <a href={estimator}>Freight Estimator</a></p>
+  </main>
+</Frame>
+<script>
+  const openQuestion = () => {
+    const question = document.getElementById(location.hash.slice(1));
+    if (question instanceof HTMLDetailsElement) question.open = true;
+  };
+  openQuestion();
+  addEventListener('hashchange', openQuestion);
+</script>

@@ -1,0 +1,14 @@
+---
+import Catalog from '../components/Catalog.astro';
+import { languages } from '../lib/languages.mjs';
+
+export function getStaticPaths() {
+  return Object.keys(languages).flatMap((language) => [
+    ['spreadsheet', 'products'], ['categories', 'categories'],
+  ].map(([path, section]) => ({
+    params: { browse: language === 'en' ? path : `${language}/${path}` },
+    props: { language, section },
+  })));
+}
+---
+<Catalog {...Astro.props} />

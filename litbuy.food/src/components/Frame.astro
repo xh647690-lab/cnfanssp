@@ -1,0 +1,61 @@
+---
+import { languages, languagePath } from '../lib/languages.mjs';
+import { main } from '../lib/catalog.mjs';
+import '../styles/site.css';
+
+const { language = 'en', title, description } = Astro.props;
+const [, , , , , categoryTitle, , , register, attribution, languageLabel] = languages[language];
+const navLabels = {
+  en: ['Spreadsheet', 'Guides'], de: ['Tabelle', 'Ratgeber'],
+  es: ['Catálogo', 'Guías'], fr: ['Catalogue', 'Guides'],
+  it: ['Catalogo', 'Guide'], pl: ['Katalog', 'Poradniki'],
+  pt: ['Catálogo', 'Guias'],
+};
+const [spreadsheet, guides] = navLabels[language];
+const home = languagePath(language);
+const page = Astro.url.pathname;
+const measurementId = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const analytics = /^G-[A-Z0-9]+$/.test(measurementId ?? '') ? measurementId : undefined;
+---
+<!doctype html>
+<html lang={language}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href={new URL(page, Astro.site)} />
+  <meta name="description" content={description} />
+  <link rel="icon" type="image/png" href="/brand/litbuy.ico" />
+  <title>{title}</title>
+  {analytics && <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${analytics}`}></script>}
+  {analytics && <script define:vars={{ analytics }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', analytics);
+  </script>}
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href={home} aria-label="LitBuy Spreadsheet"><img src="/brand/litbuy-logo.png" width="132" height="34" alt="LitBuy" /></a>
+      <nav aria-label="Primary">
+        <a href={home + 'spreadsheet/'} aria-current={page === home + 'spreadsheet/' ? 'page' : undefined}>{spreadsheet}</a>
+        <a href={home + 'categories/'} aria-current={page === home + 'categories/' ? 'page' : undefined}>{categoryTitle}</a>
+        <a href="/faq/" aria-current={page === '/faq/' ? 'page' : undefined}>FAQ</a>
+        <a href="/guides/" aria-current={page.startsWith('/guides/') ? 'page' : undefined}>{guides}</a>
+      </nav>
+      <details class="language">
+        <summary aria-label={languageLabel}>{languages[language][0]} <small>{language.toUpperCase()}</small></summary>
+        <ul>
+          {Object.entries(languages).map(([code, [label]]) => (
+            <li><a href={languagePath(code) + (page.endsWith('/spreadsheet/') ? 'spreadsheet/' : page.endsWith('/categories/') ? 'categories/' : '')} lang={code} hreflang={code}>{label} <small>{code.toUpperCase()}</small></a></li>
+          ))}
+        </ul>
+      </details>
+      <a class="register" href="https://litbuy.com/register">{register}</a>
+    </div>
+  </header>
+  <slot />
+  <footer><a href={main}>{attribution}</a> · Independent catalog guide</footer>
+</body>
+</html>

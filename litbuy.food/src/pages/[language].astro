@@ -1,0 +1,10 @@
+---
+import Catalog from '../components/Catalog.astro';
+import { languages } from '../lib/languages.mjs';
+
+export function getStaticPaths() {
+  return Object.keys(languages).filter((code) => code !== 'en')
+    .map((language) => ({ params: { language } }));
+}
+---
+<Catalog language={Astro.params.language} />

@@ -1,0 +1,15 @@
+---
+import Frame from '../../components/Frame.astro';
+import { guides } from '../../lib/editorial.mjs';
+---
+<Frame title="LitBuy Guides" description="Guides to LitBuy product links, QC photos, warehouse storage, shipping and after-sales.">
+  <main class="content reading">
+    <h1>LitBuy guides</h1>
+    <p>From finding the original listing to tracking your parcel.</p>
+    <div class="editorial-cards guides-index">
+      {guides.map(({slug, title, description}) => (
+        <a href={`/guides/${slug}/`}><strong>{title}</strong><span>{description}</span></a>
+      ))}
+    </div>
+  </main>
+</Frame>
