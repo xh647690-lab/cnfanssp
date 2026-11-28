@@ -1,0 +1,11 @@
+{
+  "name": "litbuysheet-food",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "astro build && node scripts/package-worker.mjs"
+  },
+  "type": "module",
+  "dependencies": {
+    "astro": "7.4.13"
+  }
+}
