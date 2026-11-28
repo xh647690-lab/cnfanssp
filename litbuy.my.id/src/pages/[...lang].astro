@@ -67,7 +67,7 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
   <div class="section-header"><h2>{categories}</h2>{!route && <a href={navigationUrl(lang,'categories')}>{all}</a>}</div>
   <Fragment set:html={'<!--CATEGORIES-->'} />
 </section>}
-{(!route || route === 'catalogue') && <section class="section" id="catalogue">
+{(!route || route === 'catalogue' || route === 'categories') && <section class="section" id="catalogue">
   <div class="section-header"><h2>{latest}</h2><a href={route ? main + '/AllProducts/' : url(lang,'catalogue')}>{all}</a></div>
   <Fragment set:html={'<!--CATALOGUE-->'} />
 </section>}
