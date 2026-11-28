@@ -76,27 +76,31 @@ function categoryTitle(category) {
     </div>
   </header>
   <main class="shell">
-    {!page && <section class="hero">
-      <div class="hero-copy">
-        <h1>{t.heading}</h1>
-        <p>{t.intro}</p>
+    {!page && <>
+      <div class="home-search">
         <form action={origin + '/search.html'} method="get" role="search">
           <input type="hidden" name="channelid" value="2" />
           <input type="search" name="keywords" aria-label={t.search} placeholder={t.search} required />
           <button type="submit">{t.submit}</button>
         </form>
-        <a class="browse" href={pathFor('spreadsheet')}>{t.browse}</a>
       </div>
-      <article class="feature">
-        <a href={data.featured.url} class="feature-photo"><img src={data.featured.image} alt={data.featured.title} fetchpriority="high" /></a>
-        <div class="feature-info">
-          <p>{t.featured}</p>
-          <h2><a href={data.featured.url}>{data.featured.title}</a></h2>
-          <span>¥{data.featured.price} <small>· ID {data.featured.id}</small></span>
-          <a class="button buy" href={data.featured.purchase}>{t.buy}</a>
+      <section class="home-banner">
+        <div class="banner-copy">
+          <h1>{t.heading}</h1>
+          <p>{t.intro}</p>
+          <a class="button" href={pathFor('spreadsheet')}>{t.browse}</a>
         </div>
-      </article>
-    </section>}
+        <article class="banner-item">
+          <a class="banner-image" href={data.featured.url}><img src={data.featured.image} alt={data.featured.title} fetchpriority="high" /></a>
+          <div class="banner-details">
+            <small>{t.featured}</small>
+            <h2><a href={data.featured.url}>{data.featured.title}</a></h2>
+            <span>¥{data.featured.price} · ID {data.featured.id}</span>
+            <a class="button buy" href={data.featured.purchase}>{t.buy}</a>
+          </div>
+        </article>
+      </section>
+    </>}
     {page === 'spreadsheet' && <section class="listing-heading">
       <h1>{t.heading}</h1>
       <form action={origin + '/search.html'} method="get" role="search">
@@ -105,7 +109,7 @@ function categoryTitle(category) {
         <button type="submit">{t.submit}</button>
       </form>
     </section>}
-    {(!page || page === 'categories') && <section class:list={['section', page && 'listing-heading']}>
+    {(!page || page === 'categories') && <section class:list={['section', page ? 'listing-heading' : 'home-categories']}>
       {page ? <h1>{t.categories}</h1> : <h2>{t.categories}</h2>}
       <div class:list={['chips', page && 'category-list']}>
         {data.categories.map((category) => <a href={category.url}>{categoryTitle(category)}</a>)}
