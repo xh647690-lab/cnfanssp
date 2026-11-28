@@ -1,0 +1,14 @@
+---
+import Storefront from '../components/Storefront.astro';
+import { languages } from '../lib/languages.mjs';
+import { guides } from '../lib/editorial.mjs';
+
+export function getStaticPaths() {
+  const pages = ['', 'spreadsheet', 'categories', 'faq', 'guides', ...guides.map(({ slug }) => 'guides/' + slug)];
+  return Object.keys(languages).flatMap((lang) => pages.flatMap((page) => {
+    const path = [lang === 'en' ? '' : lang, page].filter(Boolean).join('/');
+    return path ? [{ params: { path }, props: { lang, page } }] : [];
+  }));
+}
+---
+<Storefront {...Astro.props} />

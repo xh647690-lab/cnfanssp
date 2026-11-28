@@ -1,0 +1,184 @@
+---
+import { getCatalog, origin, register } from '../lib/catalog.mjs';
+import { languages } from '../lib/languages.mjs';
+import { guides, faqGroups, faqSources } from '../lib/editorial.mjs';
+import './storefront.css';
+
+const { lang, page = '' } = Astro.props;
+const t = languages[lang];
+const labels = {
+  en: ['Home', 'FAQ', 'Guides', 'Latest questions', 'Latest guides', 'Sources', 'Independent catalogue'],
+  de: ['Startseite', 'FAQ', 'Ratgeber', 'Neue Fragen', 'Neue Ratgeber', 'Quellen', 'Unabhängiger Katalog'],
+  es: ['Inicio', 'Preguntas', 'Guías', 'Preguntas recientes', 'Últimas guías', 'Fuentes', 'Catálogo independiente'],
+  fr: ['Accueil', 'FAQ', 'Guides', 'Questions récentes', 'Guides récents', 'Sources', 'Catalogue indépendant'],
+  'zh-cn': ['首页', '常见问题', '攻略文章', '最新常见问题', '最新攻略', '资料来源', '独立商品目录'],
+};
+const [home, faq, guideLabel, latestFaq, latestGuides, sources, independent] = labels[lang];
+const pathFor = (path, code = lang) => '/' + [code === 'en' ? '' : code, path].filter(Boolean).join('/') + (path || code !== 'en' ? '/' : '');
+const publicUrl = 'https://lit-buy.food';
+const nav = [['', home], ['spreadsheet', t.sheet], ['categories', t.categories], ['faq', faq], ['guides', guideLabel]];
+const article = guides.find(({ slug }) => page === 'guides/' + slug);
+const pageTitle = article?.title ?? nav.find(([path]) => path === page)?.[1];
+const title = page ? pageTitle + ' | LitBuy Spreadsheet' : t.heading;
+const measurementId = import.meta.env.PUBLIC_GA4_ID;
+const description = article?.summary ?? t.intro;
+const usesCatalogue = ['', 'spreadsheet', 'categories'].includes(page);
+const data = usesCatalogue ? await getCatalog() : undefined;
+const allProducts = origin + '/AllProducts/';
+const lastQuestions = faqGroups.at(-1)[1].slice(-3).reverse();
+const translatedCategories = {
+  de: ['Schuhe','Sweatshirts','T-Shirts','Jacken','Hosen & Shorts','Kopfbedeckungen','Accessoires','Sets','Elektronik','Sonstiges','Trikots'],
+  es: ['Calzado','Sudaderas','Camisetas','Chaquetas','Pantalones y shorts','Gorras y sombreros','Accesorios','Conjuntos','Electrónica','Otros','Camisetas deportivas'],
+  fr: ['Chaussures','Sweats','T-shirts','Vestes','Pantalons et shorts','Casquettes et chapeaux','Accessoires','Ensembles','Électronique','Autres','Maillots'],
+  'zh-cn': ['鞋履','卫衣','T 恤','夹克','长裤与短裤','帽饰','配件','套装','电子产品','其他商品','球衣'],
+};
+const sourceCategoryKeys = ['shoes','hoodies-sweaters','t-shirts','jackets','pants-shorts','headwear','accessories','short-sets','electronics','other-stuff','jersey'];
+function categoryTitle(category) {
+  const slug = new URL(category.url).pathname.split('/').filter(Boolean).at(-1);
+  return translatedCategories[lang]?.[sourceCategoryKeys.indexOf(slug)] ?? category.title;
+}
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  {/^G-[A-Z0-9]+$/.test(measurementId ?? '') && <>
+    <script is:inline async src={'https://www.googletagmanager.com/gtag/js?id=' + measurementId}></script>
+    <script define:vars={{ measurementId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', measurementId);
+    </script>
+  </>}
+  <link rel="icon" type="image/png" href="/brand/litbuy-icon.png" />
+  <link rel="canonical" href={publicUrl + pathFor(page)} />
+  {Object.keys(languages).map((code) => <link rel="alternate" hreflang={code} href={publicUrl + pathFor(page, code)} />)}
+  <link rel="alternate" hreflang="x-default" href={publicUrl + pathFor(page, 'en')} />
+</head>
+<body>
+  <header>
+    <div class="shell topbar">
+      <a href={pathFor('')} class="brand" aria-label={home}><img src="/brand/litbuy.png" alt="LitBuy" width="1368" height="356" /></a>
+      <div class="actions">
+        <details class="locale">
+          <summary>{t.name}</summary>
+          <ul>{Object.entries(languages).map(([code, language]) => <li><a href={pathFor(page, code)} hreflang={code} aria-current={code === lang ? 'page' : undefined}>{language.name}<small>{code.toUpperCase()}</small></a></li>)}</ul>
+        </details>
+        <a class="button signup" href={register}>{t.signup}</a>
+      </div>
+      <nav aria-label={t.sheet}>
+        {nav.map(([path, label]) => <a href={pathFor(path)} aria-current={page === path || (path === 'guides' && article) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+    </div>
+  </header>
+  <main class="shell">
+    {!page && <section class="hero">
+      <div class="hero-copy">
+        <h1>{t.heading}</h1>
+        <p>{t.intro}</p>
+        <form action={origin + '/search.html'} method="get" role="search">
+          <input type="hidden" name="channelid" value="2" />
+          <input type="search" name="keywords" aria-label={t.search} placeholder={t.search} required />
+          <button type="submit">{t.submit}</button>
+        </form>
+        <a class="browse" href={pathFor('spreadsheet')}>{t.browse}</a>
+      </div>
+      <article class="feature">
+        <a href={data.featured.url} class="feature-photo"><img src={data.featured.image} alt={data.featured.title} fetchpriority="high" /></a>
+        <div class="feature-info">
+          <p>{t.featured}</p>
+          <h2><a href={data.featured.url}>{data.featured.title}</a></h2>
+          <span>¥{data.featured.price} <small>· ID {data.featured.id}</small></span>
+          <a class="button buy" href={data.featured.purchase}>{t.buy}</a>
+        </div>
+      </article>
+    </section>}
+    {page === 'spreadsheet' && <section class="listing-heading">
+      <h1>{t.heading}</h1>
+      <form action={origin + '/search.html'} method="get" role="search">
+        <input type="hidden" name="channelid" value="2" />
+        <input type="search" name="keywords" aria-label={t.search} placeholder={t.search} required />
+        <button type="submit">{t.submit}</button>
+      </form>
+    </section>}
+    {(!page || page === 'categories') && <section class:list={['section', page && 'listing-heading']}>
+      {page ? <h1>{t.categories}</h1> : <h2>{t.categories}</h2>}
+      <div class:list={['chips', page && 'category-list']}>
+        {data.categories.map((category) => <a href={category.url}>{categoryTitle(category)}</a>)}
+      </div>
+    </section>}
+    {(!page || page === 'spreadsheet') && <section class="section" id="products">
+      <div class="section-head">
+        <h2>{t.recent}</h2>
+        <a href={allProducts}>{t.all}</a>
+      </div>
+      <div class:list={['grid', !page && 'home-products']}>
+        {data.products.map(({url,image,title,price}) => <article class="card">
+          <a class="product-photo" href={url}><img src={image} alt={title} loading="lazy" /></a>
+          <div class="card-content">
+            <h3><a href={url}>{title}</a></h3>
+            <strong>¥{price}</strong>
+            <a class="view" href={url}>{t.view}</a>
+          </div>
+        </article>)}
+      </div>
+    </section>}
+    {!page && <div class="resources">
+      <section class="section">
+        <div class="section-head"><h2>{latestFaq}</h2><a href={pathFor('faq')}>{faq}</a></div>
+        <div class="teasers" lang="en">{lastQuestions.map(([question], index) => <a href={pathFor('faq') + '#question-' + (24 - index)}>{question}</a>)}</div>
+      </section>
+      <section class="section">
+        <div class="section-head"><h2>{latestGuides}</h2><a href={pathFor('guides')}>{guideLabel}</a></div>
+        <div class="teasers" lang="en">{guides.slice(-3).reverse().map(({ slug, title }) => <a href={pathFor('guides/' + slug)}>{title}</a>)}</div>
+      </section>
+    </div>}
+    {page === 'faq' && <section class="editorial">
+      <h1>{faq}</h1>
+      <div class="faq-list" lang="en">
+        {faqGroups.map(([group, questions], groupIndex) => <details class="faq-group" open={groupIndex === 0} name="faq-topic">
+          <summary>{group}</summary>
+          <div>{questions.map(([question, answer], index) => <details class="faq-question" id={'question-' + (groupIndex * 6 + index + 1)}>
+            <summary>{question}</summary><p>{answer}</p>
+          </details>)}</div>
+        </details>)}
+      </div>
+      <details class="sources"><summary>{sources}</summary><ul lang="en">{faqSources.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul></details>
+    </section>}
+    {page === 'guides' && <section class="editorial">
+      <h1>{guideLabel}</h1>
+      <div class="guide-list" lang="en">
+        {guides.map(({ slug, title, summary }) => <a class="guide-card" href={pathFor('guides/' + slug)}><h2>{title}</h2><p>{summary}</p></a>)}
+      </div>
+    </section>}
+    {article && <article class="editorial article">
+      <a class="back" href={pathFor('guides')}>{guideLabel}</a>
+      <div lang="en">
+        <h1>{article.title}</h1>
+        <p class="intro">{article.summary}</p>
+        {article.sections.map(([heading, paragraph]) => <section><h2>{heading}</h2><p>{paragraph}</p></section>)}
+      </div>
+      <details class="sources"><summary>{sources}</summary><ul lang="en">{article.sources.map(([label, href]) => <li><a href={href}>{label}</a></li>)}</ul></details>
+    </article>}
+  </main>
+  <footer><div class="shell footer"><span>{independent}</span><a href={origin}>{t.source}</a></div></footer>
+  <script>
+    function revealFaq() {
+      const id = window.location.hash.slice(1);
+      if (!/^question-\d+$/.test(id)) return;
+      const question = document.getElementById(id);
+      if (!(question instanceof HTMLDetailsElement)) return;
+      const group = question.closest('.faq-group');
+      if (group instanceof HTMLDetailsElement) group.open = true;
+      question.open = true;
+      question.scrollIntoView({ block: 'nearest' });
+    }
+    revealFaq();
+    window.addEventListener('hashchange', revealFaq);
+  </script>
+</body>
+</html>
