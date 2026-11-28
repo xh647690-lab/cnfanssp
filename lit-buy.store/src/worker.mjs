@@ -207,7 +207,8 @@ export default {
   async fetch(request, env = {}) {
     const url = new URL(request.url);
     const isLive = url.origin === production;
-    const analytics = isLive && /^G-[A-Z0-9]+$/.test(env.GA4_MEASUREMENT_ID ?? '') ? env.GA4_MEASUREMENT_ID : '';
+    const measurementId = env.GA4_MEASUREMENT_ID ?? 'G-5M49CG0FHJ';
+    const analytics = isLive && /^G-[A-Z0-9]+$/.test(measurementId) ? measurementId : '';
     if (url.pathname === '/robots.txt') {
       return new Response(isLive
         ? 'User-agent: *\nAllow: /\nDisallow: /search\nSitemap: ' + production + '/sitemap.xml\n'
