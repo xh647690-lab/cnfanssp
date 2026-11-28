@@ -76,7 +76,7 @@ function analytics(id) {
 }
 
 export default {
-  async fetch(request, env = {}) {
+  async fetch(request) {
     const url = new URL(request.url);
     if (url.pathname === '/robots.txt') {
       return new Response(url.origin === site ? 'User-agent: *\nAllow: /\nSitemap: ' + site + '/sitemap.xml\n' : 'User-agent: *\nDisallow: /\n', { headers: { 'content-type': 'text/plain' } });
@@ -97,7 +97,7 @@ export default {
       const categories = categoryLinks(await upstream('/'));
       body = body.replace('<span id="categories-slot"></span>', () => categories);
     }
-    if (url.origin === site) body = body.replace('</head>', () => analytics(env.GA4_MEASUREMENT_ID) + '</head>');
+    if (url.origin === site) body = body.replace('</head>', () => analytics('G-Y7YX28X0FP') + '</head>');
     return new Response(body, { headers: {
       'content-type': 'text/html; charset=utf-8',
       ...(url.origin === site ? {} : {'x-robots-tag': 'noindex'}),
