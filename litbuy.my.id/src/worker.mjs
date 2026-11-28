@@ -58,7 +58,12 @@ function renderCategories(html) {
 
 export default {
   async fetch(request, env = {}) {
-    const route = new URL(request.url).pathname.replace(/\/$/, '') || '/';
+    const requestUrl = new URL(request.url);
+    if (requestUrl.hostname === 'www.litbuy.my.id') {
+      requestUrl.hostname = 'litbuy.my.id';
+      return Response.redirect(requestUrl, 308);
+    }
+    const route = requestUrl.pathname.replace(/\/$/, '') || '/';
     if (route === '/robots.txt') {
       return new Response('User-agent: *\nAllow: /\nSitemap: https://litbuy.my.id/sitemap.xml\n', {
         headers: {'content-type':'text/plain; charset=utf-8'}

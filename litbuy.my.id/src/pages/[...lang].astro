@@ -52,13 +52,14 @@ const previewFaq = faq.slice(-3).reverse().map((entry, index) => [entry, faq.len
 </div><nav class="frame" aria-label="Navigation">{nav.map(([path, label]) => <a aria-current={route === path ? "page" : undefined} href={url(lang,path)}>{label}</a>)}</nav></header>
 <main class:list={["frame", route ? "inner" : "home"]}>
 {!route && <section class="hero">
-<h1>LitBuy<br><span>Spreadsheet</span></h1>
+<h1>LitBuy <span>Spreadsheet</span></h1>
 <p>{intro}</p>
 <form action={main + '/search.html'} method="get" role="search">
 <input type="hidden" name="channelid" value="2">
 <input type="search" required name="keywords" aria-label={placeholder} placeholder={placeholder}>
 <button type="submit">{search}</button>
 </form>
+<div class="hero-actions"><a href={url(lang,'catalogue')}>{browse}</a><a href={registration}>{signup}</a></div>
 </section>}
 {(!route || route === 'categories') && <section class="section" id="categories">
   <div class="section-header"><h2>{categories}</h2>{!route && <a href={url(lang,'categories')}>{all}</a>}</div>
@@ -136,4 +137,20 @@ nav{gap:24px;overflow:auto;white-space:nowrap}nav a{padding:10px 0;border-bottom
 .story{padding:clamp(17px,4vw,32px);overflow:visible}.story section{margin-top:19px}.story h2{font-size:1.13rem;margin-bottom:4px}.story ul{margin:0;padding-left:19px}.story p{max-width:68ch}
 footer .frame{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 @media(max-width:540px){nav{gap:14px}nav a{font-size:.85rem}.home .products article:nth-child(n+5){display:none}.editorial-home{display:block}.home .section{margin-block:17px}.hero h1{font-size:clamp(2.65rem,13vw,4rem)}.hero p{margin-top:11px}.hero form{margin-top:14px}.hero{padding:22px}.reading{margin-block:19px}.story section{margin-top:13px}.inner .products img{aspect-ratio:1.55}.header .brand img{width:31px;height:31px}}
+
+/* Keep the catalogue front and centre, with LitBuy’s warm brand palette. */
+.bar{border-bottom:1px solid #f0e8df}.register{background:#ffad34;border-color:#ffad34;color:#2b1a05}
+.home{display:grid;grid-template-columns:240px minmax(0,1fr);gap:20px;padding-top:22px}
+.home .hero{grid-column:2;grid-row:1;margin:0;background:linear-gradient(120deg,#fff0d7,#ffd18c 72%,#ffbb65);color:#25170f;padding:clamp(22px,4.5vw,56px);border-radius:17px}
+.home .hero h1{font-size:clamp(2.35rem,5vw,4.6rem);line-height:1;letter-spacing:-.065em;max-width:12ch}
+.home .hero h1 span{color:#8c390e}.home .hero p{color:#613b22}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-top:17px;font-weight:650;font-size:.9rem}
+.home #categories{grid-column:1;grid-row:1;margin:0;padding:17px;background:white;border:1px solid var(--edge);border-radius:17px}
+.home #categories .categories{display:grid;grid-template-columns:1fr;gap:1px}
+.home #categories .categories a{border:0;border-radius:6px;padding:3px 7px;font-size:.86rem}
+.home #categories .categories a:hover{background:#fff0dd}
+.home #categories .section-header{align-items:baseline}.home #categories h2{font-size:1rem}
+.home #catalogue,.editorial-home{grid-column:1/-1;margin-top:0}
+.home #catalogue .products{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:760px){.home{display:block;padding-top:13px}.home #categories{margin-top:13px;padding:12px}.home #categories .categories{display:flex;max-height:92px;overflow:auto;gap:4px}.home #categories .categories a{border:1px solid var(--edge);padding:3px 8px}.home #catalogue{margin-top:15px}.home #catalogue .products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
